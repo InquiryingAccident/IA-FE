@@ -1,0 +1,53 @@
+name: iOS CI/CD
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build-ios:
+    name: Build & Deploy iOS
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 23
+
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. Cocoapods 설치 & Pod Install
+      - name: Install Pods
+        run: |
+          cd ios
+          pod install
+          cd ..
+
+      # 5. Setup Ruby (fastlane은 Ruby 기반)
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.1' # 원하는 버전 지정
+
+      # 6. Fastlane 설치
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      # (옵션) iOS 인증서/프로비저닝 파일 셋업
+      #  - GitHub Secrets에 저장해둔 base64 인코딩된 파일을 디코딩해 저장
+      #  - fastlane match나 cert, sigh 등과 연동
+
+      # 7. Fastlane TestFlight 업로드 (beta lane 실행)
+      - name: Fastlane iOS Beta
+        run: cd ios && fastlane beta
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          # APPLE_ID: "appleDeveloperEmail@icloud.com" 처럼 직접 써도 되지만 보안상 secrets 사용 권장
+          # FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          # FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
