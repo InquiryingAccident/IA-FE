@@ -1,23 +1,68 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
+# # This file contains the fastlane.tools configuration
+# # You can find the documentation at https://docs.fastlane.tools
+# #
+# # For a list of all available actions, check out
+# #
+# #     https://docs.fastlane.tools/actions
+# #
+# # For a list of all available plugins, check out
+# #
+# #     https://docs.fastlane.tools/plugins/available-plugins
+# #
 
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+# # Uncomment the line if you want fastlane to automatically update itself
+# # update_fastlane
 
+# default_platform(:ios)
+
+# platform :ios do
+#   desc "Description of what the lane does"
+#   lane :custom_lane do
+#     # add actions here: https://docs.fastlane.tools/actions
+#   end
+# end
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+
+  desc "Build the iOS app for Release"
+  lane :build do
+    gym(
+      scheme: "MyApp",
+      workspace: "MyApp.xcworkspace", # CocoaPods 사용 시 xcworkspace 권장
+      configuration: "Release",
+      export_method: "app-store", # ad-hoc, enterprise, development, app-store 등
+    )
   end
+
+  desc "Upload to TestFlight for beta testing"
+  lane :beta do
+    # build_app()는 gym()과 비슷하게 빌드해줍니다.
+    build_app(
+      scheme: "MyApp",
+      workspace: "MyApp.xcworkspace",
+      export_method: "app-store"
+    )
+
+    # upload_to_testflight()로 TestFlight에 업로드
+    upload_to_testflight(
+      username: ENV["APPLE_ID"] # Apple ID는 환경변수나 Appfile에서 지정
+    )
+  end
+
+  desc "Upload to App Store (Production Release)"
+  lane :release do
+    build_app(
+      scheme: "MyApp",
+      workspace: "MyApp.xcworkspace",
+      export_method: "app-store"
+    )
+    upload_to_app_store(
+      username: ENV["APPLE_ID"],
+      app_identifier: "com.example.myapp"  # Bundle ID
+      # metadata_path: "./fastlane/metadata",
+      # skip_screenshots: true
+    )
+  end
+
 end
