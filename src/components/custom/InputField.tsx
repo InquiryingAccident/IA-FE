@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TextInputProps} from 'react-native';
+
+interface InputFieldProps extends TextInputProps {
+  disabled?: boolean;
+  error?: string;
+  touched?: boolean;
+}
 
 function InputField() {}
 
