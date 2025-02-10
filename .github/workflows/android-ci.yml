@@ -1,0 +1,67 @@
+name: Android CI/CD
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build-android:
+    name: Build & Deploy Android
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 저장소 체크아웃
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # 2. Node.js 설치 (프로젝트는 Node.js 23.7 사용)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 23.7
+
+      # 3. NPM 의존성 설치 (npm 10.9.2 버전 환경이므로 npm 사용)
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. Java 설치 (Android 빌드에 필요; 일반적으로 Java 11 사용)
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      # 5. Android SDK 설치 (Android 빌드를 위한 환경 설정)
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          build-tools: '33.0.0'
+          target: 'android-33'
+
+      # 6. Ruby 설치 (fastlane 실행을 위해 Ruby 3.4.1 사용)
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.1'
+
+      # 7. Fastlane 설치
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      # 8. Fastlane 빌드 실행 (android 폴더에서 Fastlane lane 호출)
+      - name: Build with Fastlane
+        run: |
+          cd android
+          fastlane build
+
+      # 9. (선택) Google Play 업로드 실행
+      - name: Upload to Google Play
+        run: |
+          cd android
+          fastlane upload_to_playstore
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          # GOOGLE_PLAY_PACKAGE_NAME: ${{ secrets.GOOGLE_PLAY_PACKAGE_NAME }}
