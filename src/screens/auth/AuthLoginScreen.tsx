@@ -10,7 +10,7 @@ type AuthScreenProps = StackScreenProps<
   typeof authNavigations.AUTH_LOGIN
 >;
 
-function AuthLoginScreen() {
+function AuthLoginScreen({navigation}: AuthScreenProps) {
   const {isLogin} = useAuth();
 
   return (

@@ -9,7 +9,7 @@ type AuthScreenProps = StackScreenProps<
   typeof authNavigations.AUTH_SIGNUP
 >;
 
-function AuthSignupScreen() {
+function AuthSignupScreen({navigation}: AuthScreenProps) {
   return (
     <View>
       <Text>Signup</Text>
