@@ -41,3 +41,5 @@ function AuthStackNavigator() {
     </Stack.Navigator>
   );
 }
+
+export default AuthStackNavigator;
