@@ -1,6 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useAuth} from '@/utils/AuthContext';
 import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
 import AuthLoginScreen from '@/screens/auth/AuthLoginScreen';
 import AuthSignupScreen from '@/screens/auth/AuthSignupScreen';
@@ -16,26 +15,40 @@ const Stack = createStackNavigator<AuthStackParamList>();
 
 function AuthStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName={authNavigations.AUTH_HOME}>
+    <Stack.Navigator
+      screenOptions={{
+        cardStyle: {
+          backgroundColor: 'white',
+        },
+        headerStyle: {
+          shadowColor: 'gray',
+          backgroundColor: 'white',
+        },
+        headerTitleStyle: {
+          fontSize: 15,
+        },
+        headerTintColor: 'black',
+      }}>
       <Stack.Screen
         name={authNavigations.AUTH_HOME}
         component={AuthHomeScreen}
-        options={{headerShown: false}}
+        options={{
+          headerTitle: ' ',
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={authNavigations.AUTH_LOGIN}
         component={AuthLoginScreen}
         options={{
-          headerShown: true,
-          headerTitle: '',
+          headerTitle: '로그인',
         }}
       />
       <Stack.Screen
         name={authNavigations.AUTH_SIGNUP}
         component={AuthSignupScreen}
         options={{
-          headerShown: true,
-          headerTitle: '',
+          headerTitle: '회원가입',
         }}
       />
     </Stack.Navigator>
