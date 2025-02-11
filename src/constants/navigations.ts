@@ -4,6 +4,10 @@ const authNavigations = {
   AUTH_SIGNUP: 'AuthSignup',
 } as const;
 
-const tabNavigations = {} as const;
+const mainTabNavigations = {
+  MAINTAB_HOME: 'MainTabHome',
+  MAINTAB_SEARCH: 'MainTabSearch',
+  MAINTAB_ADD: 'MainTabAdd',
+} as const;
 
-export {authNavigations, tabNavigations};
+export {authNavigations, mainTabNavigations};
