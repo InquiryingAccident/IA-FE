@@ -1,4 +1,5 @@
 import {mainTabNavigations} from '@/constants';
+import tabSearchHomeScreen from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
@@ -9,7 +10,7 @@ function TabSearchStackNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
-        component={MainTabSearchScreen}
+        component={tabSearchHomeScreen}
       />
     </Stack.Navigator>
   );
