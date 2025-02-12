@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+} from 'react-native';
 import CustomButton from '@/components/custom/CustomButton';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
@@ -12,13 +19,13 @@ type AuthScreenProps = StackScreenProps<
 
 const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageContainer}>
         <Image
-          source={require('@/assets/logo/Logo_IA.png')}
-          style={styles.logo}
+          source={require('@/assets/logo/Logo.png')}
+          style={styles.image}
         />
-        <Text style={styles.appName}>App Name</Text>
+        <Text style={styles.appName}>Accident Aircraft Finder</Text>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
@@ -30,7 +37,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           onPress={() => navigation.navigate(authNavigations.AUTH_SIGNUP)}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -39,25 +46,28 @@ export default AuthHomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    marginHorizontal: 30,
+    marginVertical: 30,
   },
-  logoContainer: {
+  imageContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
-  logo: {
-    width: 100,
-    height: 100,
+  image: {
+    width: Dimensions.get('screen').width * 0.8,
+    height: Dimensions.get('screen').width * 0.8,
   },
   appName: {
+    padding: 30,
     fontSize: 24,
     marginTop: 8,
   },
   buttonContainer: {
-    width: '100%',
-    marginBottom: 32,
+    flex: 1,
+    alignItems: 'center',
+    gap: 10,
+    bottom: 100,
+    position: 'absolute',
   },
 });
