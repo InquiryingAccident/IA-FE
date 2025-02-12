@@ -1,9 +1,12 @@
-import React from 'react';
-import {useAuth} from '@/utils/AuthContext';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useRef} from 'react';
+import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {authNavigations} from '@/constants';
+import useForm from '@/hooks/useForm';
+import {validateLogin, useAuth} from '@/utils';
+import CustomButton from '@/components/custom/CustomButton';
+import InputField from '@/components/custom/InputField';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -12,16 +15,61 @@ type AuthScreenProps = StackScreenProps<
 
 function AuthLoginScreen({navigation}: AuthScreenProps) {
   const {isLogin} = useAuth();
+  const passwordRef = useRef<TextInput | null>(null);
+  const login = useForm({
+    initialValue: {email: '', password: ''},
+    validate: validateLogin,
+  });
+
+  const handleSubmit = () => {
+    console.log('login.values', login.values);
+    // loginMutation.mutate(login.values);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>Login</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <InputField
+          autoFocus
+          placeholder="이메일"
+          error={login.errors.email}
+          touched={login.touched.email}
+          inputMode="email"
+          returnKeyType="next"
+          blurOnSubmit={false}
+          onSubmitEditing={() => passwordRef.current?.focus()}
+          {...login.getTextInputProps('email')}
+        />
+        <InputField
+          ref={passwordRef}
+          placeholder="비밀번호"
+          error={login.errors.password}
+          touched={login.touched.password}
+          secureTextEntry
+          returnKeyType="join"
+          onSubmitEditing={handleSubmit}
+          {...login.getTextInputProps('password')}
+        />
+      </View>
+      <CustomButton
+        label="로그인"
+        variant="filled"
+        size="large"
+        onPress={handleSubmit}
+      />
+    </SafeAreaView>
   );
 }
 
 export default AuthLoginScreen;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    margin: 30,
+  },
+  inputContainer: {
+    gap: 20,
+    marginBottom: 30,
+  },
 });
