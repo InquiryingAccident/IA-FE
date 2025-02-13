@@ -17,7 +17,20 @@ type RequestSignupUser = {
   nickname: string;
 };
 
-type ResponseSignupUser = {};
+type ResponseSignupUser = {
+  createDate: string;
+  updateDate: string;
+  isEdited: boolean;
+  isDeleted: boolean;
+  memberId: string;
+  email: string;
+  password: string;
+  nickname: string;
+  profileUrl: string;
+  role: string[];
+  accountStatus: string;
+  lastLonginTime: string;
+};
 
 type AuthToken = {
   accessToken: string;
@@ -33,15 +46,34 @@ const postLogin = async ({
   const formData = new FormData();
   formData.append('email', email);
   formData.append('password', password);
-  const response = await axiosInstance.post('/api/auth/login', formData);
-  return JSON.parse(response.data);
+  const {data} = await axiosInstance.post('/api/auth/login', formData);
+  return data;
 };
 
-const postSignup = async ({email, password, nickname}: RequestSignupUser) => {
+const postSignup = async ({
+  email,
+  password,
+  nickname,
+}: RequestSignupUser): Promise<void> => {
   const formData = new FormData();
   formData.append('email', email);
   formData.append('password', password);
   formData.append('nickname', nickname);
-  const response = await axiosInstance.post('/api/auth/signup', formData);
-  return JSON.parse(response.data);
+  const {data} = await axiosInstance.post('/api/auth/signup', formData);
+  return data;
 };
+
+// const postLogout = async (): Promise<void> => {
+//   await axiosInstance.post('')
+// }
+
+const postRefresh = async (): Promise<AuthToken> => {
+  const refreshToken = await getEncryptStorage('refreshToken');
+  const formData = new FormData();
+  formData.append('refreshToken', refreshToken);
+  const {data} = await axiosInstance.post('/api/auth/refresh', formData);
+  return data;
+};
+
+export type {RequestUser, RequestSignupUser, ResponseSignupUser, AuthToken};
+export {postLogin, postSignup, postRefresh};
