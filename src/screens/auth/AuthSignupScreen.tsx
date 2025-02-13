@@ -2,7 +2,7 @@ import {authNavigations} from '@/constants';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -11,9 +11,11 @@ type AuthScreenProps = StackScreenProps<
 
 function AuthSignupScreen({navigation}: AuthScreenProps) {
   return (
-    <View>
-      <Text>Signup</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>AuthSignupScreen</Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
