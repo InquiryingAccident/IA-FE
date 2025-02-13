@@ -1,10 +1,11 @@
 import {
   getEncryptStorage,
   setEncryptStorage,
-  removeEncryptSTorage,
+  removeEncryptStorage,
 } from '@/utils/EncryptStorage';
 import {User} from '@/types/user';
 import axiosInstance from './axios';
+import {Profile} from '@/types/domain';
 
 type RequestUser = {
   email: string;
@@ -15,21 +16,6 @@ type RequestSignupUser = {
   email: string;
   password: string;
   nickname: string;
-};
-
-type ResponseSignupUser = {
-  createDate: string;
-  updateDate: string;
-  isEdited: boolean;
-  isDeleted: boolean;
-  memberId: string;
-  email: string;
-  password: string;
-  nickname: string;
-  profileUrl: string;
-  role: string[];
-  accountStatus: string;
-  lastLonginTime: string;
 };
 
 type AuthToken = {
@@ -67,6 +53,18 @@ const postSignup = async ({
 //   await axiosInstance.post('')
 // }
 
+const getAccessToken = async (): Promise<AuthToken> => {
+  const refreshToken = await getEncryptStorage('refreshToken');
+
+  const {data} = await axiosInstance.post('/api/auth/refresh', {
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  });
+
+  return data;
+};
+
 const postRefresh = async (): Promise<AuthToken> => {
   const refreshToken = await getEncryptStorage('refreshToken');
   const formData = new FormData();
@@ -75,5 +73,23 @@ const postRefresh = async (): Promise<AuthToken> => {
   return data;
 };
 
-export type {RequestUser, RequestSignupUser, ResponseSignupUser, AuthToken};
-export {postLogin, postSignup, postRefresh};
+type ResponseProfile = Profile;
+
+const getProfile = async (): Promise<ResponseProfile> => {
+  const {data} = await axiosInstance.get('/api/member/my-info');
+  return data;
+};
+
+const postLogout = async (): Promise<void> => {
+  await axiosInstance.post('/api/auth/logout');
+};
+
+export type {RequestUser, RequestSignupUser, ResponseProfile, AuthToken};
+export {
+  postLogin,
+  postSignup,
+  postRefresh,
+  getProfile,
+  getAccessToken,
+  postLogout,
+};
