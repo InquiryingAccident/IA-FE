@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {ServerBaseUrl} from '@env';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://api.plane-accident-finder-world',
+  baseURL: ServerBaseUrl,
   withCredentials: true,
 });
 
