@@ -9,11 +9,11 @@ const getEncryptStorage = async (key: string) => {
   return storedData ? JSON.parse(storedData) : null;
 };
 
-const removeEncryptSTorage = async (key: string) => {
+const removeEncryptStorage = async (key: string) => {
   const data = await EncryptedStorage.getItem(key);
   if (data) {
     await EncryptedStorage.removeItem(key);
   }
 };
 
-export {setEncryptStorage, getEncryptStorage, removeEncryptSTorage};
+export {setEncryptStorage, getEncryptStorage, removeEncryptStorage};
