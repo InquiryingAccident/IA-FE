@@ -1,12 +1,28 @@
+import {tabHomeNavigations} from '@/constants';
+import {TabHomeStackParamList} from '@/navigations/stack/TabHomeStackNavigator';
+import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 
-function TabHomeScreen() {
+type TabHomeScreenProps = StackScreenProps<
+  TabHomeStackParamList,
+  typeof tabHomeNavigations.TAB_HOME
+>;
+
+function TabHomeScreen({navigation}: TabHomeScreenProps) {
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <Text>TabHomeScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 
 export default TabHomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
