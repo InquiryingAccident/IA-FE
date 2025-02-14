@@ -4,9 +4,10 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {authNavigations} from '@/constants';
 import useForm from '@/hooks/useForm';
-import {validateLogin, useAuth} from '@/utils';
+import {validateLogin} from '@/utils';
 import CustomButton from '@/components/custom/CustomButton';
 import InputField from '@/components/custom/InputField';
+import useAuth from '@/hooks/queries/useAuth';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
