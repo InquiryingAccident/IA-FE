@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 function tabSearchHomeScreen() {
   return (
     <View>
-      <Text>tabSearchHomeScreen</Text>
+      <Text>항공편 검색, 선택사항으로 날짜, 등 입력 모달 추가</Text>
     </View>
   );
 }

@@ -12,7 +12,7 @@ type TabHomeScreenProps = StackScreenProps<
 function TabHomeScreen({navigation}: TabHomeScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>TabHomeScreen</Text>
+      <Text>추가 기능& 항공 소식 알리기 등 기능 구현? 예정</Text>
     </SafeAreaView>
   );
 }
