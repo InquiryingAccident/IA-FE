@@ -9,6 +9,7 @@ const colors = {
   GRAY_200: '#E7E7E7',
   GRAY_500: '#8E8E8E',
   GRAY_700: '#575757',
+  GREEN_500: '#98CE40',
   BLACK: '#000',
 };
 
