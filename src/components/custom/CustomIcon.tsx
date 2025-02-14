@@ -9,18 +9,10 @@ type IconProps = SvgProps & {
   onPress?: () => void;
 };
 
-function Icon({name, size, onPress, ...props}: IconProps) {
+function Icon({name, size, onPress}: IconProps) {
   const SvgIcon = Icons[name];
 
-  const iconWidth = size || 24;
-  const iconHeight = size || 24;
-
-  const sizeProps = {
-    ...(iconWidth !== undefined ? {iconWidth} : {}),
-    ...(iconHeight !== undefined ? {iconHeight} : {}),
-  };
-
-  return <SvgIcon {...sizeProps} onPress={onPress} />;
+  return <SvgIcon width={size} height={size} onPress={onPress} />;
 }
 
 export default Icon;
