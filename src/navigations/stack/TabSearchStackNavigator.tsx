@@ -1,20 +1,24 @@
-import {mainTabNavigations} from '@/constants';
+import {mainTabNavigations, tabSearchNavigations} from '@/constants';
 import tabSearchHomeScreen from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
-const Stack = createStackNavigator();
+export type TabSearchStackParamList = {
+  [tabSearchNavigations.TAB_SEARCH]: undefined;
+};
+
+const Stack = createStackNavigator<TabSearchStackParamList>();
 
 function TabSearchStackNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
+      initialRouteName={tabSearchNavigations.TAB_SEARCH}
       screenOptions={{
         headerShown: false,
         headerTitle: '',
       }}>
       <Stack.Screen
-        name={mainTabNavigations.MAINTAB_SEARCH}
+        name={tabSearchNavigations.TAB_SEARCH}
         component={tabSearchHomeScreen}
       />
     </Stack.Navigator>
