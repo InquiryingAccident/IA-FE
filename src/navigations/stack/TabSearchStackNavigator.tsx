@@ -7,7 +7,12 @@ const Stack = createStackNavigator();
 
 function TabSearchStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
+      screenOptions={{
+        headerShown: false,
+        headerTitle: '',
+      }}>
       <Stack.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={tabSearchHomeScreen}

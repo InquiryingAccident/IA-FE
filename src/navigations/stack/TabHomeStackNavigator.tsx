@@ -11,7 +11,12 @@ const Stack = createStackNavigator<TabHomeStackParamList>();
 
 function TabHomeStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName={tabHomeNavigations.TAB_HOME}>
+    <Stack.Navigator
+      initialRouteName={tabHomeNavigations.TAB_HOME}
+      screenOptions={{
+        headerShown: false,
+        headerTitle: '',
+      }}>
       <Stack.Screen
         name={tabHomeNavigations.TAB_HOME}
         component={TabHomeScreen}

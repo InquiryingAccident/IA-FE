@@ -28,21 +28,21 @@ function MainTabNavigator() {
           switch (route.name) {
             case mainTabNavigations.MAINTAB_HOME:
               return focused ? (
-                <SvgIcon name="Home" width={24} height={24} />
+                <SvgIcon name="Home" size={24} />
               ) : (
-                <SvgIcon name="HomeInactive" width={24} height={24} />
+                <SvgIcon name="HomeInactive" size={24} />
               );
             case mainTabNavigations.MAINTAB_SEARCH:
               return focused ? (
-                <SvgIcon name="Search" width={24} height={24} />
+                <SvgIcon name="Search" size={24} />
               ) : (
-                <SvgIcon name="SearchInactive" width={24} height={24} />
+                <SvgIcon name="SearchInactive" size={24} />
               );
             case mainTabNavigations.MAINTAB_ADD:
               return focused ? (
-                <SvgIcon name="Bookmark" width={24} height={24} />
+                <SvgIcon name="Bookmark" size={24} />
               ) : (
-                <SvgIcon name="BookmarkInactive" width={24} height={24} />
+                <SvgIcon name="BookmarkInactive" size={24} />
               );
             default:
               return null;
@@ -57,18 +57,7 @@ function MainTabNavigator() {
           shadowColor: 'transparent',
           elevation: 0,
         },
-        headerTitle: () => (
-          //로고 transformer 수정 필요
-          <View>
-            <SvgIcon
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              name={'Home'}
-            />
-          </View>
-        ),
+        headerTitle: 'TabNavigator Header에 로고 배치',
         //headerRight -> DrawerNavigator 구현예정
         // headerRight: () => (
         //   <TouchableOpacity
@@ -85,10 +74,16 @@ function MainTabNavigator() {
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_HOME}
         component={TabHomeStackNavigator}
+        options={{
+          title: '홈',
+        }}
       />
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={TabSearchStackNavigator}
+        options={{
+          title: '항공편 검색',
+        }}
       />
     </Tab.Navigator>
   );
