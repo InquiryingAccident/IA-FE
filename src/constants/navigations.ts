@@ -18,9 +18,14 @@ const tabSearchNavigations = {
   TAB_SEARCH: 'TabSearchHome',
 } as const;
 
+const tabBookmarkNavigations = {
+  TAB_BOOKMARK: 'TabBookmarkHome',
+} as const;
+
 export {
   authNavigations,
   mainTabNavigations,
   tabHomeNavigations,
   tabSearchNavigations,
+  tabBookmarkNavigations,
 };
