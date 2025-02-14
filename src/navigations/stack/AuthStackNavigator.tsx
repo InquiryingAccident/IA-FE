@@ -16,6 +16,7 @@ const Stack = createStackNavigator<AuthStackParamList>();
 function AuthStackNavigator() {
   return (
     <Stack.Navigator
+      initialRouteName={authNavigations.AUTH_HOME}
       screenOptions={{
         cardStyle: {
           backgroundColor: 'white',

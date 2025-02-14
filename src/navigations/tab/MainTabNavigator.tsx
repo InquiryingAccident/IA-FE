@@ -1,10 +1,10 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {mainTabNavigations} from '@/constants';
-import MainTabHomeScreen from '@/screens/mainTab/MainTabHomeScreen';
 import TabSearchStackNavigator from '../stack/TabSearchStackNavigator';
 import TabHomeStackNavigator from '../stack/TabHomeStackNavigator';
 import {View, TouchableOpacity} from 'react-native';
+import SvgIcon from '@/components/custom/CustomIcon';
 // import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
@@ -28,21 +28,21 @@ function MainTabNavigator() {
           switch (route.name) {
             case mainTabNavigations.MAINTAB_HOME:
               return focused ? (
-                <HomeIconActive width={24} height={24} />
+                <SvgIcon name="Home" width={24} height={24} />
               ) : (
-                <HomeIconInactive width={24} height={24} />
+                <SvgIcon name="HomeInactive" width={24} height={24} />
               );
             case mainTabNavigations.MAINTAB_SEARCH:
               return focused ? (
-                <SearchIconActive width={24} height={24} />
+                <SvgIcon name="Search" width={24} height={24} />
               ) : (
-                <SearchIconInactive width={24} height={24} />
+                <SvgIcon name="SearchInactive" width={24} height={24} />
               );
             case mainTabNavigations.MAINTAB_ADD:
               return focused ? (
-                <StarIconActive width={24} height={24} />
+                <SvgIcon name="Bookmark" width={24} height={24} />
               ) : (
-                <StarIconInactive width={24} height={24} />
+                <SvgIcon name="BookmarkInactive" width={24} height={24} />
               );
             default:
               return null;
@@ -60,11 +60,12 @@ function MainTabNavigator() {
         headerTitle: () => (
           //로고 transformer 수정 필요
           <View>
-            <Logo
+            <SvgIcon
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              name={'Home'}
             />
           </View>
         ),

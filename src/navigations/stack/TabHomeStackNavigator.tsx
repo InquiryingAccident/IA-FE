@@ -1,16 +1,19 @@
-import {mainTabNavigations} from '@/constants';
-import TabHomeScreen from '@/screens/mainTab/tabHomeStack/tabHomeScreen';
-import tabSearchHomeScreen from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
+import {tabHomeNavigations} from '@/constants';
+import TabHomeScreen from '@/screens/mainTab/tabHomeStack/TabHomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
-const Stack = createStackNavigator();
+export type TabHomeStackParamList = {
+  [tabHomeNavigations.TAB_HOME]: undefined;
+};
+
+const Stack = createStackNavigator<TabHomeStackParamList>();
 
 function TabHomeStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={tabHomeNavigations.TAB_HOME}>
       <Stack.Screen
-        name={mainTabNavigations.MAINTAB_HOME}
+        name={tabHomeNavigations.TAB_HOME}
         component={TabHomeScreen}
       />
     </Stack.Navigator>
