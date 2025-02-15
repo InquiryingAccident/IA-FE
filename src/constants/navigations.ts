@@ -7,7 +7,7 @@ const authNavigations = {
 const mainTabNavigations = {
   MAINTAB_HOME: 'MainTabHome',
   MAINTAB_SEARCH: 'MainTabSearch',
-  MAINTAB_ADD: 'MainTabAdd',
+  MAINTAB_BOOKMARK: 'MainTabBookmark',
 } as const;
 
 const tabHomeNavigations = {
