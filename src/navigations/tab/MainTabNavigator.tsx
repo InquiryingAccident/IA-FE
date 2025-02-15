@@ -5,12 +5,13 @@ import TabSearchStackNavigator from '../stack/TabSearchStackNavigator';
 import TabHomeStackNavigator from '../stack/TabHomeStackNavigator';
 import {View, TouchableOpacity} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
+import TabBookmarkStackNavigator from '../stack/TabBookmarkStackNavigator';
 // import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
   [mainTabNavigations.MAINTAB_HOME]: undefined;
   [mainTabNavigations.MAINTAB_SEARCH]: undefined;
-  [mainTabNavigations.MAINTAB_ADD]: undefined;
+  [mainTabNavigations.MAINTAB_BOOKMARK]: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -38,7 +39,7 @@ function MainTabNavigator() {
               ) : (
                 <SvgIcon name="SearchInactive" size={24} />
               );
-            case mainTabNavigations.MAINTAB_ADD:
+            case mainTabNavigations.MAINTAB_BOOKMARK:
               return focused ? (
                 <SvgIcon name="Bookmark" size={24} />
               ) : (
@@ -83,6 +84,13 @@ function MainTabNavigator() {
         component={TabSearchStackNavigator}
         options={{
           title: '항공편 검색',
+        }}
+      />
+      <Tab.Screen
+        name={mainTabNavigations.MAINTAB_BOOKMARK}
+        component={TabBookmarkStackNavigator}
+        options={{
+          title: '즐겨찾기',
         }}
       />
     </Tab.Navigator>

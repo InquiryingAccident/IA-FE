@@ -24,3 +24,5 @@ function TabBookmarkStackNavigator() {
     </Stack.Navigator>
   );
 }
+
+export default TabBookmarkStackNavigator;
