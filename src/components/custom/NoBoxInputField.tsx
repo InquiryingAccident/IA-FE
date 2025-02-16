@@ -69,7 +69,8 @@ function InputField<T extends string | number>({
 
 const styles = StyleSheet.create({
   container: {
-    width: deviceWidth - 48,
+    width: '100%',
+    paddingHorizontal: 24,
     marginVertical: 10,
   },
   label: {

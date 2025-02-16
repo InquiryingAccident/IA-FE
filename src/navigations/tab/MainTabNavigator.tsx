@@ -29,19 +29,19 @@ function MainTabNavigator() {
           switch (route.name) {
             case mainTabNavigations.MAINTAB_HOME:
               return focused ? (
-                <SvgIcon name="Home" size={24} />
+                <SvgIcon name="HomeActiveGreen" size={24} />
               ) : (
                 <SvgIcon name="HomeInactive" size={24} />
               );
             case mainTabNavigations.MAINTAB_SEARCH:
               return focused ? (
-                <SvgIcon name="Search" size={24} />
+                <SvgIcon name="SearchActiveGreen" size={24} />
               ) : (
                 <SvgIcon name="SearchInactive" size={24} />
               );
             case mainTabNavigations.MAINTAB_BOOKMARK:
               return focused ? (
-                <SvgIcon name="Bookmark" size={24} />
+                <SvgIcon name="BookmarkActiveGreen" size={24} />
               ) : (
                 <SvgIcon name="BookmarkInactive" size={24} />
               );

@@ -25,12 +25,12 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
   });
 
   const handleSubmit = () => {
-    const {email, password} = signup.values;
+    const {email, password, nickname} = signup.values;
     signupMutation.mutate(
       {
         email,
         password,
-        nickname: '',
+        nickname: nickname,
       },
       {
         onSuccess: () => loginMutation.mutate({email, password}),

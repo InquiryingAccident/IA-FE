@@ -16,6 +16,7 @@ const tabHomeNavigations = {
 
 const tabSearchNavigations = {
   TAB_SEARCH: 'TabSearchHome',
+  TAB_SEARCH_ACCIDENTLIST: 'TabSearchAccidentList',
 } as const;
 
 const tabBookmarkNavigations = {

@@ -7,12 +7,13 @@ type IconProps = SvgProps & {
   name: keyof typeof Icons;
   size?: number;
   onPress?: () => void;
+  color?: string;
 };
 
-function Icon({name, size, onPress}: IconProps) {
+function Icon({name, size, onPress, color}: IconProps) {
   const SvgIcon = Icons[name];
 
-  return <SvgIcon width={size} height={size} onPress={onPress} />;
+  return <SvgIcon width={size} height={size} onPress={onPress} color={color} />;
 }
 
 export default Icon;
