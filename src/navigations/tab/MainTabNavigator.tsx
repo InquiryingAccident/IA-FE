@@ -3,9 +3,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {mainTabNavigations} from '@/constants';
 import TabSearchStackNavigator from '../stack/TabSearchStackNavigator';
 import TabHomeStackNavigator from '../stack/TabHomeStackNavigator';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
 import TabBookmarkStackNavigator from '../stack/TabBookmarkStackNavigator';
+import Logo from '@/assets/logo/LogoSvg.svg';
 // import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
@@ -58,7 +59,12 @@ function MainTabNavigator() {
           shadowColor: 'transparent',
           elevation: 0,
         },
-        headerTitle: 'TabNavigator Header에 로고 배치',
+        headerTitle: () => (
+          <View style={headerStyles.container}>
+            <Logo width={30} height={30} />
+            <Text>Accident Finder</Text>
+          </View>
+        ),
         //headerRight -> DrawerNavigator 구현예정
         // headerRight: () => (
         //   <TouchableOpacity
@@ -98,3 +104,13 @@ function MainTabNavigator() {
 }
 
 export default MainTabNavigator;
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+});
