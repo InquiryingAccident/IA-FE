@@ -8,6 +8,7 @@ const mainTabNavigations = {
   MAINTAB_HOME: 'MainTabHome',
   MAINTAB_SEARCH: 'MainTabSearch',
   MAINTAB_BOOKMARK: 'MainTabBookmark',
+  MAINTAB_USER: 'MainTabUser',
 } as const;
 
 const tabHomeNavigations = {
@@ -23,10 +24,15 @@ const tabBookmarkNavigations = {
   TAB_BOOKMARK: 'TabBookmarkHome',
 } as const;
 
+const tabUserNavigations = {
+  TAB_USER: 'TabUserHome',
+} as const;
+
 export {
   authNavigations,
   mainTabNavigations,
   tabHomeNavigations,
   tabSearchNavigations,
   tabBookmarkNavigations,
+  tabUserNavigations,
 };
