@@ -32,7 +32,11 @@ const postLogin = async ({
   const formData = new FormData();
   formData.append('email', email);
   formData.append('password', password);
-  const {data} = await axiosInstance.post('/api/auth/login', formData);
+  const {data} = await axiosInstance.post('/api/auth/login', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return data;
 };
 

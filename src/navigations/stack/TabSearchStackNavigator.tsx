@@ -8,7 +8,6 @@ export type TabSearchStackParamList = {
   [tabSearchNavigations.TAB_SEARCH]: undefined;
   [tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST]: {
     tailNumber: string;
-    accidentDate?: string;
   };
 };
 

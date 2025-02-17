@@ -74,11 +74,13 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {TabSearchStackParamList} from '@/navigations/stack/TabSearchStackNavigator';
-import {tabSearchNavigations} from '@/constants';
+import {storageKeys, tabSearchNavigations} from '@/constants';
 import axiosInstance from '@/api/axios';
+import {getEncryptStorage} from '@/utils';
 
 type Accident = {
   date: string;
@@ -94,9 +96,8 @@ const TabSearchAccidentListScreen: React.FC<
   TabSearchAccidentListScreenProps
 > = ({route}) => {
   // 필수: tailNumber, 선택: accidentDate
-  const {tailNumber, accidentDate} = route.params as {
+  const {tailNumber} = route.params as {
     tailNumber: string;
-    accidentDate?: string;
   };
 
   const [accidentData, setAccidentData] = useState<Accident[]>([]);
@@ -104,13 +105,26 @@ const TabSearchAccidentListScreen: React.FC<
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
+    // Alert.alert('항공기번호', tailNumber);
     const fetchAccidents = async () => {
       try {
+        const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
+        // Alert.alert(accessToken);
         const accidentListformData = new FormData();
         accidentListformData.append('registration', tailNumber);
+        accidentListformData.append('page', 0);
+        accidentListformData.append('size', 10);
+        accidentListformData.append('sortField', 'accidentDate');
+        accidentListformData.append('sortDirection', 'ASC');
         const response = await axiosInstance.post(
           '/api/plane-accident/registration/search',
           accidentListformData,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          },
         );
         setAccidentData(response.data);
       } catch (err) {
@@ -121,7 +135,10 @@ const TabSearchAccidentListScreen: React.FC<
       }
     };
     fetchAccidents();
-  }, [tailNumber, accidentDate]);
+    if (accidentData.length === 0) {
+      Alert.alert('해당 비행기는 사고내역이 없습니다.');
+    }
+  }, [tailNumber]);
 
   if (loading) {
     return (

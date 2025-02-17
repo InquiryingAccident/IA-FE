@@ -127,6 +127,12 @@ type TabSearchScreenProps = StackScreenProps<
   typeof tabSearchNavigations.TAB_SEARCH
 >;
 
+interface Flight {
+  ident: string;
+  registration: string | null;
+  [key: string]: any;
+}
+
 function tabSearchHomeScreen({navigation}: TabSearchScreenProps) {
   const [searchText, setSearchText] = useState('');
 
@@ -136,27 +142,35 @@ function tabSearchHomeScreen({navigation}: TabSearchScreenProps) {
       return;
     }
     try {
-      Alert.alert(`${FlightAwareApi}/flight/${searchText}`);
+      // Alert.alert(`${FlightAwareApi}/flight/${searchText}`);
       const response = await axiosFlightAwareInstance.get(
-        `/flight/${searchText}`,
+        `/flights/${searchText}`,
         {
           headers: {
             'x-apikey': xapikey,
           },
         },
       );
-      if (response.status !== 200) {
-        Alert.alert('해당 항공편의 tail number를 찾을 수 없습니다.');
-        return;
-      } else {
-        Alert.alert('해당 항공편의 tail number를 찾았습니다.');
+      // if (response.status !== 200) {
+      //   Alert.alert('해당 항공편의 tail number를 찾을 수 없습니다.');
+      //   return;
+      // } else {
+      //   Alert.alert('해당 항공편의 tail number를 찾았습니다.');
+      // }
+      const flights = response.data.flights;
+      if (!flights || flights.length === 0) {
+        Alert.alert('항공편의 비행기가 없습니다.');
       }
-      const tailNumber = 'HL8088';
-      const accidentDate = '2021-01-01';
-      navigation.navigate(tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST, {
-        tailNumber,
-        accidentDate,
-      });
+      const validFlight = flights.find(
+        (flight: Flight) => flight.registration !== null,
+      );
+      if (validFlight) {
+        navigation.navigate(tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST, {
+          tailNumber: validFlight.registration,
+        });
+      } else {
+        Alert.alert('유효한 항공 번호가 없습니다.');
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('검색 중 오류가 발생했습니다.');
