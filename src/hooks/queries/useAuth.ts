@@ -4,7 +4,6 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import {
   postLogin,
   postSignup,
-  postRefresh,
   getAccessToken,
   ResponseProfile,
   getProfile,
@@ -33,6 +32,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
     onSuccess: ({accessToken, refreshToken}) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
+      setEncryptStorage(storageKeys.ACCESS_TOKEN, accessToken);
     },
     onSettled: () => {
       queryClient.refetchQueries({
