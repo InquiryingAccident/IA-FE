@@ -7,12 +7,14 @@ import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
 import TabBookmarkStackNavigator from '../stack/TabBookmarkStackNavigator';
 import Logo from '@/assets/logo/LogoSvg.svg';
+import TabUserStackNavigator from '../stack/TabUserStackNavigator';
 // import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
   [mainTabNavigations.MAINTAB_HOME]: undefined;
   [mainTabNavigations.MAINTAB_SEARCH]: undefined;
   [mainTabNavigations.MAINTAB_BOOKMARK]: undefined;
+  [mainTabNavigations.MAINTAB_USER]: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -45,6 +47,12 @@ function MainTabNavigator() {
                 <SvgIcon name="BookmarkActiveGreen" size={24} />
               ) : (
                 <SvgIcon name="BookmarkInactive" size={24} />
+              );
+            case mainTabNavigations.MAINTAB_USER:
+              return focused ? (
+                <SvgIcon name="UserActiveGreen" size={24} />
+              ) : (
+                <SvgIcon name="UserInactive" size={24} />
               );
             default:
               return null;
@@ -97,6 +105,13 @@ function MainTabNavigator() {
         component={TabBookmarkStackNavigator}
         options={{
           title: '즐겨찾기',
+        }}
+      />
+      <Tab.Screen
+        name={mainTabNavigations.MAINTAB_USER}
+        component={TabUserStackNavigator}
+        options={{
+          title: '내정보',
         }}
       />
     </Tab.Navigator>
