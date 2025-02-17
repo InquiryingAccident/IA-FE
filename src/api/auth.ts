@@ -49,7 +49,11 @@ const postSignup = async ({
   formData.append('email', email);
   formData.append('password', password);
   formData.append('nickname', nickname);
-  const {data} = await axiosInstance.post('/api/auth/signup', formData);
+  const {data} = await axiosInstance.post('/api/auth/signup', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return data;
 };
 
@@ -59,28 +63,26 @@ const postSignup = async ({
 
 const getAccessToken = async (): Promise<AuthToken> => {
   const refreshToken = await getEncryptStorage('refreshToken');
-
-  const {data} = await axiosInstance.post('/api/auth/refresh', {
+  const formData = new FormData();
+  formData.append('refreshToken', refreshToken);
+  const {data} = await axiosInstance.post('/api/auth/refresh', formData, {
     headers: {
       Authorization: `Bearer ${refreshToken}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
 
   return data;
 };
 
-const postRefresh = async (): Promise<AuthToken> => {
-  const refreshToken = await getEncryptStorage('refreshToken');
-  const formData = new FormData();
-  formData.append('refreshToken', refreshToken);
-  const {data} = await axiosInstance.post('/api/auth/refresh', formData);
-  return data;
-};
-
 type ResponseProfile = Profile;
 
 const getProfile = async (): Promise<ResponseProfile> => {
-  const {data} = await axiosInstance.get('/api/member/my-info');
+  const {data} = await axiosInstance.post('/api/member/my-info', {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return data;
 };
 
@@ -89,11 +91,4 @@ const postLogout = async (): Promise<void> => {
 };
 
 export type {RequestUser, RequestSignupUser, ResponseProfile, AuthToken};
-export {
-  postLogin,
-  postSignup,
-  postRefresh,
-  getProfile,
-  getAccessToken,
-  postLogout,
-};
+export {postLogin, postSignup, getProfile, getAccessToken, postLogout};
