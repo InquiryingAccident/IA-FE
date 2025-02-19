@@ -1,3 +1,5 @@
+import {errorMessages} from '@/constants';
+
 type UserLoginInfomation = {
   email: string;
   password: string;
@@ -37,13 +39,13 @@ function validateSignupUser(values: UserSignupInformation) {
   };
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-    errors.email = '올바른 이메일 형식이 아닙니다.';
+    errors.email = errorMessages.VALIDATE_EMAIL;
   }
   if (!(values.password.length >= 8 && values.password.length <= 20)) {
-    errors.password = '비밀번호는 8~20자 사이로 입력해주세요.';
+    errors.password = errorMessages.VALIDATE_PASSWORD;
   }
   if (!(values.nickname.length >= 2 && values.nickname.length <= 10)) {
-    errors.nickname = '닉네임은 2~10자 사이로 입력해주세요.';
+    errors.nickname = errorMessages.VALIDATE_NICKNAME;
   }
 
   return errors;
@@ -56,7 +58,7 @@ function validateSignup(
   const signupErrors = {...errors, passwordConfirm: ''};
 
   if (values.password !== values.passwordConfirm) {
-    signupErrors.passwordConfirm = '비밀번호가 일치하지않습니다.';
+    signupErrors.passwordConfirm = errorMessages.VALIDATE_PASSWORDCONFIRM;
   }
 
   return signupErrors;
