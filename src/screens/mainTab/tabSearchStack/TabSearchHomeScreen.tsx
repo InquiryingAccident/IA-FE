@@ -13,7 +13,7 @@ type TabSearchScreenProps = StackScreenProps<
   typeof tabSearchNavigations.TAB_SEARCH
 >;
 
-interface Flight {
+export interface Flight {
   ident: string;
   registration: string | null;
   scheduled_out?: string;
@@ -26,7 +26,6 @@ interface Flight {
   arrival_delay?: number;
   status?: string;
   aircraft_type?: string;
-  // 필요에 따라 추가 필드 작성
   [key: string]: any;
 }
 
@@ -54,16 +53,17 @@ function tabSearchHomeScreen({navigation}: TabSearchScreenProps) {
       // } else {
       //   Alert.alert('해당 항공편의 tail number를 찾았습니다.');
       // }
-      const flights = response.data.flights;
+      const flights: Flight[] = response.data.flights;
       if (!flights || flights.length === 0) {
         Alert.alert('항공편의 비행기가 없습니다.');
+        return;
       }
-      const validFlight = flights.find(
+      const validFlights = flights.filter(
         (flight: Flight) => flight.registration !== null,
       );
-      if (validFlight) {
+      if (validFlights.length > 0) {
         navigation.navigate(tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST, {
-          tailNumber: validFlight.registration,
+          flights: validFlights,
         });
       } else {
         Alert.alert('유효한 항공 번호가 없습니다.');
