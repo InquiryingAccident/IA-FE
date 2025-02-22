@@ -81,6 +81,7 @@ import {TabSearchStackParamList} from '@/navigations/stack/TabSearchStackNavigat
 import {storageKeys, tabSearchNavigations} from '@/constants';
 import axiosInstance from '@/api/axios';
 import {getEncryptStorage} from '@/utils';
+import {Flight} from './TabSearchHomeScreen';
 
 type Accident = {
   date: string;
@@ -96,9 +97,7 @@ const TabSearchAccidentListScreen: React.FC<
   TabSearchAccidentListScreenProps
 > = ({route}) => {
   // 필수: tailNumber, 선택: accidentDate
-  const {tailNumber} = route.params as {
-    tailNumber: string;
-  };
+  const {flights} = route.params;
 
   const [accidentData, setAccidentData] = useState<Accident[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -111,11 +110,11 @@ const TabSearchAccidentListScreen: React.FC<
         const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
         // Alert.alert(accessToken);
         const accidentListformData = new FormData();
-        accidentListformData.append('registration', tailNumber);
-        accidentListformData.append('page', 0);
-        accidentListformData.append('size', 10);
-        accidentListformData.append('sortField', 'accidentDate');
-        accidentListformData.append('sortDirection', 'ASC');
+        // accidentListformData.append('registration', tailNumber);
+        // accidentListformData.append('page', 0);
+        // accidentListformData.append('size', 10);
+        // accidentListformData.append('sortField', 'accidentDate');
+        // accidentListformData.append('sortDirection', 'ASC');
         const response = await axiosInstance.post(
           '/api/plane-accident/registration/search',
           accidentListformData,
@@ -138,7 +137,7 @@ const TabSearchAccidentListScreen: React.FC<
     if (accidentData.length === 0) {
       Alert.alert('해당 비행기는 사고내역이 없습니다.');
     }
-  }, [tailNumber]);
+  }, [flights]);
 
   if (loading) {
     return (
