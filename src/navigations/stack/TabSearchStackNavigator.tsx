@@ -1,14 +1,14 @@
 import {mainTabNavigations, tabSearchNavigations} from '@/constants';
 import TabSearchAccidentListScreen from '@/screens/mainTab/tabSearchStack/TabSearchAccidentListScreen';
-import tabSearchHomeScreen from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
+import tabSearchHomeScreen, {
+  Flight,
+} from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
 export type TabSearchStackParamList = {
   [tabSearchNavigations.TAB_SEARCH]: undefined;
-  [tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST]: {
-    tailNumber: string;
-  };
+  [tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST]: {flights: Flight[]};
 };
 
 const Stack = createStackNavigator<TabSearchStackParamList>();
