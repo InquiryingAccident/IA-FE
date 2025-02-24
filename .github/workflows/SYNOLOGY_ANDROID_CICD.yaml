@@ -117,7 +117,7 @@ jobs:
           FULL_COMMIT_HASH=$(git rev-parse HEAD)
           SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
           DATE=$(date +'%Y-%m-%d %H:%M')
-          APK_NAME="plane-accident-finder-${DATE}-${SHORT_COMMIT_HASH}.apk"
+          APK_NAME="PAF-${SHORT_COMMIT_HASH}.apk"
           FILE_PATH="android/app/build/outputs/${APK_NAME}"
           FILE_SIZE=$(stat -c%s "$FILE_PATH")
           JSON_PATH="android/app/build/outputs/plane-accident-finder-cicd-history.json"
