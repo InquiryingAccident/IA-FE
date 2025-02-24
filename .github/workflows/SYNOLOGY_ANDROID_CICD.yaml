@@ -1,4 +1,4 @@
-name: PLANE-ACCIDENT-FINDER-FRONTEND
+6name: PLANE-ACCIDENT-FINDER-FRONTEND
 
 on:
   push:
@@ -180,6 +180,6 @@ jobs:
           FTP_URL="ftp://suh-project.synology.me/plane-accident-finder/downloads/"
           echo "Uploading APK file..."
           # 와일드카드가 확장되도록 따옴표 없이 사용
-          curl -T android/app/build/outputs/plane-accident-finder-*.apk "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
+          curl -T android/app/build/outputs/PAF-*.apk "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
           echo "Uploading JSON file..."
           curl -T android/app/build/outputs/plane-accident-finder-cicd-history.json "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
