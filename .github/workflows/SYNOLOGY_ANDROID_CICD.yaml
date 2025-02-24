@@ -140,7 +140,7 @@ jobs:
         with:
           name: plane-accident-finder
           path: |
-            android/app/build/outputs/plane-accident-finder-*.apk
+            android/app/build/outputs/PAF-*.apk
             android/app/build/outputs/plane-accident-finder-cicd-history.json
 
   deploy:
