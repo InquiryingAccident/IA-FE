@@ -116,7 +116,7 @@ jobs:
           set -e
           FULL_COMMIT_HASH=$(git rev-parse HEAD)
           SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
-          DATE=$(date +'%y%m%d')
+          DATE=$(date +'%Y-%m-%d %H:%M')
           APK_NAME="plane-accident-finder-${DATE}-${SHORT_COMMIT_HASH}.apk"
           FILE_PATH="android/app/build/outputs/${APK_NAME}"
           FILE_SIZE=$(stat -c%s "$FILE_PATH")
