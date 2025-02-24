@@ -77,15 +77,16 @@ jobs:
             exit 1
           fi
 
-      # 1) 로컬에 JSON 파일 없으면 미리 빈 JSON 생성
-      - name: Ensure plane-accident-finder-cicd-history.json
+      # 1) Ensure local JSON file exists
+      - name: Ensure plane-accident-finder-cicd-history.json exists
         run: |
           JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
+          mkdir -p $(dirname "$JSON_PATH")
           if [ ! -f "$JSON_PATH" ]; then
             echo '{"files": []}' > "$JSON_PATH"
           fi
 
-      # 2) NAS에서 JSON 다운로드 시도, 실패 시 로컬 파일 그대로 유지
+      # 2) Download or initialize JSON file from Synology NAS
       - name: Download or initialize JSON file from Synology NAS
         env:
           SYNOSSH_HOST: ${{ secrets.SYNOSSH_HOST }}
@@ -98,7 +99,7 @@ jobs:
             echo "No existing JSON on NAS. Using local file."
           fi
 
-      # 3) JSON 파일에 빌드 정보 업데이트
+      # 3) Update JSON file with build info
       - name: Update JSON file with build info
         run: |
           set -e
@@ -110,7 +111,7 @@ jobs:
           FILE_SIZE=$(stat -c%s "$FILE_PATH")
           JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
           COMMIT_LINK="https://github.com/${GITHUB_REPOSITORY}/commit/${FULL_COMMIT_HASH}"
-
+          
           UPDATED_JSON=$(jq --arg apk_name "$APK_NAME" \
                             --arg file_size "$FILE_SIZE" \
                             --arg build_date "$DATE" \
@@ -118,12 +119,12 @@ jobs:
                             --arg full_commit_hash "$FULL_COMMIT_HASH" \
             '.files += [{"apk_name": $apk_name, "file_size": $file_size, "build_date": $build_date, "commit_link": $commit_link, "full_commit_hash": $full_commit_hash}]' \
             "$JSON_PATH")
-
+          
           echo "$UPDATED_JSON" > "$JSON_PATH"
           echo "Updated JSON file:"
           cat "$JSON_PATH"
 
-      # 4) 빌드 산출물(APK + JSON) 업로드
+      # 4) Upload build artifacts (APK + JSON)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
