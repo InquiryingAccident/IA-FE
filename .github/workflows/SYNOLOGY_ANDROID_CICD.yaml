@@ -78,9 +78,8 @@ jobs:
       - name: Rename APK file
         run: |
           SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
-          DATE=$(date +'%y%m%d')
           APK_SOURCE="android/app/build/outputs/apk/release/app-release.apk"
-          APK_TARGET="android/app/build/outputs/plane-accident-finder-${DATE}-${SHORT_COMMIT_HASH}.apk"
+          APK_TARGET="android/app/build/outputs/PAF-${SHORT_COMMIT_HASH}.apk"
           if [ -f "$APK_SOURCE" ]; then
             mv "$APK_SOURCE" "$APK_TARGET"
           else
