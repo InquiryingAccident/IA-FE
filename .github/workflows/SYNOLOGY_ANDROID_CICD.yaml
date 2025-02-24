@@ -18,25 +18,31 @@ jobs:
       KOTLIN_VERSION: 2.0.21
 
     steps:
+      # 1) 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2) Node.js / NPM 설정
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      # 3) .env 파일 생성 (기밀 정보는 GitHub Secrets에 저장 후 ENV에 할당)
       - name: Create .env file from secret
         run: echo "${{ secrets.ENV }}" > .env
 
+      # 4) 프로젝트 종속성 설치
       - name: Install Node dependencies
         run: npm install
 
+      # 5) 추가 패키지(sshpass, jq) 설치
       - name: Install additional dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y sshpass jq
 
+      # 6) Android SDK 환경 변수 설정
       - name: Setup Android SDK Environment Variables
         run: |
           echo "ANDROID_BUILD_TOOLS_VERSION=$ANDROID_BUILD_TOOLS_VERSION" >> $GITHUB_ENV
@@ -45,6 +51,7 @@ jobs:
           echo "ANDROID_MIN_SDK=$ANDROID_MIN_SDK" >> $GITHUB_ENV
           echo "ANDROID_NDK_VERSION=$ANDROID_NDK_VERSION" >> $GITHUB_ENV
 
+      # 7) JDK 17 + Gradle 캐싱
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
@@ -52,18 +59,22 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # 8) gradlew 실행 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x android/gradlew
 
+      # 9) 디버그 keystore 생성/저장 (Base64로 GitHub Secret에 저장했다가 디코딩)
       - name: Decode and save debug.keystore
         run: |
           mkdir -p android/app
           echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > android/app/debug.keystore
 
+      # 10) React Native APK 빌드 (Release)
       - name: Build React Native APK
         working-directory: android
         run: ./gradlew assembleRelease
 
+      # 11) 빌드된 APK 파일 이름 변경
       - name: Rename APK file
         run: |
           SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
@@ -77,7 +88,7 @@ jobs:
             exit 1
           fi
 
-      # 1) 로컬에 JSON 파일 생성(없으면 강제로 생성)
+      # 12) 로컬에 JSON 파일(plane-accident-finder-cicd-history.json) 준비
       - name: Ensure plane-accident-finder-cicd-history.json exists
         run: |
           JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
@@ -86,7 +97,7 @@ jobs:
             echo '{"files": []}' > "$JSON_PATH"
           fi
 
-      # 2) NAS에서 JSON 다운로드 시도 (없으면 로컬 파일 유지)
+      # 13) NAS에서 기존 JSON 다운로드 시도 / 실패 시 로컬 파일 그대로 사용
       - name: Download or initialize JSON file from Synology NAS
         env:
           SYNOSSH_HOST: ${{ secrets.SYNOSSH_HOST }}
@@ -99,11 +110,7 @@ jobs:
             echo "No existing JSON on NAS. Using local file."
           fi
 
-      # 3) 디버그: release 디렉토리 내 파일 목록 확인
-      - name: List release directory
-        run: ls -al android/app/build/outputs/apk/release
-
-      # 4) JSON 파일 업데이트: 빌드 정보 추가
+      # 14) JSON 파일 업데이트 (빌드 정보 추가)
       - name: Update JSON file with build info
         run: |
           set -e
@@ -123,12 +130,12 @@ jobs:
                             --arg full_commit_hash "$FULL_COMMIT_HASH" \
             '.files += [{"apk_name": $apk_name, "file_size": $file_size, "build_date": $build_date, "commit_link": $commit_link, "full_commit_hash": $full_commit_hash}]' \
             "$JSON_PATH")
-          
+
           echo "$UPDATED_JSON" > "$JSON_PATH"
           echo "Updated JSON file:"
           cat "$JSON_PATH"
 
-      # 5) 아티팩트 업로드 (APK + JSON)
+      # 15) 빌드 결과물(APK + JSON) 업로드 (Artifact)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -150,24 +157,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass
 
+      # 1) 아티팩트 다운로드 (plane-accident-finder)
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: plane-accident-finder
           path: android/app/build/outputs/
 
+      # 2) 디버그: 실제로 어떤 폴더 구조로 풀렸는지 확인
+      - name: List downloaded structure
+        run: ls -alR android/app/build/outputs
+
+      # 3) JSON 파일을 검증
+      #    (위의 'ls -alR' 결과를 보고, 파일이 어디 위치했는지에 맞춰 경로 수정)
       - name: Verify JSON file
         run: |
-          ls -al android/app/build/outputs/apk/release
-          cat android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json
+          cat android/app/build/outputs/plane-accident-finder-cicd-history.json
 
+      # 4) Synology NAS로 APK & JSON 업로드
       - name: Upload APK and JSON to Synology NAS
         env:
           SYNOSSH_HOST: ${{ secrets.SYNOSSH_HOST }}
           SYNOSSH_USERNAME: ${{ secrets.SYNOSSH_USERNAME }}
           SYNOSSH_PASSWORD: ${{ secrets.SYNOSSH_PASSWORD }}
         run: |
+          # 실제 파일 구조가 'android/app/build/outputs/plane-accident-finder-*.apk' 일 수도 있음
           sshpass -p "$SYNOSSH_PASSWORD" scp -o StrictHostKeyChecking=no -P 2022 \
-            android/app/build/outputs/apk/release/plane-accident-finder-*.apk \
-            android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json \
+            android/app/build/outputs/plane-accident-finder-*.apk \
+            android/app/build/outputs/plane-accident-finder-cicd-history.json \
             $SYNOSSH_USERNAME@$SYNOSSH_HOST:/volume1/web/plane-accident-finder/downloads/
