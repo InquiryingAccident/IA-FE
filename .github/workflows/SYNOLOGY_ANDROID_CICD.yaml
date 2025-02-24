@@ -18,7 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
+          
+      # .env 저장
       - name: Create .env file from secret
         run: echo "${{ secrets.ENV }}" > .env
 
@@ -39,6 +40,12 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x android/gradlew
+
+      # keystore 디코딩 및 저장
+      - name: Decode and save debug.keystore
+        run: |
+          mkdir -p android/app
+          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > android/app/debug.keystore
 
       - name: Build React Native APK
         working-directory: android
