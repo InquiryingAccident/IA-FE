@@ -87,7 +87,7 @@ jobs:
           cat "$JSON_PATH"
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: plane-accident-finder
           path: |
@@ -108,7 +108,7 @@ jobs:
           sudo apt-get install -y sshpass
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: plane-accident-finder
           path: android/app/build/outputs/
