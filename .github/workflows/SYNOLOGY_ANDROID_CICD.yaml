@@ -77,18 +77,28 @@ jobs:
             exit 1
           fi
 
+      # 1) 로컬에 JSON 파일 없으면 미리 빈 JSON 생성
+      - name: Ensure plane-accident-finder-cicd-history.json
+        run: |
+          JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
+          if [ ! -f "$JSON_PATH" ]; then
+            echo '{"files": []}' > "$JSON_PATH"
+          fi
+
+      # 2) NAS에서 JSON 다운로드 시도, 실패 시 로컬 파일 그대로 유지
       - name: Download or initialize JSON file from Synology NAS
         env:
           SYNOSSH_HOST: ${{ secrets.SYNOSSH_HOST }}
           SYNOSSH_USERNAME: ${{ secrets.SYNOSSH_USERNAME }}
           SYNOSSH_PASSWORD: ${{ secrets.SYNOSSH_PASSWORD }}
         run: |
-          JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-files.json"
+          JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
           if ! sshpass -p "$SYNOSSH_PASSWORD" scp -o StrictHostKeyChecking=no -P 2022 \
-            $SYNOSSH_USERNAME@$SYNOSSH_HOST:/volume1/web/plane-accident-finder/downloads/plane-accident-finder-files.json "$JSON_PATH"; then
-            echo '{"files": []}' > "$JSON_PATH"
+            $SYNOSSH_USERNAME@$SYNOSSH_HOST:/volume1/web/plane-accident-finder/downloads/plane-accident-finder-cicd-history.json "$JSON_PATH"; then
+            echo "No existing JSON on NAS. Using local file."
           fi
 
+      # 3) JSON 파일에 빌드 정보 업데이트
       - name: Update JSON file with build info
         run: |
           set -e
@@ -98,26 +108,29 @@ jobs:
           APK_NAME="plane-accident-finder-${DATE}-${SHORT_COMMIT_HASH}.apk"
           FILE_PATH="android/app/build/outputs/apk/release/${APK_NAME}"
           FILE_SIZE=$(stat -c%s "$FILE_PATH")
-          JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-files.json"
+          JSON_PATH="android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json"
           COMMIT_LINK="https://github.com/${GITHUB_REPOSITORY}/commit/${FULL_COMMIT_HASH}"
-          EXISTING_JSON=$(cat "$JSON_PATH")
-          UPDATED_JSON=$(echo "$EXISTING_JSON" | jq --arg apk_name "$APK_NAME" \
-                                                     --arg file_size "$FILE_SIZE" \
-                                                     --arg build_date "$DATE" \
-                                                     --arg commit_link "$COMMIT_LINK" \
-                                                     --arg full_commit_hash "$FULL_COMMIT_HASH" \
-            '.files += [{"apk_name": $apk_name, "file_size": $file_size, "build_date": $build_date, "commit_link": $commit_link, "full_commit_hash": $full_commit_hash}]')
+
+          UPDATED_JSON=$(jq --arg apk_name "$APK_NAME" \
+                            --arg file_size "$FILE_SIZE" \
+                            --arg build_date "$DATE" \
+                            --arg commit_link "$COMMIT_LINK" \
+                            --arg full_commit_hash "$FULL_COMMIT_HASH" \
+            '.files += [{"apk_name": $apk_name, "file_size": $file_size, "build_date": $build_date, "commit_link": $commit_link, "full_commit_hash": $full_commit_hash}]' \
+            "$JSON_PATH")
+
           echo "$UPDATED_JSON" > "$JSON_PATH"
           echo "Updated JSON file:"
           cat "$JSON_PATH"
 
+      # 4) 빌드 산출물(APK + JSON) 업로드
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: plane-accident-finder
           path: |
             android/app/build/outputs/apk/release/plane-accident-finder-*.apk
-            android/app/build/outputs/apk/release/plane-accident-finder-files.json
+            android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json
 
   deploy:
     runs-on: ubuntu-latest
@@ -139,7 +152,8 @@ jobs:
           path: android/app/build/outputs/
 
       - name: Verify JSON file
-        run: cat android/app/build/outputs/apk/release/plane-accident-finder-files.json
+        run: |
+          cat android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json
 
       - name: Upload APK and JSON to Synology NAS
         env:
@@ -149,5 +163,5 @@ jobs:
         run: |
           sshpass -p "$SYNOSSH_PASSWORD" scp -o StrictHostKeyChecking=no -P 2022 \
             android/app/build/outputs/apk/release/plane-accident-finder-*.apk \
-            android/app/build/outputs/apk/release/plane-accident-finder-files.json \
+            android/app/build/outputs/apk/release/plane-accident-finder-cicd-history.json \
             $SYNOSSH_USERNAME@$SYNOSSH_HOST:/volume1/web/plane-accident-finder/downloads/
