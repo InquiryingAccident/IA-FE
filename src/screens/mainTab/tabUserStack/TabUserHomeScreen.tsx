@@ -13,15 +13,22 @@ type TabUserScreenProps = StackScreenProps<
 function TabUserHomeScreen({navigation}: TabUserScreenProps) {
   const {logoutMutation} = useAuth();
 
+  const logoutUser = async () => {};
+
   const deleteUser = async () => {
     console.log('delte Token: Logout or DeleteUser');
-    logoutMutation.mutate(null);
+    await logoutMutation.mutate(null);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <SettingItem
         title="로그아웃"
+        onPress={deleteUser}
+        color={colors.RED_500}
+      />
+      <SettingItem
+        title="회원탈퇴"
         onPress={deleteUser}
         color={colors.RED_500}
       />

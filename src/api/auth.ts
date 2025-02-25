@@ -83,6 +83,7 @@ const getProfile = async (): Promise<ResponseProfile> => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  console.log(data);
   return data;
 };
 
