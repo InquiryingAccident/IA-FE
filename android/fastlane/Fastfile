@@ -1,0 +1,61 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+end
+# default_platform(:android)
+
+# platform :android do
+#   desc "Build Release APK"
+#   lane :build do
+#     gradle(
+#       task: "assembleRelease",
+#       build_type: "Release"
+#     )
+#   end
+
+#   desc "Upload to Google Play (Internal Track)"
+#   lane :upload_to_playstore do
+#     gradle(
+#       task: "bundleRelease"  # AAB 파일 생성이 필요한 경우
+#     )
+#     upload_to_play_play_store(
+#       track: "internal",  # 내부 테스트 트랙 등 필요에 따라 조정
+#       aab: "app/build/outputs/bundle/release/app-release.aab",
+#       json_key_file: ENV["GOOGLE_PLAY_JSON_KEY"]
+#     )
+#   end
+# end
