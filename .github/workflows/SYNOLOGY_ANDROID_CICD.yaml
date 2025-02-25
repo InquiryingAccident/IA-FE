@@ -16,6 +16,7 @@ jobs:
       ANDROID_MIN_SDK: 24
       ANDROID_NDK_VERSION: 27.1.12297006
       KOTLIN_VERSION: 2.0.21
+      TZ: Asia/Seoul  # 서울 시간대
     steps:
       # 1) 코드 체크아웃
       - name: Checkout code
