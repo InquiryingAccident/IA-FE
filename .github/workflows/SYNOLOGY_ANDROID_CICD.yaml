@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
 
 jobs:
   build:
@@ -16,7 +15,7 @@ jobs:
       ANDROID_MIN_SDK: 24
       ANDROID_NDK_VERSION: 27.1.12297006
       KOTLIN_VERSION: 2.0.21
-      TZ: Asia/Seoul  # 서울 시간대
+      TZ: Asia/Seoul # 서울 시간대
     steps:
       # 1) 코드 체크아웃
       - name: Checkout code
@@ -75,7 +74,7 @@ jobs:
         working-directory: android
         run: ./gradlew assembleRelease
 
-      # 11) 빌드된 APK 파일 이름 변경  
+      # 11) 빌드된 APK 파일 이름 변경
       - name: Rename APK file
         run: |
           SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
@@ -105,7 +104,7 @@ jobs:
         run: |
           JSON_PATH="android/app/build/outputs/plane-accident-finder-cicd-history.json"
           FTP_URL="ftp://suh-project.synology.me/plane-accident-finder/downloads/plane-accident-finder-cicd-history.json"
-          
+
           echo "Attempting to download JSON from NAS via FTP..."
           if curl "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-pasv -o "$JSON_PATH"; then
             echo "Successfully downloaded JSON from NAS:"
@@ -126,7 +125,7 @@ jobs:
           FILE_SIZE=$(stat -c%s "$FILE_PATH")
           JSON_PATH="android/app/build/outputs/plane-accident-finder-cicd-history.json"
           COMMIT_LINK="https://github.com/${GITHUB_REPOSITORY}/commit/${FULL_COMMIT_HASH}"
-          
+
           UPDATED_JSON=$(jq --arg apk_name "$APK_NAME" \
                             --arg file_size "$FILE_SIZE" \
                             --arg build_date "$DATE" \
@@ -134,7 +133,7 @@ jobs:
                             --arg full_commit_hash "$FULL_COMMIT_HASH" \
             '.files += [{"apk_name": $apk_name, "file_size": $file_size, "build_date": $build_date, "commit_link": $commit_link, "full_commit_hash": $full_commit_hash}]' \
             "$JSON_PATH")
-          
+
           echo "$UPDATED_JSON" > "$JSON_PATH"
           echo "Updated JSON file:"
           cat "$JSON_PATH"
@@ -183,16 +182,16 @@ jobs:
         run: |
           # FTP 서버 기본 경로는 다음과 같습니다.
           FTP_URL="ftp://suh-project.synology.me/plane-accident-finder/downloads/"
-          
+
           echo "Uploading debug.keystore..."
           curl -T "android/app/debug.keystore" "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
-          
+
           echo "Uploading APK file..."
           curl -T android/app/build/outputs/PAF-*.apk "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
-          
+
           echo "Uploading JSON file..."
           curl -T android/app/build/outputs/plane-accident-finder-cicd-history.json "$FTP_URL" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD" --ftp-create-dirs --ftp-pasv
-          
+
           # 5) FTP 업로드가 완료된 후, 서버의 JSON 파일 내용을 확인 (디버그용)
           echo "Verifying uploaded JSON file..."
           curl "$FTP_URL/plane-accident-finder-cicd-history.json" --user "$WEB_FTP_USERNAME:$WEB_FTP_PASSWORD"
