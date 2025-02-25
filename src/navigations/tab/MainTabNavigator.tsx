@@ -11,9 +11,9 @@ import TabUserStackNavigator from '../stack/TabUserStackNavigator';
 // import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
-  [mainTabNavigations.MAINTAB_HOME]: undefined;
+  // [mainTabNavigations.MAINTAB_HOME]: undefined;
   [mainTabNavigations.MAINTAB_SEARCH]: undefined;
-  [mainTabNavigations.MAINTAB_BOOKMARK]: undefined;
+  // [mainTabNavigations.MAINTAB_BOOKMARK]: undefined;
   [mainTabNavigations.MAINTAB_USER]: undefined;
 };
 
@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 function MainTabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={mainTabNavigations.MAINTAB_HOME}
+      initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
       screenOptions={({route}) => ({
         tabBarStyle: {
           shadowColor: 'transparent',
@@ -30,24 +30,24 @@ function MainTabNavigator() {
         },
         tabBarIcon: ({focused}) => {
           switch (route.name) {
-            case mainTabNavigations.MAINTAB_HOME:
-              return focused ? (
-                <SvgIcon name="HomeActiveGreen" size={24} />
-              ) : (
-                <SvgIcon name="HomeInactive" size={24} />
-              );
+            // case mainTabNavigations.MAINTAB_HOME:
+            //   return focused ? (
+            //     <SvgIcon name="HomeActiveGreen" size={24} />
+            //   ) : (
+            //     <SvgIcon name="HomeInactive" size={24} />
+            //   );
             case mainTabNavigations.MAINTAB_SEARCH:
               return focused ? (
                 <SvgIcon name="SearchActiveGreen" size={24} />
               ) : (
                 <SvgIcon name="SearchInactive" size={24} />
               );
-            case mainTabNavigations.MAINTAB_BOOKMARK:
-              return focused ? (
-                <SvgIcon name="BookmarkActiveGreen" size={24} />
-              ) : (
-                <SvgIcon name="BookmarkInactive" size={24} />
-              );
+            // case mainTabNavigations.MAINTAB_BOOKMARK:
+            //   return focused ? (
+            //     <SvgIcon name="BookmarkActiveGreen" size={24} />
+            //   ) : (
+            //     <SvgIcon name="BookmarkInactive" size={24} />
+            //   );
             case mainTabNavigations.MAINTAB_USER:
               return focused ? (
                 <SvgIcon name="UserActiveGreen" size={24} />
