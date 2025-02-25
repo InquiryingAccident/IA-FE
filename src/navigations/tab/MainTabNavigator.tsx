@@ -86,13 +86,13 @@ function MainTabNavigator() {
         //   </TouchableOpacity>
         // ),
       })}>
-      {/* <Tab.Screen
+      <Tab.Screen
         name={mainTabNavigations.MAINTAB_HOME}
         component={TabHomeStackNavigator}
         options={{
           title: '홈',
         }}
-      /> */}
+      />
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={TabSearchStackNavigator}
@@ -100,13 +100,13 @@ function MainTabNavigator() {
           title: '항공편 검색',
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name={mainTabNavigations.MAINTAB_BOOKMARK}
         component={TabBookmarkStackNavigator}
         options={{
           title: '즐겨찾기',
         }}
-      /> */}
+      />
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_USER}
         component={TabUserStackNavigator}
