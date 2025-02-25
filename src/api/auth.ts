@@ -87,7 +87,8 @@ const getProfile = async (): Promise<ResponseProfile> => {
 };
 
 const postLogout = async (): Promise<void> => {
-  await axiosInstance.post('/api/auth/logout');
+  console.log('auth - 로그아웃');
+  // await axiosInstance.post('/api/auth/logout');
 };
 
 export type {RequestUser, RequestSignupUser, ResponseProfile, AuthToken};
