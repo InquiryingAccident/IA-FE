@@ -9,7 +9,14 @@ import {
   getProfile,
   postLogout,
 } from '@/api/auth';
-import {storageKeys, queryKeys, numbers, errorMessages} from '@/constants';
+import {
+  storageKeys,
+  queryKeys,
+  numbers,
+  errorMessages,
+  alerts_ErrorMessage,
+  alerts,
+} from '@/constants';
 import {
   getEncryptStorage,
   setEncryptStorage,
@@ -23,6 +30,12 @@ import {Alert} from 'react-native';
 function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
   return useMutation({
     mutationFn: postSignup,
+    onError: () => {
+      Alert.alert(
+        alerts_ErrorMessage.AUTH_SIGNUP_EMAIL.TITLE,
+        alerts_ErrorMessage.AUTH_SIGNUP_EMAIL.DESCRIPTION,
+      );
+    },
     ...mutationOptions,
   });
 }
@@ -44,8 +57,10 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
       });
     },
     onError: () => {
-      console.log('로그인 에러: ');
-      Alert.alert('로그인 에러');
+      Alert.alert(
+        alerts_ErrorMessage.AUTH_LOGIN.TITLE,
+        alerts_ErrorMessage.AUTH_LOGIN.DESCRIPTION,
+      );
     },
     ...mutationOptions,
   });
