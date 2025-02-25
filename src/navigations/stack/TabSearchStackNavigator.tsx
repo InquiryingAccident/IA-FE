@@ -1,6 +1,6 @@
 import {mainTabNavigations, tabSearchNavigations} from '@/constants';
 import TabSearchAccidentListScreen from '@/screens/mainTab/tabSearchStack/TabSearchAccidentListScreen';
-import tabSearchHomeScreen, {
+import TabSearchHomeScreen, {
   Flight,
 } from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -18,18 +18,18 @@ function TabSearchStackNavigator() {
     <Stack.Navigator initialRouteName={tabSearchNavigations.TAB_SEARCH}>
       <Stack.Screen
         name={tabSearchNavigations.TAB_SEARCH}
-        component={tabSearchHomeScreen}
+        component={TabSearchHomeScreen}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name={tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST}
         component={TabSearchAccidentListScreen}
         options={{
           headerTitle: '사고 내역',
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

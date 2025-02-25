@@ -29,8 +29,8 @@ export interface Flight {
   [key: string]: any;
 }
 
-function tabSearchHomeScreen({navigation}: TabSearchScreenProps) {
-  const [searchText, setSearchText] = useState('');
+function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
+  const [searchText, setSearchText] = useState<string>('');
 
   const handleSearch = async () => {
     if (!searchText) {
@@ -93,7 +93,7 @@ function tabSearchHomeScreen({navigation}: TabSearchScreenProps) {
   );
 }
 
-export default tabSearchHomeScreen;
+export default TabSearchHomeScreen;
 
 const styles = StyleSheet.create({
   container: {
