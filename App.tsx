@@ -8,13 +8,11 @@ import {StyleSheet, Text, View} from 'react-native';
 
 function App(): React.JSX.Element {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </QueryClientProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }
 
