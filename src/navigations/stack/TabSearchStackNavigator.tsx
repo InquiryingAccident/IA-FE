@@ -3,12 +3,14 @@ import TabSearchAccidentListScreen from '@/screens/mainTab/tabSearchStack/TabSea
 import TabSearchHomeScreen, {
   Flight,
 } from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
+import TabSearchIdentScreen from '@/screens/mainTab/tabSearchStack/TabSearchIdentScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
 export type TabSearchStackParamList = {
   [tabSearchNavigations.TAB_SEARCH]: undefined;
   [tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST]: {flights: Flight[]};
+  [tabSearchNavigations.TAB_SEARCH_IDENT]: undefined;
 };
 
 const Stack = createStackNavigator<TabSearchStackParamList>();
@@ -30,6 +32,10 @@ function TabSearchStackNavigator() {
           headerTitle: '사고 내역',
         }}
       /> */}
+      <Stack.Screen
+        name={tabSearchNavigations.TAB_SEARCH_IDENT}
+        component={TabSearchIdentScreen}
+      />
     </Stack.Navigator>
   );
 }
