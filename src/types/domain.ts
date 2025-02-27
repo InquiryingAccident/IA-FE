@@ -3,7 +3,7 @@ interface Profile {
   nickname: string;
   accountStatus: string;
   createDate: string;
-  lastLonginTime: string;
+  lastLoginTime: string;
 }
 
 export type {Profile};
