@@ -18,13 +18,10 @@ const alerts_ErrorMessage = {
     TITLE: '아이디 또는 비밀번호가 정확하지 않습니다.',
     DESCRIPTION: '아이디 또는 비밀번호를 확인해주세요.',
   },
-  AUTH_SIGNUP_EMAIL: {
-    TITLE: '이미 사용중인 이메일입니다.',
-    DESCRIPTION: '다른 이메일을 사용해주세요.',
-  },
-  AUTH_SIGNUP_NICKNAME: {
-    TITLE: '이미 사용중인 닉네임입니다.',
-    DESCRIPTION: '다른 닉네임을 사용해주세요.',
+  AUTH_SIGNUP: {
+    TITLE: '이미 존재하는 유저입니다.',
+    DESCRIPTION:
+      '이메일이나 닉네임이 이미 사용중입니다. 다른 이메일이나 닉네임을 사용해주세요.',
   },
 };
 

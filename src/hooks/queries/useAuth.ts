@@ -30,8 +30,8 @@ function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
     mutationFn: postSignup,
     onError: () => {
       Alert.alert(
-        alerts_ErrorMessage.AUTH_SIGNUP_EMAIL.TITLE,
-        alerts_ErrorMessage.AUTH_SIGNUP_EMAIL.DESCRIPTION,
+        alerts_ErrorMessage.AUTH_SIGNUP.TITLE,
+        alerts_ErrorMessage.AUTH_SIGNUP.DESCRIPTION,
       );
     },
     ...mutationOptions,
@@ -54,7 +54,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
         queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
       });
     },
-    onError: () => {
+    onError: (error: any) => {
       Alert.alert(
         alerts_ErrorMessage.AUTH_LOGIN.TITLE,
         alerts_ErrorMessage.AUTH_LOGIN.DESCRIPTION,
