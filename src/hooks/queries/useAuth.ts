@@ -58,6 +58,16 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
       Alert.alert(
         alerts_ErrorMessage.AUTH_LOGIN.TITLE,
         alerts_ErrorMessage.AUTH_LOGIN.DESCRIPTION,
+        [
+          {
+            text: '회원가입',
+            onPress: () => {},
+          },
+          {
+            text: '확인',
+            style: 'cancel',
+          },
+        ],
       );
     },
     ...mutationOptions,
