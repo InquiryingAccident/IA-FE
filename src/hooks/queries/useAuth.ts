@@ -13,9 +13,7 @@ import {
   storageKeys,
   queryKeys,
   numbers,
-  errorMessages,
   alerts_ErrorMessage,
-  alerts,
 } from '@/constants';
 import {
   getEncryptStorage,
@@ -66,32 +64,6 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
-// function useGetRefreshToken() {
-//   const {data, error, isSuccess, isError} = useQuery({
-//     queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
-//     queryFn: getAccessToken,
-//     staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
-//     refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
-//     refetchOnReconnect: true,
-//     refetchIntervalInBackground: true,
-//   });
-
-//   useEffect(() => {
-//     if (isSuccess) {
-//       setHeader('Authorization', `Bearer ${data.accessToken}`);
-//       setEncryptStorage(storageKeys.REFRESH_TOKEN, data.refreshToken);
-//     }
-//   }, [isSuccess]);
-
-//   useEffect(() => {
-//     if (isError) {
-//       removeHeader('Authorization');
-//       removeEncryptStorage(storageKeys.REFRESH_TOKEN);
-//     }
-//   }, [isError]);
-
-//   return {isSuccess, isError};
-// }
 function useGetRefreshToken() {
   const refreshToken = getEncryptStorage(storageKeys.REFRESH_TOKEN); // 동기적으로 가져올 수 있다면
   const {data, error, isSuccess, isError} = useQuery({
@@ -129,22 +101,6 @@ function useGetProfile(queryOptions?: UseQueryCustomOptions<ResponseProfile>) {
   });
 }
 
-// function useLogout(mutationOptions?: UseMutationCustomOptions) {
-//   console.log('useAuth-Logout');
-//   return useMutation({
-//     mutationFn: postLogout,
-//     onSuccess: () => {
-//       removeHeader('Authorization');
-//       removeEncryptStorage(storageKeys.REFRESH_TOKEN);
-//       removeEncryptStorage(storageKeys.ACCESS_TOKEN);
-//       queryClient.resetQueries({queryKey: [queryKeys.AUTH]});
-//     },
-//     // onSettled: () => {
-//     //   queryClient.invalidateQueries({queryKey: [queryKeys.AUTH]});
-//     // },
-//     ...mutationOptions,
-//   });
-// }
 function useLogout(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postLogout,
