@@ -24,6 +24,7 @@ import {UseMutationCustomOptions, UseQueryCustomOptions} from '@/types/common';
 import {removeHeader, setHeader} from '@/utils/axiosInstance';
 import queryClient from '@/api/queryClient';
 import {Alert} from 'react-native';
+import {useUserStore} from '@/store/userStore';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
   return useMutation({
@@ -104,14 +105,20 @@ function useGetRefreshToken() {
 }
 
 function useGetProfile(queryOptions?: UseQueryCustomOptions<ResponseProfile>) {
+  const setUser = useUserStore(state => state.setUser);
   return useQuery({
     queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
     queryFn: getProfile,
+    select: data => {
+      setUser(data);
+      return data;
+    },
     ...queryOptions,
   });
 }
 
 function useLogout(mutationOptions?: UseMutationCustomOptions) {
+  const clearUser = useUserStore(state => state.clearUser);
   return useMutation({
     mutationFn: postLogout,
     onSuccess: () => {
@@ -125,6 +132,7 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
       queryClient.removeQueries({
         queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
       });
+      clearUser();
     },
     ...mutationOptions,
   });
