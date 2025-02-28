@@ -1,8 +1,15 @@
 import React, {useRef} from 'react';
-import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
-import {authNavigations, errorMessages} from '@/constants';
+import {alerts_ErrorMessage, authNavigations, errorMessages} from '@/constants';
 import useForm from '@/hooks/useForm';
 import {validateLogin} from '@/utils';
 import CustomButton from '@/components/custom/CustomButton';
@@ -26,12 +33,20 @@ function AuthLoginScreen({navigation}: AuthScreenProps) {
   const handleSubmit = () => {
     loginMutation.mutate(login.values, {
       onError: error => {
-        Toast.show({
-          type: 'error',
-          text1: error.response?.data.message || errorMessages.UNEXPECTED_ERROR,
-          position: 'bottom',
-          visibilityTime: 2000,
-        });
+        Alert.alert(
+          alerts_ErrorMessage.AUTH_LOGIN.TITLE,
+          alerts_ErrorMessage.AUTH_LOGIN.DESCRIPTION,
+          [
+            {
+              text: '회원가입',
+              onPress: () => navigation.navigate(authNavigations.AUTH_SIGNUP),
+            },
+            {
+              text: '확인',
+              style: 'cancel',
+            },
+          ],
+        );
       },
     });
   };
