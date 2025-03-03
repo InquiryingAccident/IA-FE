@@ -11,6 +11,8 @@ const colors = {
   GRAY_700: '#575757',
   GREEN_500: '#98CE40',
   BLACK: '#000',
+  BLUE_BASIC: '#2079FF',
+  BLUE_SHADOW: '#4690FF',
 };
 
 export {colors};
