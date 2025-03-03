@@ -30,10 +30,12 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
       <View style={styles.buttonContainer}>
         <CustomButton
           label="로그인"
+          variant="filled"
           onPress={() => navigation.navigate(authNavigations.AUTH_LOGIN)}
         />
         <CustomButton
           label="회원가입"
+          variant="outlined"
           onPress={() => navigation.navigate(authNavigations.AUTH_SIGNUP)}
         />
       </View>
