@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   inValid: {
     opacity: 0.5,
+    // backgroundColor: colors.GRAY_200,
   },
   filled: {
     backgroundColor: colors.BLUE_BASIC,
