@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     padding: 30,
     fontSize: 24,
     marginTop: 8,
+    fontStyle: 'italic',
   },
   buttonContainer: {
     flex: 1,
