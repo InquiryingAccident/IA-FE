@@ -65,7 +65,7 @@ const SearchIdentInputField = forwardRef(
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
+    borderWidth: 3,
     borderRadius: 8,
     borderColor: colors.BLUE_BASIC,
     padding: deviceHeight > 700 ? 15 : 10,
