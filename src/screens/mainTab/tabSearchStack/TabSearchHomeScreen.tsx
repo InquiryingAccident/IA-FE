@@ -38,23 +38,26 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>항공편을 검색하세요</Text>
-        <Text style={styles.subHeaderText}>
-          해당 항공편의 정보와 사고기록을 보여줍니다.
-        </Text>
-      </View>
-      <View style={styles.searchContainer}>
-        <SearchIdentInputField
-          placeholder="항공편 코드(ex: KE123)"
-          value={searchText}
-          onChangeText={value => setSearchText(value)}
-          onPress={handleSearch}
-          onSubmitEditing={handleSearch}
-        />
-      </View>
-    </SafeAreaView>
+    <View
+      style={{backgroundColor: colors.WHITE, width: '100%', height: '100%'}}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>항공편을 검색하세요</Text>
+          <Text style={styles.subHeaderText}>
+            해당 항공편의 정보와 사고기록을 보여줍니다.
+          </Text>
+        </View>
+        <View style={styles.searchContainer}>
+          <SearchIdentInputField
+            placeholder="항공편 코드(ex: KE123)"
+            value={searchText}
+            onChangeText={value => setSearchText(value)}
+            onPress={handleSearch}
+            onSubmitEditing={handleSearch}
+          />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 
