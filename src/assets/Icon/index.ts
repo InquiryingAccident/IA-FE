@@ -10,5 +10,6 @@ export {default as SearchActiveGreen} from './Search-3.svg';
 export {default as BookmarkActiveGreen} from './Star-3.svg';
 export {default as UserActiveGreen} from './User.svg';
 export {default as SearchIconBlue} from './search-4.svg';
-
+export {default as SearchIconWhite} from './search-5.svg';
+export {default as PersonFillWhite} from './person-fill.svg';
 // export {default as DeleteIcon} from './Delete.svg';
