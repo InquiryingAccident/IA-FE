@@ -25,7 +25,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           source={require('@/assets/logo/Logo.png')}
           style={styles.image}
         />
-        <Text style={styles.appName}>Accident Aircraft Finder</Text>
+        <Text style={styles.appName}>항공 사고기록 검색기</Text>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     padding: 30,
     fontSize: 24,
     marginTop: 8,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
   },
   buttonContainer: {
     flex: 1,
