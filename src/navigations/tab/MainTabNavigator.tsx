@@ -1,19 +1,14 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {mainTabNavigations} from '@/constants';
+import {colors, mainTabNavigations} from '@/constants';
 import TabSearchStackNavigator from '../stack/TabSearchStackNavigator';
-import TabHomeStackNavigator from '../stack/TabHomeStackNavigator';
-import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
-import TabBookmarkStackNavigator from '../stack/TabBookmarkStackNavigator';
 import Logo from '@/assets/logo/LogoSvg.svg';
 import TabUserStackNavigator from '../stack/TabUserStackNavigator';
-// import Logo from '@/assets/icons/LogoSvg.svg';
 
 export type MainTabParamList = {
-  // [mainTabNavigations.MAINTAB_HOME]: undefined;
   [mainTabNavigations.MAINTAB_SEARCH]: undefined;
-  // [mainTabNavigations.MAINTAB_BOOKMARK]: undefined;
   [mainTabNavigations.MAINTAB_USER]: undefined;
 };
 
@@ -25,44 +20,43 @@ function MainTabNavigator() {
       initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
       screenOptions={({route}) => ({
         tabBarStyle: {
-          shadowColor: 'transparent',
-          backgroundColor: '#FFF',
+          backgroundColor: colors.BLUE_BASIC,
         },
         tabBarIcon: ({focused}) => {
           switch (route.name) {
-            // case mainTabNavigations.MAINTAB_HOME:
-            //   return focused ? (
-            //     <SvgIcon name="HomeActiveGreen" size={24} />
-            //   ) : (
-            //     <SvgIcon name="HomeInactive" size={24} />
-            //   );
             case mainTabNavigations.MAINTAB_SEARCH:
-              return focused ? (
-                <SvgIcon name="SearchActiveGreen" size={24} />
-              ) : (
-                <SvgIcon name="SearchInactive" size={24} />
+              return (
+                <SvgIcon
+                  name="SearchIconWhite"
+                  size={24}
+                  color="#FFF"
+                  opacity={focused ? 1 : 0.5}
+                />
               );
-            // case mainTabNavigations.MAINTAB_BOOKMARK:
-            //   return focused ? (
-            //     <SvgIcon name="BookmarkActiveGreen" size={24} />
-            //   ) : (
-            //     <SvgIcon name="BookmarkInactive" size={24} />
-            //   );
             case mainTabNavigations.MAINTAB_USER:
-              return focused ? (
-                <SvgIcon name="UserActiveGreen" size={24} />
-              ) : (
-                <SvgIcon name="UserInactive" size={24} />
+              return (
+                <SvgIcon
+                  name="PersonFillWhite"
+                  size={24}
+                  opacity={focused ? 1 : 0.5}
+                />
               );
             default:
               return null;
           }
         },
-        tabBarActiveTintColor: '#98CE40', // 활성화된 탭 색상
-        tabBarInactiveTintColor: '#828282', // 비활성화된 탭 색상
-        headerTitleAlign: 'center', // 헤더 타이틀 가운데 정렬
+        tabBarLabel: ({focused}) => (
+          <Text style={[styles.tabLabel, {opacity: focused ? 1 : 0.7}]}>
+            {route.name === mainTabNavigations.MAINTAB_SEARCH
+              ? '항공편 검색'
+              : '내정보'}
+          </Text>
+        ),
+        tabBarActiveTintColor: colors.WHITE,
+        tabBarInactiveTintColor: colors.WHITE,
+        headerPressOpacity: 0.8,
+        headerTitleAlign: 'center',
         headerStyle: {
-          // justifyContent: 'center',
           backgroundColor: '#FFF',
           shadowColor: 'transparent',
           elevation: 0,
@@ -73,26 +67,7 @@ function MainTabNavigator() {
             <Text>Accident Finder</Text>
           </View>
         ),
-        //headerRight -> DrawerNavigator 구현예정
-        // headerRight: () => (
-        //   <TouchableOpacity
-        //     style={{marginRight: 32}}
-        //     onPress={() => {
-        //       console.log('다이아몬드 아이콘 클릭');
-        //       navigation.navigate(mainNavigations.MAIN_PURCHASE);
-        //       // 결제 화면 이동 로직 추가
-        //     }}>
-        //     <PurchaseLogo />
-        //   </TouchableOpacity>
-        // ),
       })}>
-      {/* <Tab.Screen
-        name={mainTabNavigations.MAINTAB_HOME}
-        component={TabHomeStackNavigator}
-        options={{
-          title: '홈',
-        }}
-      /> */}
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={TabSearchStackNavigator}
@@ -100,13 +75,6 @@ function MainTabNavigator() {
           title: '항공편 검색',
         }}
       />
-      {/* <Tab.Screen
-        name={mainTabNavigations.MAINTAB_BOOKMARK}
-        component={TabBookmarkStackNavigator}
-        options={{
-          title: '즐겨찾기',
-        }}
-      /> */}
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_USER}
         component={TabUserStackNavigator}
@@ -119,6 +87,13 @@ function MainTabNavigator() {
 }
 
 export default MainTabNavigator;
+
+const styles = StyleSheet.create({
+  tabLabel: {
+    fontSize: 12,
+    color: '#FFF',
+  },
+});
 
 const headerStyles = StyleSheet.create({
   container: {
