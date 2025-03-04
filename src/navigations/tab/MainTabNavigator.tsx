@@ -20,6 +20,7 @@ function MainTabNavigator() {
       initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
       screenOptions={({route}) => ({
         tabBarStyle: {
+          paddingTop: 12,
           backgroundColor: colors.BLUE_BASIC,
         },
         tabBarIcon: ({focused}) => {
@@ -64,7 +65,7 @@ function MainTabNavigator() {
         headerTitle: () => (
           <View style={headerStyles.container}>
             <Logo width={30} height={30} />
-            <Text>Accident Finder</Text>
+            <Text>Plane Accident Finder</Text>
           </View>
         ),
       })}>
