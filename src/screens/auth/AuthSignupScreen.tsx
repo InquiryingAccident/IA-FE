@@ -100,7 +100,18 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
           {...signup.getTextInputProps('nickname')}
         />
       </View>
-      <CustomButton label="회원가입" onPress={handleSubmit} />
+      <CustomButton
+        label="회원가입"
+        onPress={handleSubmit}
+        inValid={
+          !(
+            signup.values.email &&
+            signup.values.password &&
+            signup.values.passwordConfirm &&
+            signup.values.nickname
+          )
+        }
+      />
     </SafeAreaView>
   );
 }

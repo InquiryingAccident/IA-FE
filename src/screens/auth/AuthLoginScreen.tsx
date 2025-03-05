@@ -80,7 +80,7 @@ function AuthLoginScreen({navigation}: AuthScreenProps) {
         label="로그인"
         variant="filled"
         size="large"
-        inValid={!!passwordRef}
+        inValid={!login.values.password}
         onPress={handleSubmit}
       />
     </SafeAreaView>
