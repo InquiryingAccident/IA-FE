@@ -8,6 +8,7 @@ import {
   ResponseProfile,
   getProfile,
   postLogout,
+  deleteUser,
 } from '@/api/auth';
 import {
   storageKeys,
@@ -138,10 +139,32 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
+function useDelete(mutationOptions?: UseMutationCustomOptions) {
+  const clearUser = useUserStore(state => state.clearUser);
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      removeHeader('Authorization');
+      removeEncryptStorage(storageKeys.REFRESH_TOKEN);
+      removeEncryptStorage(storageKeys.ACCESS_TOKEN);
+      queryClient.resetQueries({queryKey: [queryKeys.AUTH]});
+      queryClient.removeQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
+      });
+      queryClient.removeQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
+      });
+      clearUser();
+    },
+    ...mutationOptions,
+  });
+}
+
 function useAuth() {
   const signupMutation = useSignup();
   const loginMutation = useLogin();
   const logoutMutation = useLogout();
+  const deleteMutation = useDelete();
   const refreshTokenQuery = useGetRefreshToken();
   const getProfileQuery = useGetProfile({
     enabled: refreshTokenQuery.isSuccess,
@@ -153,6 +176,7 @@ function useAuth() {
     signupMutation,
     loginMutation,
     logoutMutation,
+    deleteMutation,
     refreshTokenQuery,
     getProfileQuery,
   };
