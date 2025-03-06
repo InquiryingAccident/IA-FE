@@ -56,22 +56,6 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
         queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
       });
     },
-    // onError: (error: any) => {
-    //   Alert.alert(
-    //     alerts_ErrorMessage.AUTH_LOGIN.TITLE,
-    //     alerts_ErrorMessage.AUTH_LOGIN.DESCRIPTION,
-    //     [
-    //       {
-    //         text: '회원가입',
-    //         onPress: () => {},
-    //       },
-    //       {
-    //         text: '확인',
-    //         style: 'cancel',
-    //       },
-    //     ],
-    //   );
-    // },
     ...mutationOptions,
   });
 }
