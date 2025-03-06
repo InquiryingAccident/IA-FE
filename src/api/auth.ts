@@ -24,8 +24,6 @@ type AuthToken = {
   refreshToken: string;
 };
 
-// 서새찬 미친놈
-// //모든 api formData 형식, post
 const postLogin = async ({
   email,
   password,
@@ -58,10 +56,6 @@ const postSignup = async ({
   return data;
 };
 
-// const postLogout = async (): Promise<void> => {
-//   await axiosInstance.post('')
-// }
-
 const getAccessToken = async (): Promise<AuthToken> => {
   const refreshToken = await getEncryptStorage('refreshToken');
   const formData = new FormData();
@@ -93,12 +87,11 @@ const postLogout = async (): Promise<void> => {
   const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
   const formData = new FormData();
   formData.append(storageKeys.REFRESH_TOKEN, refreshToken);
-  await axiosInstance.post('/api/member/logout', formData, {
+  await axiosInstance.post('/api/auth/logout', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  // await fetch('https://api.plane-accident-finder.world/api/member/logout')
   console.log('로그아웃 성공');
 };
 
