@@ -1,13 +1,22 @@
+import axiosInstance from '@/api/axios';
 import CustomButton from '@/components/custom/CustomButton';
 import InputField from '@/components/custom/InputField';
-import {authNavigations} from '@/constants';
+import {authNavigations, colors} from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
 import useForm from '@/hooks/useForm';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {validateSignup} from '@/utils';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useRef} from 'react';
-import {View, SafeAreaView, StyleSheet, TextInput} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Text,
+  Alert,
+} from 'react-native';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -37,27 +46,87 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
       },
     );
   };
-  // const handleSubmit = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('email', signup.values.email);
-  //     formData.append('password', signup.values.password);
-  //     formData.append('nickname', signup.values.nickname);
-  //     const response = await axiosInstance.post('/api/auth/signup', formData);
-  //     if (response.status === 200) {
-  //       Alert.alert('회원가입 성공');
-  //     } else {
-  //       Alert.alert('회원가입 실패');
-  //     }
-  //   } catch (error) {
-  //     Alert.alert('에러');
-  //   }
-  // };
 
+  const checkUsingEmail = async () => {
+    try {
+      const emailValue = signup.values.email;
+      console.log(emailValue);
+      const newFormData = new FormData();
+      newFormData.append('email', emailValue);
+      const response = await axiosInstance.post(
+        '/api/member/check-email',
+        newFormData,
+        {
+          headers: {
+            Authorization: null,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log('이메일 체크 통신 성공');
+      if (response.status === 200) {
+        const data = await response.data;
+
+        if (data == true) {
+          Alert.alert('사용가능한 이메일입니다.');
+        } else {
+          Alert.alert(
+            '사용 불가능한 이메일입니다.',
+            '다른 이메일을 사용해 주세요.',
+          );
+        }
+      } else {
+        if (response.status === 201) {
+          Alert.alert('신호 201');
+        } else {
+          Alert.alert('왜이래?');
+          console.log(response.status);
+        }
+      }
+    } catch (error) {
+      Alert.alert(`체크하는 도중 에러가 있었습니다.\n다시 시도해주세요`);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <InputField
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 10,
+          }}>
+          <View
+            style={{
+              flex: 0.8,
+            }}>
+            <InputField
+              autoFocus
+              placeholder="이메일"
+              error={signup.errors.email}
+              touched={signup.touched.email}
+              inputMode="email"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              {...signup.getTextInputProps('email')}
+            />
+          </View>
+          <Pressable
+            style={{
+              flex: 0.2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={checkUsingEmail}>
+            <Text
+              style={{
+                color: colors.BLUE_BASIC,
+              }}>
+              이메일 체크
+            </Text>
+          </Pressable>
+        </View>
+        {/* <InputField
           autoFocus
           placeholder="이메일"
           error={signup.errors.email}
@@ -67,7 +136,7 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
           blurOnSubmit={false}
           onSubmitEditing={() => passwordRef.current?.focus()}
           {...signup.getTextInputProps('email')}
-        />
+        /> */}
         <InputField
           ref={passwordRef}
           placeholder="비밀번호"
