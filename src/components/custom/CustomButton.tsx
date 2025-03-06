@@ -50,19 +50,20 @@ const styles = StyleSheet.create({
   },
   inValid: {
     opacity: 0.5,
+    // backgroundColor: colors.GRAY_200,
   },
   filled: {
-    backgroundColor: colors.PINK_700,
+    backgroundColor: colors.BLUE_BASIC,
   },
   outlined: {
-    borderColor: colors.PINK_700,
+    borderColor: colors.BLUE_BASIC,
     borderWidth: 1,
   },
   filledPressed: {
-    backgroundColor: colors.PINK_500,
+    backgroundColor: colors.BLUE_SHADOW,
   },
   outlinedPressed: {
-    borderColor: colors.PINK_700,
+    borderColor: colors.BLUE_BASIC,
     borderWidth: 1,
     opacity: 0.5,
   },
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
   },
   outlinedText: {
-    color: colors.PINK_700,
+    color: colors.BLUE_BASIC,
   },
 });
 

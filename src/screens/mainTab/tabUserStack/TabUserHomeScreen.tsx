@@ -21,7 +21,7 @@ type CalculatedDate = {
 };
 
 function TabUserHomeScreen({navigation}: TabUserScreenProps) {
-  const {logoutMutation} = useAuth();
+  const {logoutMutation, deleteMutation} = useAuth();
   const userInfo = useUserStore(state => state.user);
   let accountStatusString;
   let accountCreatedDate;
@@ -50,11 +50,11 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
   if (userInfo?.lastLoginTime) {
     accountLastLoginTime = formatDateTime(userInfo.lastLoginTime);
   }
-  const logoutUser = async () => {};
-
+  const logoutUser = async () => {
+    logoutMutation.mutate(null);
+  };
   const deleteUser = async () => {
-    console.log('delte Token: Logout or DeleteUser');
-    await logoutMutation.mutate(null);
+    deleteMutation.mutate(null);
   };
 
   return (
@@ -76,7 +76,7 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
       <View style={styles.authContainer}>
         <SettingItem
           title="로그아웃"
-          onPress={deleteUser}
+          onPress={logoutUser}
           color={colors.RED_500}
         />
         <SettingItem

@@ -25,15 +25,17 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           source={require('@/assets/logo/Logo.png')}
           style={styles.image}
         />
-        <Text style={styles.appName}>Accident Aircraft Finder</Text>
+        <Text style={styles.appName}>항공 사고기록 검색기</Text>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
           label="로그인"
+          variant="filled"
           onPress={() => navigation.navigate(authNavigations.AUTH_LOGIN)}
         />
         <CustomButton
           label="회원가입"
+          variant="outlined"
           onPress={() => navigation.navigate(authNavigations.AUTH_SIGNUP)}
         />
       </View>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
     padding: 30,
     fontSize: 24,
     marginTop: 8,
+    // fontStyle: 'italic',
   },
   buttonContainer: {
     flex: 1,

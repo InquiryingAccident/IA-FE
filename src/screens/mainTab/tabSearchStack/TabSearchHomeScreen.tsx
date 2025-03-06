@@ -1,12 +1,9 @@
-import {tabSearchNavigations} from '@/constants';
+import React, {useState} from 'react';
+import {colors, tabSearchNavigations} from '@/constants';
 import {TabSearchStackParamList} from '@/navigations/stack/TabSearchStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useState} from 'react';
-import {View, SafeAreaView, StyleSheet, Pressable, Alert} from 'react-native';
-import InputField from '@/components/custom/NoBoxInputField';
-import SvgIcon from '@/components/custom/CustomIcon';
-import axiosFlightAwareInstance from '@/api/axiosFlightaware';
-import {xapikey} from '@env';
+import {View, SafeAreaView, StyleSheet, Alert, Text} from 'react-native';
+import SearchIdentInputField from '@/components/custom/SearchIdentInputField';
 
 type TabSearchScreenProps = StackScreenProps<
   TabSearchStackParamList,
@@ -37,59 +34,30 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
       Alert.alert('항공편 코드를 입력해주세요');
       return;
     }
-    try {
-      // Alert.alert(`${FlightAwareApi}/flight/${searchText}`);
-      const response = await axiosFlightAwareInstance.get(
-        `/flights/${searchText}`,
-        {
-          headers: {
-            'x-apikey': xapikey,
-          },
-        },
-      );
-      // if (response.status !== 200) {
-      //   Alert.alert('해당 항공편의 tail number를 찾을 수 없습니다.');
-      //   return;
-      // } else {
-      //   Alert.alert('해당 항공편의 tail number를 찾았습니다.');
-      // }
-      const flights: Flight[] = response.data.flights;
-      if (!flights || flights.length === 0) {
-        Alert.alert('항공편의 비행기가 없습니다.');
-        return;
-      }
-      const validFlights = flights.filter(
-        (flight: Flight) => flight.registration !== null,
-      );
-      if (validFlights.length > 0) {
-        navigation.navigate(tabSearchNavigations.TAB_SEARCH_ACCIDENTLIST, {
-          flights: validFlights,
-        });
-      } else {
-        Alert.alert('유효한 항공 번호가 없습니다.');
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('검색 중 오류가 발생했습니다.');
-    }
+    console.log('handleSearch');
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchInputField}>
-          <InputField
-            label="항공편 검색"
-            placeholder="항공편 코드(Ex: KE123)"
+    <View
+      style={{backgroundColor: colors.WHITE, width: '100%', height: '100%'}}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>항공편을 검색하세요</Text>
+          <Text style={styles.subHeaderText}>
+            해당 항공편의 정보와 사고기록을 보여줍니다.
+          </Text>
+        </View>
+        <View style={styles.searchContainer}>
+          <SearchIdentInputField
+            placeholder="항공편 코드(ex: KE123)"
             value={searchText}
             onChangeText={value => setSearchText(value)}
+            onPress={handleSearch}
+            onSubmitEditing={handleSearch}
           />
         </View>
-        <Pressable style={styles.searchIcon} onPress={handleSearch}>
-          <SvgIcon name="SearchInactive" size={32} />
-        </Pressable>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -98,25 +66,22 @@ export default TabSearchHomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 30,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  headerContainer: {
+    marginBottom: 30,
+    gap: 5,
+  },
+  headerText: {
+    fontSize: 24,
+    color: colors.BLUE_BASIC,
+  },
+  subHeaderText: {
+    color: colors.BLACK,
+    fontSize: 16,
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 24,
-  },
-  searchInputField: {
-    flex: 1,
-    marginRight: 8,
-  },
-  searchIcon: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'black',
+    marginBottom: 20,
   },
 });
