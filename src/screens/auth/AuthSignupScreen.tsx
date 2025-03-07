@@ -121,8 +121,10 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
             <Text
               style={{
                 color: colors.BLUE_BASIC,
+                justifyContent: 'center',
+                textAlign: 'center',
               }}>
-              이메일 체크
+              이메일{`\n`}체크
             </Text>
           </Pressable>
         </View>
