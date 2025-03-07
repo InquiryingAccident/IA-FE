@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {colors, tabSearchNavigations} from '@/constants';
+import {colors, storageKeys, tabSearchNavigations} from '@/constants';
 import {TabSearchStackParamList} from '@/navigations/stack/TabSearchStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
 import {View, SafeAreaView, StyleSheet, Alert, Text} from 'react-native';
 import SearchIdentInputField from '@/components/custom/SearchIdentInputField';
+import axiosInstance from '@/api/axios';
+import {getEncryptStorage} from '@/utils';
 
 type TabSearchScreenProps = StackScreenProps<
   TabSearchStackParamList,
@@ -34,7 +36,33 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
       Alert.alert('항공편 코드를 입력해주세요');
       return;
     }
-    console.log('handleSearch');
+    try {
+      const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
+      const formData = new FormData();
+      formData.append('flightNumber', searchText);
+      const response = await axiosInstance.post(
+        '/api/plane/registration/search',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      if (response.status === 200) {
+        const data = await response.data;
+        if (data.flights.length == 0) {
+          Alert.alert('항공편의 정보가 없습니다.', '다시 시도해주세요.');
+        } else {
+          Alert.alert('항공편을 찾았습니다.');
+          console.log(data);
+        }
+      }
+    } catch (error) {
+      console.error('항공편 검색 에러');
+      console.error(error);
+    }
   };
 
   return (
