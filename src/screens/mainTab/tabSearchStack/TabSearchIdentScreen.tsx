@@ -15,7 +15,7 @@ function TabSearchIdentScreen({navigation}: TabSearchScreenProps) {
   if (flights?.length == 0) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.identInfo}>
+        <View style={styles.identInfoContainer}>
           <Text>항공편 정보가 없습니다.</Text>
         </View>
       </SafeAreaView>
@@ -23,15 +23,36 @@ function TabSearchIdentScreen({navigation}: TabSearchScreenProps) {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.identInfo}>
-          <Text>
-            항공편 스크린, 출발지 - 목적지, 그 아래에 출발시간-예상도착시간 등의
-            정보 입력
-          </Text>
-          {flights && flights.length > 0 && (
-            <Text>{flights[0].origin.name}</Text>
-          )}
-        </View>
+        {flights && flights.length > 0 && (
+          <View style={styles.identInfoContainer}>
+            <Text style={styles.identText}>{flights[0].ident}</Text>
+            <Text>
+              Origin{`\n`}
+              <Text>
+                {flights[0].origin.city}
+                {`\n`}
+              </Text>
+              <Text>
+                {flights[0].origin.name}
+                {`\n`}
+              </Text>
+              <Text>{flights[0].origin.timezone}</Text>
+            </Text>
+
+            <Text>
+              Destination{`\n`}
+              <Text>
+                {flights[0].destination.city}
+                {`\n`}
+              </Text>
+              <Text>
+                {flights[0].destination.name}
+                {`\n`}
+              </Text>
+              <Text>{flights[0].destination.timezone}</Text>
+            </Text>
+          </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -43,7 +64,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  identInfo: {
-    flex: 1,
+  identInfoContainer: {
+    gap: 10,
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  identText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
