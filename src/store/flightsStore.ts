@@ -68,6 +68,9 @@ interface FlightInfo {
   actualIn: string;
   departureDelay: number;
   arrivalDelay: number;
+  blocked: boolean;
+  diverted: boolean;
+  cancelled: boolean;
   Origin: {
     name: string;
     city: string;
