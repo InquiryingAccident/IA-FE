@@ -6,6 +6,7 @@ import {View, SafeAreaView, StyleSheet, Alert, Text} from 'react-native';
 import SearchIdentInputField from '@/components/custom/SearchIdentInputField';
 import axiosInstance from '@/api/axios';
 import {getEncryptStorage} from '@/utils';
+import {useFlightsStore} from '@/store/flightsStore';
 
 type TabSearchScreenProps = StackScreenProps<
   TabSearchStackParamList,
@@ -30,12 +31,9 @@ export interface Flight {
 
 function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
   const [searchText, setSearchText] = useState<string>('');
+  const {setFlights} = useFlightsStore();
 
-  const handleSearch = async () => {
-    if (!searchText) {
-      Alert.alert('항공편 코드를 입력해주세요');
-      return;
-    }
+  const storeFlightsInfo = async () => {
     try {
       const accessToken = await getEncryptStorage(storageKeys.ACCESS_TOKEN);
       const formData = new FormData();
@@ -55,14 +53,68 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
         if (data.flights.length == 0) {
           Alert.alert('항공편의 정보가 없습니다.', '다시 시도해주세요.');
         } else {
-          Alert.alert('항공편을 찾았습니다.');
           console.log(data);
+          Alert.alert('항공편을 찾았습니다.');
+          const flightsData = data.flights.map((flight: any) => ({
+            ident: flight.ident,
+            identIcao: flight.identIcao,
+            identIata: flight.identIata,
+            actualRunwayOff: flight.actualRunwayOff,
+            actualRunwayOn: flight.actualRunwayOn,
+            operator: flight.operator,
+            operatorIcao: flight.operatorIcao,
+            operatorIata: flight.operatorIata,
+            flightNumber: flight.flightNumber,
+            registration: flight.registration,
+            aircraftType: flight.aircraftType,
+            status: flight.status,
+            scheduledOut: flight.scheduledOut,
+            scheduledIn: flight.scheduledIn,
+            estimatedOut: flight.estimatedOut,
+            estimatedIn: flight.estimatedIn,
+            actualOut: flight.actualOut,
+            actualIn: flight.actualIn,
+            departureDelay: flight.departureDelay,
+            arrivalDelay: flight.arrivalDelay,
+            blocked: flight.blocked,
+            diverted: flight.diverted,
+            cancelled: flight.cancelled,
+            origin: {
+              name: flight.origin.name,
+              city: flight.origin.city,
+              iata: flight.origin.iata,
+              icao: flight.origin.icao,
+              timezone: flight.origin.timezone,
+              airportInfoUrl: flight.origin.airportInfoUrl,
+            },
+            destination: {
+              name: flight.destination.name,
+              city: flight.destination.city,
+              iata: flight.destination.iata,
+              icao: flight.destination.icao,
+              timezone: flight.destination.timezone,
+              airportInfoUrl: flight.destination.airportInfoUrl,
+            },
+          }));
+
+          // zustand store에 데이터 저장
+          setFlights(flightsData);
+          // 항공편 식별 정보 화면으로 이동
+          navigation.navigate(tabSearchNavigations.TAB_SEARCH_IDENT);
         }
       }
     } catch (error) {
       console.error('항공편 검색 에러');
       console.error(error);
     }
+  };
+
+  const handleSearch = async () => {
+    if (!searchText) {
+      Alert.alert('항공편 코드를 입력해주세요');
+      return;
+    }
+    storeFlightsInfo();
   };
 
   return (
