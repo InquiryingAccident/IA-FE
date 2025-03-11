@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {colors, mainTabNavigations} from '@/constants';
 import TabSearchStackNavigator from '../stack/TabSearchStackNavigator';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
 import Logo from '@/assets/logo/LogoSvg.svg';
 import TabUserStackNavigator from '../stack/TabUserStackNavigator';
@@ -20,7 +20,9 @@ function MainTabNavigator() {
       initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
       screenOptions={({route}) => ({
         tabBarStyle: {
+          height: Dimensions.get('screen').height * 0.08,
           paddingTop: 12,
+          paddingBottom: 12,
           backgroundColor: colors.BLUE_BASIC,
         },
         tabBarIcon: ({focused}) => {
@@ -72,9 +74,7 @@ function MainTabNavigator() {
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={TabSearchStackNavigator}
-        options={{
-          title: '항공편 검색',
-        }}
+        options={{}}
       />
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_USER}

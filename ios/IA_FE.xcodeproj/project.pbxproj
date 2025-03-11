@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09C4B4B42D80561000CA744B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09C4B4B22D80561000CA744B /* MaterialIcons.ttf */; };
+		09C4B4B52D80561000CA744B /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09C4B4B12D80561000CA744B /* Ionicons.ttf */; };
+		09C4B4B62D80561000CA744B /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09C4B4B32D80561000CA744B /* Octicons.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-IA_FE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-IA_FE.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13EAAB2C142A309C085C40CF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
@@ -15,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09C4B4B12D80561000CA744B /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		09C4B4B22D80561000CA744B /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		09C4B4B32D80561000CA744B /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* IA_FE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IA_FE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = IA_FE/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = IA_FE/Info.plist; sourceTree = "<group>"; };
@@ -39,9 +45,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09C4B4B02D8055BC00CA744B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				09C4B4B12D80561000CA744B /* Ionicons.ttf */,
+				09C4B4B22D80561000CA744B /* MaterialIcons.ttf */,
+				09C4B4B32D80561000CA744B /* Octicons.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* IA_FE */ = {
 			isa = PBXGroup;
 			children = (
+				09C4B4B02D8055BC00CA744B /* Fonts */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -158,6 +175,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09C4B4B42D80561000CA744B /* MaterialIcons.ttf in Resources */,
+				09C4B4B52D80561000CA744B /* Ionicons.ttf in Resources */,
+				09C4B4B62D80561000CA744B /* Octicons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13EAAB2C142A309C085C40CF /* PrivacyInfo.xcprivacy in Resources */,
@@ -378,7 +398,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -447,7 +470,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

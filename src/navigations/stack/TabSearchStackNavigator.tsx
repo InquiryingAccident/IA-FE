@@ -35,6 +35,16 @@ function TabSearchStackNavigator() {
       <Stack.Screen
         name={tabSearchNavigations.TAB_SEARCH_IDENT}
         component={TabSearchIdentScreen}
+        options={{
+          headerTitle: '항공편 정보',
+          headerBackTitle: '뒤로',
+          headerTitleStyle: {
+            fontSize: 18,
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
       />
     </Stack.Navigator>
   );

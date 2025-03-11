@@ -11,6 +11,7 @@ import CustomButton from '@/components/custom/CustomButton';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {authNavigations} from '@/constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -25,6 +26,11 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           source={require('@/assets/logo/Logo.png')}
           style={styles.image}
         />
+        {/* <MaterialIcons
+          name="flight"
+          size={Dimensions.get('screen').width * 0.8}
+          color="black"
+        /> */}
         <Text style={styles.appName}>항공 사고기록 검색기</Text>
       </View>
       <View style={styles.buttonContainer}>
@@ -39,6 +45,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           onPress={() => navigation.navigate(authNavigations.AUTH_SIGNUP)}
         />
       </View>
+      <MaterialIcons name="flight-takeoff" size={24} color="black" />
     </SafeAreaView>
   );
 };
