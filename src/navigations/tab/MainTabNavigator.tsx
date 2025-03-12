@@ -21,7 +21,7 @@ function MainTabNavigator() {
       screenOptions={({route}) => ({
         tabBarStyle: {
           height: Dimensions.get('screen').height * 0.08,
-          paddingTop: 12,
+          paddingTop: 8,
           paddingBottom: 12,
           backgroundColor: colors.BLUE_BASIC,
         },
