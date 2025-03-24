@@ -55,17 +55,20 @@ function AuthLoginScreen({navigation}: AuthScreenProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
         <InputField
+          title="아이디"
           autoFocus
           placeholder="이메일"
           error={login.errors.email}
           touched={login.touched.email}
           inputMode="email"
           returnKeyType="next"
+          // message="올바른 이메일 형식입니다."
           // blurOnSubmit={false}
           onSubmitEditing={() => passwordRef.current?.focus()}
           {...login.getTextInputProps('email')}
         />
         <InputField
+          title="비밀번호"
           ref={passwordRef}
           placeholder="비밀번호"
           error={login.errors.password}
