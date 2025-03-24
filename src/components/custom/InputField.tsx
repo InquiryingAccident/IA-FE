@@ -8,10 +8,9 @@ import {
   Text,
   Pressable,
 } from 'react-native';
-
 import {mergeRefs} from '@/utils';
 import {colors} from '@/constants';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 interface InputFieldProps extends TextInputProps {
   title?: string;
   disabled?: boolean;
@@ -21,6 +20,7 @@ interface InputFieldProps extends TextInputProps {
   check?: boolean;
   available?: boolean;
   checkedButton?: () => void;
+  ischecked?: boolean;
 }
 
 const deviceHeight = Dimensions.get('screen').height;
@@ -36,6 +36,7 @@ const InputField = forwardRef(
       check = false,
       available = false,
       checkedButton,
+      ischecked = false,
       ...props
     }: InputFieldProps,
     ref?: ForwardedRef<TextInput>,
@@ -66,10 +67,16 @@ const InputField = forwardRef(
             autoCorrect={false}
             {...props}
           />
-          {check && (
+          {check && !ischecked && (
             <Pressable style={styles.checkedButton} onPress={checkedButton}>
               <Text style={styles.checkedButtonText}>중복확인</Text>
             </Pressable>
+          )}
+          {check && ischecked && (
+            <View style={styles.verifiedIconContainer}>
+              {/* <Icon name="check-circle" size={20} color={colors.BLUE_BASIC} /> */}
+              <MaterialIcons name="check" size={30} color={colors.BLUE_BASIC} />
+            </View>
           )}
         </View>
         {touched && Boolean(error) && <Text style={styles.error}>{error}</Text>}
@@ -122,6 +129,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: colors.WHITE,
+  },
+  verifiedIconContainer: {
+    flex: 0.2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputError: {
     borderColor: colors.RED_300,
