@@ -21,14 +21,13 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
   const passwordRef = useRef<TextInput | null>(null);
   const passwordConfirmRef = useRef<TextInput | null>(null);
   const nicknameRef = useRef<TextInput | null>(null);
-
   const signup = useForm({
     initialValue: {email: '', password: '', passwordConfirm: '', nickname: ''},
     validate: validateSignup,
   });
-
   const [availableEmail, setAvailableEmail] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
+  const [verified, setVerified] = useState<boolean>(false);
 
   const handleSubmit = () => {
     const {email, password, nickname} = signup.values;
@@ -65,12 +64,14 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
 
       if (response.status === 200) {
         const data = response.data;
+        console.log({data});
         if (data === true) {
           setAvailableEmail(true);
+          setVerified(true);
           setMessage('사용 가능한 이메일입니다.');
-          Alert.alert('사용가능한 이메일입니다.');
         } else {
           setAvailableEmail(false);
+          setVerified(false);
           setMessage('이미 사용 중인 이메일입니다.');
           Alert.alert(
             '사용 불가능한 이메일입니다.',
@@ -83,6 +84,7 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
       }
     } catch (error) {
       setAvailableEmail(false);
+      setVerified(false);
       setMessage('중복 확인 도중 에러가 발생했습니다.');
       Alert.alert('체크하는 도중 에러가 있었습니다.\n다시 시도해주세요');
     }
@@ -90,6 +92,7 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
 
   const handleEmailChange = (text: string) => {
     setAvailableEmail(false);
+    setVerified(false);
     setMessage('');
   };
 
@@ -106,6 +109,7 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
           touched={signup.touched.email}
           check={true}
           available={availableEmail}
+          ischecked={verified}
           checkedButton={checkUsingEmail}
           message={
             message !== '' ? message : '이메일을 입력 후 중복확인을 해주세요'
@@ -122,7 +126,6 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
           textContentType="oneTimeCode"
           secureTextEntry
           returnKeyType="next"
-          blurOnSubmit={false}
           error={signup.errors.password}
           touched={signup.touched.password}
           onSubmitEditing={() => passwordConfirmRef.current?.focus()}
