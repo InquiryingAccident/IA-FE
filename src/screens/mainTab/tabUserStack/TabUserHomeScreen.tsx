@@ -153,6 +153,6 @@ const styles = StyleSheet.create({
   containerGap: {
     width: '100%',
     height: 14,
-    backgroundColor: colors.GRAY_300,
+    backgroundColor: colors.GRAY_100,
   },
 });
