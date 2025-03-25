@@ -46,6 +46,13 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
   };
 
   const checkUsingEmail = async () => {
+    if (signup.errors.email) {
+      setAvailableEmail(false);
+      setVerified(false);
+      setMessage('이메일 형식이 올바르지 않습니다.');
+
+      return;
+    }
     try {
       const emailValue = signup.values.email;
       const newFormData = new FormData();
