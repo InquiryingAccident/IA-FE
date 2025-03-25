@@ -156,8 +156,8 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
           returnKeyType="done"
           error={signup.errors.nickname}
           touched={signup.touched.nickname}
-          onSubmitEditing={handleSubmit}
           {...signup.getTextInputProps('nickname')}
+          // enablesReturnKeyAutomatically
         />
       </View>
       <CustomButton
@@ -168,7 +168,8 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
             signup.values.email &&
             signup.values.password &&
             signup.values.passwordConfirm &&
-            signup.values.nickname
+            signup.values.nickname &&
+            verified
           )
         }
       />
