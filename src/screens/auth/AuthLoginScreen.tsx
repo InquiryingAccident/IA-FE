@@ -1,6 +1,8 @@
 import React, {useRef} from 'react';
 import {
   Alert,
+  Dimensions,
+  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -54,6 +56,10 @@ function AuthLoginScreen({navigation}: AuthScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
+        <Image
+          source={require('@/assets/logo/Logo.png')}
+          style={styles.image}
+        />
         <InputField
           title="아이디"
           autoFocus
@@ -100,5 +106,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     gap: 20,
     marginBottom: 30,
+    justifyContent: 'center',
+  },
+  image: {
+    width: Dimensions.get('screen').width * 0.8,
+    height: Dimensions.get('screen').width * 0.8,
   },
 });
