@@ -6,6 +6,7 @@ import useAuth from '@/hooks/queries/useAuth';
 import useForm from '@/hooks/useForm';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {validateSignup} from '@/utils';
+import KeyboardAvoid from '@/utils/KeyboardAvoid';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useRef, useState} from 'react';
 import {View, SafeAreaView, StyleSheet, TextInput, Alert} from 'react-native';
@@ -104,76 +105,78 @@ function AuthSignupScreen({navigation}: AuthScreenProps) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <InputField
-          autoFocus
-          title="아이디"
-          placeholder="이메일"
-          inputMode="email"
-          returnKeyType="next"
-          error={signup.errors.email}
-          touched={signup.touched.email}
-          check={true}
-          available={availableEmail}
-          ischecked={verified}
-          checkedButton={checkUsingEmail}
-          message={
-            message !== '' ? message : '이메일을 입력 후 중복확인을 해주세요'
+    <KeyboardAvoid>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.inputContainer}>
+          <InputField
+            autoFocus
+            title="아이디"
+            placeholder="이메일"
+            inputMode="email"
+            returnKeyType="next"
+            error={signup.errors.email}
+            touched={signup.touched.email}
+            check={true}
+            available={availableEmail}
+            ischecked={verified}
+            checkedButton={checkUsingEmail}
+            message={
+              message !== '' ? message : '이메일을 입력 후 중복확인을 해주세요'
+            }
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            {...signup.getTextInputProps('email', {
+              onChangeText: handleEmailChange,
+            })}
+          />
+          <InputField
+            ref={passwordRef}
+            title="비밀번호"
+            placeholder="비밀번호"
+            textContentType="oneTimeCode"
+            secureTextEntry
+            returnKeyType="next"
+            error={signup.errors.password}
+            touched={signup.touched.password}
+            onSubmitEditing={() => passwordConfirmRef.current?.focus()}
+            {...signup.getTextInputProps('password')}
+          />
+          <InputField
+            ref={passwordConfirmRef}
+            title="비밀번호 확인"
+            placeholder="비밀번호 확인"
+            secureTextEntry
+            returnKeyType="next"
+            error={signup.errors.passwordConfirm}
+            touched={signup.touched.passwordConfirm}
+            onSubmitEditing={() => nicknameRef.current?.focus()}
+            {...signup.getTextInputProps('passwordConfirm')}
+          />
+          <InputField
+            ref={nicknameRef}
+            title="닉네임"
+            placeholder="닉네임"
+            returnKeyType="done"
+            error={signup.errors.nickname}
+            touched={signup.touched.nickname}
+            {...signup.getTextInputProps('nickname')}
+            // enablesReturnKeyAutomatically
+          />
+        </View>
+        <CustomButton
+          label="회원가입"
+          onPress={handleSubmit}
+          inValid={
+            !(
+              signup.values.email &&
+              signup.values.password &&
+              signup.values.passwordConfirm &&
+              signup.values.nickname &&
+              verified
+            )
           }
-          onSubmitEditing={() => passwordRef.current?.focus()}
-          {...signup.getTextInputProps('email', {
-            onChangeText: handleEmailChange,
-          })}
         />
-        <InputField
-          ref={passwordRef}
-          title="비밀번호"
-          placeholder="비밀번호"
-          textContentType="oneTimeCode"
-          secureTextEntry
-          returnKeyType="next"
-          error={signup.errors.password}
-          touched={signup.touched.password}
-          onSubmitEditing={() => passwordConfirmRef.current?.focus()}
-          {...signup.getTextInputProps('password')}
-        />
-        <InputField
-          ref={passwordConfirmRef}
-          title="비밀번호 확인"
-          placeholder="비밀번호 확인"
-          secureTextEntry
-          returnKeyType="next"
-          error={signup.errors.passwordConfirm}
-          touched={signup.touched.passwordConfirm}
-          onSubmitEditing={() => nicknameRef.current?.focus()}
-          {...signup.getTextInputProps('passwordConfirm')}
-        />
-        <InputField
-          ref={nicknameRef}
-          title="닉네임"
-          placeholder="닉네임"
-          returnKeyType="done"
-          error={signup.errors.nickname}
-          touched={signup.touched.nickname}
-          {...signup.getTextInputProps('nickname')}
-          // enablesReturnKeyAutomatically
-        />
-      </View>
-      <CustomButton
-        label="회원가입"
-        onPress={handleSubmit}
-        inValid={
-          !(
-            signup.values.email &&
-            signup.values.password &&
-            signup.values.passwordConfirm &&
-            signup.values.nickname &&
-            verified
-          )
-        }
-      />
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoid>
   );
 }
 
