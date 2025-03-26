@@ -105,12 +105,17 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
         <SettingItem
           title="로그아웃"
           onPress={logoutUser}
-          color={colors.RED_500}
+          color={colors.GRAY_300}
         />
+        <View
+          style={{
+            height: 2,
+            backgroundColor: colors.GRAY_100,
+          }}></View>
         <SettingItem
           title="회원탈퇴"
           onPress={deleteUser}
-          color={colors.RED_500}
+          color={colors.GRAY_300}
         />
       </View>
     </SafeAreaView>
