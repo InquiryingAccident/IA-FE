@@ -140,8 +140,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     // backgroundColor: colors.RED_300,
     marginBottom: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoHeaderText: {
+    justifyContent: 'center',
     alignItems: 'flex-start',
     fontSize: 18,
     color: colors.GRAY_300,
