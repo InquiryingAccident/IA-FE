@@ -4,7 +4,14 @@ import useAuth from '@/hooks/queries/useAuth';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
 import {useUserStore} from '@/store/userStore';
 import {StackScreenProps} from '@react-navigation/stack';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 type TabUserScreenProps = StackScreenProps<
   TabUserStackParamList,
@@ -36,7 +43,7 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
 
-    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분 ${seconds}초`;
+    return `${year}. ${month}. ${day}일`; // ${hours}시 ${minutes}분 ${seconds}초`;
   }
 
   if (userInfo?.accountStatus === 'ACTIVE') {
@@ -61,28 +68,54 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
     <SafeAreaView style={styles.container}>
       {userInfo ? (
         <View style={styles.userInfo}>
-          <Text>사용자 닉네임: {userInfo.nickname}</Text>
-          <Text>사용자 이메일: {userInfo.email}</Text>
-          <Text>사용자 계정 상태: {accountStatusString}</Text>
-          <Text>사용자 계정 생성일: {accountCreatedDate}</Text>
-          <Text>사용자 계정 마지막 로그인 시간: {accountLastLoginTime}</Text>
+          <View style={styles.infoHeader}>
+            <Text style={styles.infoHeaderText}>내정보</Text>
+            <View style={styles.infoHeaderGap}></View>
+            <Pressable
+              style={styles.accountStatusButton}
+              onPress={() => console.log('계정 활성화 버튼 클릭')}>
+              <Text style={styles.accountStatusText}>계정 활성화</Text>
+            </Pressable>
+          </View>
+          <Text style={styles.questionHeaderText}>
+            닉네임{'     '}
+            <Text style={styles.answerNickname}>{userInfo.nickname}</Text>
+          </Text>
+          <Text style={styles.questionHeaderText}>
+            아이디{'     '}
+            <Text style={styles.answerNickname}>{userInfo.email}</Text>
+          </Text>
+          <Text style={styles.questionHeaderText}>
+            계정 생성일{'     '}
+            <Text style={styles.answerNickname}>{accountCreatedDate}</Text>
+          </Text>
+          <Text style={styles.questionHeaderText}>
+            마지막 로그인{'     '}
+            <Text style={styles.answerNickname}>{accountLastLoginTime}</Text>
+          </Text>
         </View>
       ) : (
         <View>
           <Text>사용자 정보를 표시할 수 없습니다.{`\n`}</Text>
         </View>
       )}
+      <View style={styles.containerGap}></View>
 
       <View style={styles.authContainer}>
         <SettingItem
           title="로그아웃"
           onPress={logoutUser}
-          color={colors.RED_500}
+          color={colors.GRAY_300}
         />
+        <View
+          style={{
+            height: 2,
+            backgroundColor: colors.GRAY_100,
+          }}></View>
         <SettingItem
           title="회원탈퇴"
           onPress={deleteUser}
-          color={colors.RED_500}
+          color={colors.GRAY_300}
         />
       </View>
     </SafeAreaView>
@@ -95,13 +128,56 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: colors.WHITE,
   },
   userInfo: {
-    flex: 1,
+    // padding: 20,
+    paddingVertical: 30,
+    paddingHorizontal: 22,
+  },
+  infoHeader: {
+    flexDirection: 'row',
+    marginTop: 10,
+    // backgroundColor: colors.RED_300,
+    marginBottom: 30,
+  },
+  infoHeaderText: {
+    alignItems: 'flex-start',
+    fontSize: 18,
+    color: colors.GRAY_300,
+  },
+  infoHeaderGap: {
+    width: Dimensions.get('screen').width * 0.5,
+  },
+  accountStatusButton: {
+    width: 76,
+    height: 26,
+    alignSelf: 'flex-end',
+    borderRadius: 4,
+    backgroundColor: colors.BLUE_BASIC,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  accountStatusText: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: colors.WHITE,
+  },
+  questionHeaderText: {
+    fontSize: 14,
+    color: colors.GRAY_300,
+    marginBottom: 20,
+  },
+  answerNickname: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: colors.BLACK,
   },
   authContainer: {
     flex: 1,
+  },
+  containerGap: {
+    width: '100%',
+    height: 14,
+    backgroundColor: colors.GRAY_100,
   },
 });

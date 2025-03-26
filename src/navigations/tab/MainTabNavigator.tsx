@@ -21,7 +21,7 @@ function MainTabNavigator() {
       screenOptions={({route}) => ({
         tabBarStyle: {
           height: Dimensions.get('screen').height * 0.08,
-          paddingTop: 12,
+          paddingTop: 8,
           paddingBottom: 12,
           backgroundColor: colors.BLUE_BASIC,
         },
@@ -64,12 +64,18 @@ function MainTabNavigator() {
           shadowColor: 'transparent',
           elevation: 0,
         },
-        headerTitle: () => (
+        headerLeft: () => (
           <View style={headerStyles.container}>
             <Logo width={30} height={30} />
             <Text>Plane Accident Finder</Text>
           </View>
         ),
+        // headerTitle: () => (
+        //   <View style={headerStyles.container}>
+        //     <Logo width={30} height={30} />
+        //     <Text>Plane Accident Finder</Text>
+        //   </View>
+        // ),
       })}>
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
@@ -80,7 +86,7 @@ function MainTabNavigator() {
         name={mainTabNavigations.MAINTAB_USER}
         component={TabUserStackNavigator}
         options={{
-          title: '내정보',
+          title: '',
         }}
       />
     </Tab.Navigator>
@@ -99,8 +105,9 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   container: {
     flex: 1,
+    left: 20,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 10,
   },

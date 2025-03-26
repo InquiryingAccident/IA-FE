@@ -1,9 +1,12 @@
 import React, {useRef} from 'react';
 import {
   Alert,
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -16,6 +19,7 @@ import CustomButton from '@/components/custom/CustomButton';
 import InputField from '@/components/custom/InputField';
 import useAuth from '@/hooks/queries/useAuth';
 import Toast from 'react-native-toast-message';
+import KeyboardAvoid from '@/utils/KeyboardAvoid';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -52,38 +56,47 @@ function AuthLoginScreen({navigation}: AuthScreenProps) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <InputField
-          autoFocus
-          placeholder="이메일"
-          error={login.errors.email}
-          touched={login.touched.email}
-          inputMode="email"
-          returnKeyType="next"
-          // blurOnSubmit={false}
-          onSubmitEditing={() => passwordRef.current?.focus()}
-          {...login.getTextInputProps('email')}
+    <KeyboardAvoid>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Image
+            source={require('@/assets/logo/Logo.png')}
+            style={styles.image}
+          />
+          <InputField
+            title="아이디"
+            autoFocus
+            placeholder="이메일"
+            error={login.errors.email}
+            touched={login.touched.email}
+            inputMode="email"
+            returnKeyType="next"
+            // message="올바른 이메일 형식입니다."
+            // blurOnSubmit={false}
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            {...login.getTextInputProps('email')}
+          />
+          <InputField
+            title="비밀번호"
+            ref={passwordRef}
+            placeholder="비밀번호"
+            error={login.errors.password}
+            touched={login.touched.password}
+            secureTextEntry
+            returnKeyType="join"
+            onSubmitEditing={handleSubmit}
+            {...login.getTextInputProps('password')}
+          />
+        </View>
+        <CustomButton
+          label="로그인"
+          variant="filled"
+          size="large"
+          inValid={!login.values.password}
+          onPress={handleSubmit}
         />
-        <InputField
-          ref={passwordRef}
-          placeholder="비밀번호"
-          error={login.errors.password}
-          touched={login.touched.password}
-          secureTextEntry
-          returnKeyType="join"
-          onSubmitEditing={handleSubmit}
-          {...login.getTextInputProps('password')}
-        />
-      </View>
-      <CustomButton
-        label="로그인"
-        variant="filled"
-        size="large"
-        inValid={!login.values.password}
-        onPress={handleSubmit}
-      />
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoid>
   );
 }
 
@@ -97,5 +110,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     gap: 20,
     marginBottom: 30,
+    justifyContent: 'center',
+  },
+  image: {
+    width: Dimensions.get('screen').width * 0.8,
+    height: Dimensions.get('screen').width * 0.8,
   },
 });

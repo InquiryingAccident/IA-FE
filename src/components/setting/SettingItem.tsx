@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {StyleSheet, Text, Pressable, PressableProps, View} from 'react-native';
-
+import Octicons from 'react-native-vector-icons/Octicons';
 import {colors} from '@/constants';
 
 interface SettingItemProps extends PressableProps {
@@ -31,12 +31,16 @@ function SettingItem({
         </Text>
         {subTitle && <Text style={styles.subTitleText}>{subTitle}</Text>}
       </View>
+      <View>
+        <Octicons name="chevron-right" size={22} color={colors.GRAY_300} />
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   titleText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     color: colors.BLACK,
   },

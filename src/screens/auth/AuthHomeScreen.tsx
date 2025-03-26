@@ -10,7 +10,7 @@ import {
 import CustomButton from '@/components/custom/CustomButton';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
-import {authNavigations} from '@/constants';
+import {authNavigations, colors} from '@/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type AuthScreenProps = StackScreenProps<
@@ -31,7 +31,10 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
           size={Dimensions.get('screen').width * 0.8}
           color="black"
         /> */}
-        <Text style={styles.appName}>항공 사고기록 검색기</Text>
+        <Text style={styles.appName}>Plane Accident Finder</Text>
+        <Text style={styles.subText}>
+          여행 전, 탑승하는 항공기의 사고이력을 조회해 보세요!
+        </Text>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
@@ -71,7 +74,14 @@ const styles = StyleSheet.create({
     padding: 30,
     fontSize: 24,
     marginTop: 8,
+    fontWeight: '500',
+    color: colors.BLUE_BASIC,
     // fontStyle: 'italic',
+  },
+  subText: {
+    color: colors.GRAY_400,
+    fontSize: 14,
+    fontWeight: '500',
   },
   buttonContainer: {
     flex: 1,
