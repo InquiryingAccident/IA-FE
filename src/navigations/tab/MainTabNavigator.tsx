@@ -57,13 +57,6 @@ function MainTabNavigator() {
         ),
         tabBarActiveTintColor: colors.WHITE,
         tabBarInactiveTintColor: colors.WHITE,
-        headerPressOpacity: 0.8,
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: '#FFF',
-          shadowColor: 'transparent',
-          elevation: 0,
-        },
         headerLeft: () => (
           <View style={headerStyles.container}>
             <Logo width={30} height={30} />
@@ -80,7 +73,9 @@ function MainTabNavigator() {
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_SEARCH}
         component={TabSearchStackNavigator}
-        options={{}}
+        options={{
+          title: '',
+        }}
       />
       <Tab.Screen
         name={mainTabNavigations.MAINTAB_USER}
