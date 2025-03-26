@@ -4,7 +4,14 @@ import useAuth from '@/hooks/queries/useAuth';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
 import {useUserStore} from '@/store/userStore';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 type TabUserScreenProps = StackScreenProps<
   TabUserStackParamList,
@@ -63,8 +70,11 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
         <View style={styles.userInfo}>
           <View style={styles.infoHeader}>
             <Text style={styles.infoHeaderText}>내정보</Text>
-            <Pressable style={styles.accountStatusButton}>
-              <Text>계정 활성화</Text>
+            <View style={styles.infoHeaderGap}></View>
+            <Pressable
+              style={styles.accountStatusButton}
+              onPress={() => console.log('계정 활성화 버튼 클릭')}>
+              <Text style={styles.accountStatusText}>계정 활성화</Text>
             </Pressable>
           </View>
           <Text style={styles.questionHeaderText}>
@@ -123,19 +133,29 @@ const styles = StyleSheet.create({
   infoHeader: {
     flexDirection: 'row',
     marginTop: 10,
-    backgroundColor: colors.RED_300,
+    // backgroundColor: colors.RED_300,
     marginBottom: 30,
   },
   infoHeaderText: {
-    flex: 0.5,
     alignItems: 'flex-start',
     fontSize: 18,
     color: colors.GRAY_300,
   },
+  infoHeaderGap: {
+    width: Dimensions.get('screen').width * 0.5,
+  },
   accountStatusButton: {
-    flex: 0.5,
-    backgroundColor: colors.BLACK,
+    width: 76,
+    height: 26,
     alignSelf: 'flex-end',
+    borderRadius: 4,
+    backgroundColor: colors.BLUE_BASIC,
+    justifyContent: 'center',
+  },
+  accountStatusText: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: colors.WHITE,
   },
   questionHeaderText: {
     fontSize: 14,
