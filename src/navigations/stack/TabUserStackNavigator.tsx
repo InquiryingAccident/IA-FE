@@ -20,6 +20,9 @@ function TabUserStackNavigator() {
       <Stack.Screen
         name={tabUserNavigations.TAB_USER}
         component={TabUserHomeScreen}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );
