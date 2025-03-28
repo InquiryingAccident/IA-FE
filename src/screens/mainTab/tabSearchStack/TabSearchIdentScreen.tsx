@@ -36,43 +36,54 @@ function TabSearchIdentScreen({navigation}: TabSearchScreenProps) {
         </View>
       </SafeAreaView>
     );
-  } else {
+  } else if (flights === null) {
     return (
       <SafeAreaView style={styles.container}>
-        {flights && flights.length > 0 && (
-          <View style={styles.identInfoContainer}>
-            <Text style={styles.identText}>항공편 {flights[0].ident}</Text>
-            <View style={styles.headerInfoContainer}>
-              <View style={styles.headerDeparture}>
-                <Text style={styles.headerDepartureText}>
-                  출발{`\n`}
-                  <Text style={styles.headerDepartureInfoText}>
-                    {flights[0].origin.city}
-                    {`\n`}
-                  </Text>
-                </Text>
-              </View>
-              <View style={styles.headerGap}>
-                <Ionicons name="airplane-outline" size={48} color="black" />
-              </View>
-              <View style={styles.headerArrival}>
-                <Text style={styles.headerArrivalText}>
-                  도착{`\n`}
-                  <Text style={styles.headerArrivalInfoText}>
-                    {flights[0].destination.city}
-                    {`\n`}
-                  </Text>
-                  <Text style={styles.headerArrivalInfoText}>
-                    {`\n`}예상 도착 시간: {`\n`}
-                    {flights[0].actualIn}
-                    {`\n`}
-                    {calculateTime(flights[0].actualIn)}
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        )}
+        <View style={styles.identInfoContainer}>
+          <Text>항공편 정보가 없습니다.</Text>
+        </View>
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      // <SafeAreaView style={styles.container}>
+      //   {flights && flights.length > 0 && (
+      //     <View style={styles.identInfoContainer}>
+      //       <Text style={styles.identText}>항공편 {flights[0].ident}</Text>
+      //       <View style={styles.headerInfoContainer}>
+      //         <View style={styles.headerDeparture}>
+      //           <Text style={styles.headerDepartureText}>
+      //             출발{`\n`}
+      //             <Text style={styles.headerDepartureInfoText}>
+      //               {flights[0].origin.city}
+      //               {`\n`}
+      //             </Text>
+      //           </Text>
+      //         </View>
+      //         <View style={styles.headerGap}>
+      //           <Ionicons name="airplane-outline" size={48} color="black" />
+      //         </View>
+      //         <View style={styles.headerArrival}>
+      //           <Text style={styles.headerArrivalText}>
+      //             도착{`\n`}
+      //             <Text style={styles.headerArrivalInfoText}>
+      //               {flights[0].destination.city}
+      //               {`\n`}
+      //             </Text>
+      //             <Text style={styles.headerArrivalInfoText}>
+      //               {`\n`}예상 도착 시간: {`\n`}
+      //               {flights[0].actualIn}
+      //               {`\n`}
+      //               {calculateTime(flights[0].actualIn)}
+      //             </Text>
+      //           </Text>
+      //         </View>
+      //       </View>
+      //     </View>
+      //   )}
+      // </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <Text>{flights[0].ident}</Text>
       </SafeAreaView>
     );
   }
