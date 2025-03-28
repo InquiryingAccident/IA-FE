@@ -60,7 +60,7 @@ function MainTabNavigator() {
         headerLeft: () => (
           <View style={headerStyles.container}>
             <Logo width={30} height={30} />
-            <Text>Plane Accident Finder</Text>
+            <Text style={headerStyles.headerText}>Plane Accident Finder</Text>
           </View>
         ),
         // headerTitle: () => (
@@ -105,5 +105,10 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 10,
+  },
+  headerText: {
+    color: colors.BLUE_BASIC,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
