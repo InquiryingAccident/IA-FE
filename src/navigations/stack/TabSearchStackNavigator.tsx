@@ -1,5 +1,4 @@
-import {mainTabNavigations, tabSearchNavigations} from '@/constants';
-import TabSearchAccidentListScreen from '@/screens/mainTab/tabSearchStack/TabSearchAccidentListScreen';
+import {colors, tabSearchNavigations} from '@/constants';
 import TabSearchHomeScreen, {
   Flight,
 } from '@/screens/mainTab/tabSearchStack/TabSearchHomeScreen';
@@ -22,7 +21,7 @@ function TabSearchStackNavigator() {
         name={tabSearchNavigations.TAB_SEARCH}
         component={TabSearchHomeScreen}
         options={{
-          headerShown: false,
+          headerTitle: '',
         }}
       />
       {/* <Stack.Screen
@@ -36,13 +35,15 @@ function TabSearchStackNavigator() {
         name={tabSearchNavigations.TAB_SEARCH_IDENT}
         component={TabSearchIdentScreen}
         options={{
+          headerBackButtonDisplayMode: 'minimal',
           headerTitle: '항공편 정보',
-          headerBackTitle: '뒤로',
+          // headerBackTitle: '뒤로',
           headerTitleStyle: {
-            fontSize: 18,
+            fontSize: 16,
             textAlign: 'center',
             alignItems: 'center',
             justifyContent: 'center',
+            color: colors.BLACK,
           },
         }}
       />
