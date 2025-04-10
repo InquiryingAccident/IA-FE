@@ -1,10 +1,6 @@
-import SettingItem from '@/components/setting/SettingItem';
-import {colors, tabUserNavigations} from '@/constants';
-import useAuth from '@/hooks/queries/useAuth';
-import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
-import {useUserStore} from '@/store/userStore';
-import {StackScreenProps} from '@react-navigation/stack';
+import React from 'react';
 import {
+  Alert,
   Dimensions,
   Pressable,
   SafeAreaView,
@@ -12,6 +8,15 @@ import {
   Text,
   View,
 } from 'react-native';
+import SettingItem from '@/components/setting/SettingItem';
+import {alerts, colors, tabUserNavigations} from '@/constants';
+import useAuth from '@/hooks/queries/useAuth';
+import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
+import {useUserStore} from '@/store/userStore';
+import {StackScreenProps} from '@react-navigation/stack';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-toast-message';
 
 type TabUserScreenProps = StackScreenProps<
   TabUserStackParamList,
@@ -58,10 +63,70 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
     accountLastLoginTime = formatDateTime(userInfo.lastLoginTime);
   }
   const logoutUser = async () => {
-    logoutMutation.mutate(null);
+    Alert.alert(
+      alerts.LOGOUT_ACCOUNT.TITLE,
+      alerts.LOGOUT_ACCOUNT.DESCRIPTION,
+      [
+        {
+          text: '로그아웃',
+          onPress: () =>
+            logoutMutation.mutate(null, {
+              onSuccess: () =>
+                Toast.show({
+                  type: 'success',
+                  text1: '로그아웃 완료',
+                  text2: '로그아웃 완료되었습니다.',
+                  position: 'top',
+                }),
+              onError: error =>
+                Toast.show({
+                  type: 'error',
+                  text1:
+                    error.response?.data.message || '로그아웃에 실패했습니다.',
+                  position: 'top',
+                }),
+            }),
+          style: 'destructive',
+        },
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+      ],
+    );
   };
   const deleteUser = async () => {
-    deleteMutation.mutate(null);
+    Alert.alert(
+      alerts.DELETE_ACCOUNT.TITLE,
+      alerts.DELETE_ACCOUNT.DESCRIPTION,
+      [
+        {
+          text: '탈퇴',
+          onPress: () =>
+            deleteMutation.mutate(null, {
+              onSuccess: () =>
+                Toast.show({
+                  type: 'success',
+                  text1: '회원탈퇴 완료',
+                  text2: '회원탈퇴가 완료되었습니다.',
+                  position: 'top',
+                }),
+              onError: error =>
+                Toast.show({
+                  type: 'error',
+                  text1:
+                    error.response?.data.message || '회원탈퇴에 실패했습니다.',
+                  position: 'top',
+                }),
+            }),
+          style: 'destructive',
+        },
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+      ],
+    );
   };
 
   return (
@@ -99,23 +164,45 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
           <Text>사용자 정보를 표시할 수 없습니다.{`\n`}</Text>
         </View>
       )}
-      <View style={styles.containerGap}></View>
+      <View style={styles.editContainer}>
+        <Pressable
+          style={styles.editMenu}
+          onPress={() =>
+            navigation.navigate(tabUserNavigations.TAB_USER_EDIT_INFO)
+          }>
+          <MaterialIcons name="edit" size={24} color={colors.BLUE_BASIC} />
+          <Text style={styles.editText}>내 정보 수정</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.containerGap} />
 
       <View style={styles.authContainer}>
         <SettingItem
           title="로그아웃"
           onPress={logoutUser}
           color={colors.GRAY_300}
+          icon={
+            <MaterialIcons name="logout" size={20} color={colors.GRAY_300} />
+          }
         />
         <View
           style={{
             height: 2,
             backgroundColor: colors.GRAY_100,
-          }}></View>
+          }}
+        />
         <SettingItem
           title="회원탈퇴"
           onPress={deleteUser}
           color={colors.GRAY_300}
+          icon={
+            <Ionicons
+              name="remove-circle-sharp"
+              size={20}
+              color={colors.RED_500}
+            />
+          }
         />
       </View>
     </SafeAreaView>
@@ -175,12 +262,30 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: colors.BLACK,
   },
-  authContainer: {
-    flex: 1,
+  editContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: colors.GRAY_200,
+  },
+  editMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  editText: {
+    fontWeight: '600',
+    fontSize: 15,
+    color: colors.GRAY_700,
   },
   containerGap: {
     width: '100%',
     height: 14,
     backgroundColor: colors.GRAY_100,
+  },
+  authContainer: {
+    flex: 1,
   },
 });
