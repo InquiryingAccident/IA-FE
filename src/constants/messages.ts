@@ -11,6 +11,14 @@ const alerts = {
     TITLE: '카메라 사용 권한 허용이 필요합니다.',
     DESCRIPTION: '설정 화면에서 카메라 권한을 허용해주세요.',
   },
+  LOGOUT_ACCOUNT: {
+    TITLE: '로그아웃 하시겠습니까?',
+    DESCRIPTION: '로그인 화면으로 이동합니다.',
+  },
+  DELETE_ACCOUNT: {
+    TITLE: '정말 탈퇴하시겠습니까?',
+    DESCRIPTION: '탈퇴 후에는 복구할 수 없습니다.',
+  },
 };
 
 const alerts_ErrorMessage = {
