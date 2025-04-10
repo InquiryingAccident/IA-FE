@@ -1,5 +1,9 @@
 import {errorMessages} from '@/constants';
 
+function isBlank(value: string) {
+  return value.trim() === '';
+}
+
 type UserLoginInfomation = {
   email: string;
   password: string;
@@ -64,41 +68,14 @@ function validateSignup(
   return signupErrors;
 }
 
-// const validateSignup = (values: {
-//   email: string;
-//   password: string;
-//   passwordConfirm: string;
-//   nickname: string;
-// }) => {
-//   const errors: {
-//     email: string;
-//     password: string;
-//     passwordConfirm: string;
-//     nickname: string;
-//   } = {
-//     email: '',
-//     password: '',
-//     passwordConfirm: '',
-//     nickname: '',
-//   };
+function validateEditProfile_nickname(values: {nickname: string}) {
+  const errors = {nickname: ''};
 
-//   if (!values.email) {
-//     errors.email = '이메일을 입력해주세요.';
-//   }
+  if (isBlank(values.nickname)) {
+    errors.nickname = '닉네임을 입력해주세요.';
+  }
 
-//   if (!values.password) {
-//     errors.password = '비밀번호를 입력해주세요.';
-//   }
+  return errors;
+}
 
-//   if (values.password !== values.passwordConfirm) {
-//     errors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
-//   }
-
-//   if (!values.nickname) {
-//     errors.nickname = '닉네임을 입력해주세요.';
-//   }
-
-//   return errors;
-// };
-
-export {validateLogin, validateSignup};
+export {validateLogin, validateSignup, validateEditProfile_nickname};
