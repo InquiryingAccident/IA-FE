@@ -1,4 +1,5 @@
-import {tabUserNavigations} from '@/constants';
+import InputField from '@/components/custom/InputField';
+import {colors, tabUserNavigations} from '@/constants';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
@@ -12,7 +13,7 @@ type TabUserEditInfoScreenProps = StackScreenProps<
 function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
   return (
     <View style={styles.container}>
-      <Text>TabUserEditInfoScreen</Text>
+      <InputField placeholder="닉네임을 입력해주세요." />
     </View>
   );
 }
@@ -20,5 +21,9 @@ function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
 export default TabUserEditInfoScreen;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: colors.WHITE,
+  },
 });
