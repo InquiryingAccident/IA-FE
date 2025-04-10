@@ -96,14 +96,12 @@ const postLogout = async (): Promise<void> => {
 };
 
 const deleteUser = async () => {
-  console.log('유저 삭제 - auth.ts');
   const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
   await axiosInstance.delete('/api/member/withdraw', {
     headers: {
       Authorization: `Bearer ${refreshToken}`,
     },
   });
-  console.log('회원탈퇴 성공');
 };
 
 export type {RequestUser, RequestSignupUser, ResponseProfile, AuthToken};
