@@ -27,6 +27,7 @@ const tabBookmarkNavigations = {
 
 const tabUserNavigations = {
   TAB_USER: 'TabUserHome',
+  TAB_USER_EDIT_INFO: 'TabUserEditInfo',
 } as const;
 
 export {
