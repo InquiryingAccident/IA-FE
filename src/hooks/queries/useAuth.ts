@@ -132,12 +132,6 @@ function useDelete(mutationOptions?: UseMutationCustomOptions) {
       removeEncryptStorage(storageKeys.REFRESH_TOKEN);
       removeEncryptStorage(storageKeys.ACCESS_TOKEN);
       queryClient.resetQueries({queryKey: [queryKeys.AUTH]});
-      queryClient.removeQueries({
-        queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
-      });
-      queryClient.removeQueries({
-        queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
-      });
       clearUser();
     },
     ...mutationOptions,
@@ -146,14 +140,14 @@ function useDelete(mutationOptions?: UseMutationCustomOptions) {
 
 function useAuth() {
   const signupMutation = useSignup();
-  const loginMutation = useLogin();
-  const logoutMutation = useLogout();
-  const deleteMutation = useDelete();
   const refreshTokenQuery = useGetRefreshToken();
   const getProfileQuery = useGetProfile({
     enabled: refreshTokenQuery.isSuccess,
   });
   const isLogin = getProfileQuery.isSuccess;
+  const loginMutation = useLogin();
+  const logoutMutation = useLogout();
+  const deleteMutation = useDelete();
 
   return {
     isLogin,
