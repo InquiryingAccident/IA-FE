@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     fontWeight: '500',
-    color: colors.PINK_700,
+    color: colors.BLUE_BASIC,
   },
   textError: {
     color: colors.GRAY_200,
