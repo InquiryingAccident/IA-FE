@@ -6,12 +6,15 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import CustomButton from '@/components/custom/CustomButton';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {authNavigations, colors} from '@/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {AppleButton} from '@invertase/react-native-apple-authentication';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -19,6 +22,10 @@ type AuthScreenProps = StackScreenProps<
 >;
 
 const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
+  const handlePressAppleLogin = async () => {
+    try {
+    } catch (error: any) {}
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
@@ -37,6 +44,27 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
+        {Platform.OS === 'ios' && (
+          <AppleButton
+            buttonStyle={AppleButton.Style.BLACK}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              width: Dimensions.get('screen').width - 60,
+              height: 45,
+            }}
+            cornerRadius={3}
+            onPress={handlePressAppleLogin}
+          />
+        )}
+        <CustomButton
+          label="카카오 로그인하기"
+          onPress={() => navigation.navigate(authNavigations.KAKAO)}
+          style={styles.kakaoButtonContainer}
+          textStyle={styles.kakaoButtonText}
+          icon={
+            <Ionicons name="chatbubble-sharp" color={'#181500'} size={16} />
+          }
+        />
         <CustomButton
           label="로그인"
           variant="filled"
@@ -89,5 +117,11 @@ const styles = StyleSheet.create({
     gap: 10,
     bottom: 100,
     position: 'absolute',
+  },
+  kakaoButtonContainer: {
+    backgroundColor: '#fee503',
+  },
+  kakaoButtonText: {
+    color: '#181600',
   },
 });
