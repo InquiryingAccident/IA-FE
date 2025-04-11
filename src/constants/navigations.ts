@@ -2,6 +2,7 @@ const authNavigations = {
   AUTH_HOME: 'AuthHome',
   AUTH_LOGIN: 'AuthLogin',
   AUTH_SIGNUP: 'AuthSignup',
+  AUTH_KAKAO: 'AuthKakao',
 } as const;
 
 const mainTabNavigations = {
