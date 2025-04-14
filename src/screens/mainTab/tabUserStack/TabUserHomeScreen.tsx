@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   Dimensions,
@@ -23,18 +23,11 @@ type TabUserScreenProps = StackScreenProps<
   typeof tabUserNavigations.TAB_USER
 >;
 
-type CalculatedDate = {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  min: number;
-  sec: number;
-};
-
 function TabUserHomeScreen({navigation}: TabUserScreenProps) {
   const {logoutMutation, deleteMutation} = useAuth();
   const userInfo = useUserStore(state => state.user);
+  const [userState, setUserState] = useState<Boolean>(true);
+  const state = userState ? 'ACTIVE' : 'INACTIVE';
   let accountStatusString;
   let accountCreatedDate;
   let accountLastLoginTime;
@@ -42,13 +35,13 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
     const date = new Date(isoString);
 
     const year = date.getFullYear();
-    const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1 필요
+    const month = date.getMonth() + 1;
     const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+    // const hours = date.getHours();
+    // const minutes = date.getMinutes();
+    // const seconds = date.getSeconds();
 
-    return `${year}. ${month}. ${day}일`; // ${hours}시 ${minutes}분 ${seconds}초`;
+    return `${year}. ${month}. ${day}일`;
   }
 
   if (userInfo?.accountStatus === 'ACTIVE') {
@@ -129,6 +122,42 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
     );
   };
 
+  const convertUserAccount = () => {
+    if (userState) {
+      Alert.alert(
+        '계정을 비활성화 하시겠습니까?',
+        '계정을 비활성하시면, 조회기능은 사용불가합니다.',
+        [
+          {
+            text: '비활성화',
+            onPress: () => setUserState(false),
+            style: 'destructive',
+          },
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+        ],
+      );
+    } else {
+      Alert.alert(
+        '계정을 활성화 하시겠습니까?',
+        '계정을 활성하시면, 기능을 사용할 수 있습니다.',
+        [
+          {
+            text: '활성화',
+            onPress: () => setUserState(true),
+            style: 'destructive',
+          },
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {userInfo ? (
@@ -137,8 +166,11 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
             <Text style={styles.infoHeaderText}>내정보</Text>
             <View style={styles.infoHeaderGap}></View>
             <Pressable
-              style={styles.accountStatusButton}
-              onPress={() => console.log('계정 활성화 버튼 클릭')}>
+              style={[
+                styles.accountStatusButton,
+                styles[`accountStatusButton${state}`],
+              ]}
+              onPress={convertUserAccount}>
               <Text style={styles.accountStatusText}>계정 활성화</Text>
             </Pressable>
           </View>
@@ -244,13 +276,19 @@ const styles = StyleSheet.create({
     height: 26,
     alignSelf: 'flex-end',
     borderRadius: 4,
-    backgroundColor: colors.BLUE_BASIC,
+
     justifyContent: 'center',
   },
   accountStatusText: {
     fontSize: 12,
     textAlign: 'center',
     color: colors.WHITE,
+  },
+  accountStatusButtonACTIVE: {
+    backgroundColor: colors.BLUE_BASIC,
+  },
+  accountStatusButtonINACTIVE: {
+    backgroundColor: colors.BLUE_SHADOW,
   },
   questionHeaderText: {
     fontSize: 14,
