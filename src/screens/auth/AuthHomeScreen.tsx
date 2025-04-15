@@ -13,8 +13,12 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {authNavigations, colors} from '@/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {AppleButton} from '@invertase/react-native-apple-authentication';
+import appleAuth, {
+  AppleButton,
+} from '@invertase/react-native-apple-authentication';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-toast-message';
+import useAuth from '@/hooks/queries/useAuth';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -22,9 +26,71 @@ type AuthScreenProps = StackScreenProps<
 >;
 
 const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
+  const {signupMutation, loginMutation} = useAuth();
   const handlePressAppleLogin = async () => {
     try {
-    } catch (error: any) {}
+      // const {identityToken, fullName} = await appleAuth.performRequest({
+      //   requestedOperation: appleAuth.Operation.LOGIN,
+      //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      // });
+
+      // if (identityToken) {
+      //   loginMutation.mutate({
+      //     email: fullName.
+      //     appId: 'org.reactjs.native.example.MatzipApp',
+      //     nickname: fullName?.givenName ?? null,
+      //   });
+      // }
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        // Note: it appears putting FULL_NAME first is important, see issue #293
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      });
+
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        signupMutation.mutate(
+          {
+            email: appleAuthRequestResponse.email || '',
+            password: '',
+            nickname: appleAuthRequestResponse.user || '',
+          },
+          {
+            onError: error => {
+              loginMutation.mutate(
+                {
+                  email: appleAuthRequestResponse.email || '',
+                  password: '',
+                },
+                {
+                  onError: error => {
+                    Toast.show({
+                      type: 'error',
+                      text1: '애플 로그인에 실패했습니다.',
+                      text2: '다시 시도해주세요.',
+                    });
+                  },
+                },
+              );
+            },
+          },
+        );
+      }
+    } catch (error: any) {
+      if (error.code !== appleAuth.Error.CANCELED) {
+        Toast.show({
+          type: 'error',
+          text1: '애플 로그인에 실패했습니다.',
+          text2: '다시 시도해주세요.',
+        });
+      }
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +116,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
             buttonType={AppleButton.Type.SIGN_IN}
             style={{
               width: Dimensions.get('screen').width - 60,
-              height: 45,
+              height: 50,
             }}
             cornerRadius={3}
             onPress={handlePressAppleLogin}
@@ -58,7 +124,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
         )}
         <CustomButton
           label="카카오 로그인하기"
-          onPress={() => navigation.navigate(authNavigations.KAKAO)}
+          onPress={() => navigation.navigate(authNavigations.AUTH_KAKAO)}
           style={styles.kakaoButtonContainer}
           textStyle={styles.kakaoButtonText}
           icon={
