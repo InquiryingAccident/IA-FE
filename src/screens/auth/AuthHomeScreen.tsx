@@ -29,32 +29,24 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
   const {signupMutation, loginMutation} = useAuth();
   const handlePressAppleLogin = async () => {
     try {
-      // const {identityToken, fullName} = await appleAuth.performRequest({
-      //   requestedOperation: appleAuth.Operation.LOGIN,
-      //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      // });
-
-      // if (identityToken) {
-      //   loginMutation.mutate({
-      //     email: fullName.
-      //     appId: 'org.reactjs.native.example.MatzipApp',
-      //     nickname: fullName?.givenName ?? null,
-      //   });
-      // }
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
-        // Note: it appears putting FULL_NAME first is important, see issue #293
         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
       });
-
-      // get current authentication state for user
-      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user,
       );
 
-      // use credentialState response to ensure the user is authenticated
       if (credentialState === appleAuth.State.AUTHORIZED) {
+        console.log('Authorization Successed');
+        console.log('Data - email= ', appleAuthRequestResponse.email);
+        console.log('Data - user= ', appleAuthRequestResponse.user);
+        console.log(
+          'Data - IdentifyToken= ',
+          appleAuthRequestResponse.identityToken,
+        );
+        console.log('Data - appId= ', appleAuthRequestResponse.user);
+
         signupMutation.mutate(
           {
             email: appleAuthRequestResponse.email || '',
@@ -92,6 +84,7 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
       }
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
