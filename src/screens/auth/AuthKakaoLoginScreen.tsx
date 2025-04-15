@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   Platform,
   SafeAreaView,
@@ -83,6 +84,21 @@ function KakaoLoginScreen() {
           loginMutation.mutate(response.data.access_token, {
             onError: error => {
               console.log('error = ', error);
+              Alert.alert(
+                '로그인에 실패하였습니다.',
+                '다시 시도하여 주시기 바랍니다.',
+                [
+                  {
+                    text: '확인',
+                    onPress: () => console.log('OK Pressed'),
+                  },
+                  {
+                    text: '취소',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                ],
+              );
             },
           });
           // setIsLoading(false);
