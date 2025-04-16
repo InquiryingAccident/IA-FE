@@ -98,28 +98,26 @@ const postLogout = async (): Promise<void> => {
 type RequestSocialLogin = {
   platform: 'KAKAO' | 'APPLE';
   email: string;
-  platformId?: string;
+  platformId?: string | null;
 };
 
 const postSocialLogin = async ({
   platform,
   email,
-  platformId,
+  platformId = null,
 }: RequestSocialLogin): Promise<AuthToken> => {
+  console.log('소셜 로그인');
   const formData = new FormData();
-  formData.append('platform', platform);
   formData.append('email', email);
-  formData.append('platformId', platformId || '');
-  const addressPlatform = platform === 'KAKAO' ? 'kakao' : 'apple';
-  const {data} = await axiosInstance.post(
-    `/api/auth/${addressPlatform}`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+  formData.append('socialPlatform', platform);
+  if (platformId) {
+    formData.append('socialPlatformId', platformId || '');
+  }
+  const {data} = await axiosInstance.post('/api/auth/social-login', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  );
+  });
   return data;
 };
 
