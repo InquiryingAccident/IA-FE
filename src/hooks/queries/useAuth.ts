@@ -9,6 +9,7 @@ import {
   getProfile,
   postLogout,
   deleteUser,
+  postSocialLogin,
 } from '@/api/auth';
 import {
   storageKeys,
@@ -43,6 +44,26 @@ function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
 function useLogin(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postLogin,
+    onSuccess: ({accessToken, refreshToken}) => {
+      setHeader('Authorization', `Bearer ${accessToken}`);
+      setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
+      setEncryptStorage(storageKeys.ACCESS_TOKEN, accessToken);
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
+function useSocialLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: postSocialLogin,
     onSuccess: ({accessToken, refreshToken}) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
@@ -146,6 +167,7 @@ function useAuth() {
   });
   const isLogin = getProfileQuery.isSuccess;
   const loginMutation = useLogin();
+  const socialLoginMutation = useSocialLogin();
   const logoutMutation = useLogout();
   const deleteMutation = useDelete();
 
@@ -157,6 +179,7 @@ function useAuth() {
     deleteMutation,
     refreshTokenQuery,
     getProfileQuery,
+    socialLoginMutation,
   };
 }
 
