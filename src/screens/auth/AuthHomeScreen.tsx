@@ -26,7 +26,7 @@ type AuthScreenProps = StackScreenProps<
 >;
 
 const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
-  const {signupMutation, loginMutation} = useAuth();
+  const {signupMutation, loginMutation, socialLoginMutation} = useAuth();
   const handlePressAppleLogin = async () => {
     try {
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -73,6 +73,24 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
             },
           },
         );
+
+        // socialLoginMutation.mutate(
+        //   {
+        //     platform: 'APPLE',
+        //     email: appleAuthRequestResponse.email || '',
+        //     platformId: appleAuthRequestResponse.user || '',
+        //   },
+        //   {
+        //     onError: error => {
+        //       console.log('애플 로그인 실패', error);
+        //       Toast.show({
+        //         type: 'error',
+        //         text1: '애플 로그인에 실패했습니다.',
+        //         text2: '다시 시도해주세요.',
+        //       });
+        //     },
+        //   },
+        // );
       }
     } catch (error: any) {
       if (error.code !== appleAuth.Error.CANCELED) {
