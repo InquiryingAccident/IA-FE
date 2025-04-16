@@ -19,6 +19,7 @@ import appleAuth, {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 import useAuth from '@/hooks/queries/useAuth';
+import {jwtDecode} from 'jwt-decode';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -33,9 +34,14 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
       });
+      const userIdentityToken = appleAuthRequestResponse.identityToken;
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user,
       );
+      const decodedToken = jwtDecode(String(userIdentityToken));
+      console.log('Decoded Token: ', decodedToken);
+      console.log('Decoded Token: ', userIdentityToken);
+      console.log('Decoded Token - email: ', decodedToken.email);
 
       if (credentialState === appleAuth.State.AUTHORIZED) {
         console.log('Authorization Successed');
@@ -47,50 +53,50 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
         );
         console.log('Data - appId= ', appleAuthRequestResponse.user);
 
-        signupMutation.mutate(
-          {
-            email: appleAuthRequestResponse.email || '',
-            password: '',
-            nickname: appleAuthRequestResponse.user || '',
-          },
-          {
-            onError: error => {
-              loginMutation.mutate(
-                {
-                  email: appleAuthRequestResponse.email || '',
-                  password: '',
-                },
-                {
-                  onError: error => {
-                    Toast.show({
-                      type: 'error',
-                      text1: '애플 로그인에 실패했습니다.',
-                      text2: '다시 시도해주세요.',
-                    });
-                  },
-                },
-              );
-            },
-          },
-        );
-
-        // socialLoginMutation.mutate(
+        // signupMutation.mutate(
         //   {
-        //     platform: 'APPLE',
-        //     email: appleAuthRequestResponse.email || '',
-        //     platformId: appleAuthRequestResponse.user || '',
+        //     email: String(decodedToken.email),
+        //     password: '',
+        //     nickname: appleAuthRequestResponse.user || '',
         //   },
         //   {
         //     onError: error => {
-        //       console.log('애플 로그인 실패', error);
-        //       Toast.show({
-        //         type: 'error',
-        //         text1: '애플 로그인에 실패했습니다.',
-        //         text2: '다시 시도해주세요.',
-        //       });
+        //       loginMutation.mutate(
+        //         {
+        //           email: appleAuthRequestResponse.email || '',
+        //           password: '',
+        //         },
+        //         {
+        //           onError: error => {
+        //             Toast.show({
+        //               type: 'error',
+        //               text1: '애플 로그인에 실패했습니다.',
+        //               text2: '다시 시도해주세요.',
+        //             });
+        //           },
+        //         },
+        //       );
         //     },
         //   },
         // );
+
+        socialLoginMutation.mutate(
+          {
+            platform: 'APPLE',
+            email: appleAuthRequestResponse.email || '',
+            platformId: appleAuthRequestResponse.user || '',
+          },
+          {
+            onError: error => {
+              console.log('애플 로그인 실패', error);
+              Toast.show({
+                type: 'error',
+                text1: '애플 로그인에 실패했습니다.',
+                text2: '다시 시도해주세요.',
+              });
+            },
+          },
+        );
       }
     } catch (error: any) {
       if (error.code !== appleAuth.Error.CANCELED) {
