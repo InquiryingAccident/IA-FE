@@ -95,6 +95,34 @@ const postLogout = async (): Promise<void> => {
   console.log('로그아웃 성공');
 };
 
+type RequestSocialLogin = {
+  platform: 'KAKAO' | 'APPLE';
+  email: string;
+  platformId?: string;
+};
+
+const postSocialLogin = async ({
+  platform,
+  email,
+  platformId,
+}: RequestSocialLogin): Promise<AuthToken> => {
+  const formData = new FormData();
+  formData.append('platform', platform);
+  formData.append('email', email);
+  formData.append('platformId', platformId || '');
+  const addressPlatform = platform === 'KAKAO' ? 'kakao' : 'apple';
+  const {data} = await axiosInstance.post(
+    `/api/auth/${addressPlatform}`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  return data;
+};
+
 const deleteUser = async () => {
   const refreshToken = await getEncryptStorage(storageKeys.REFRESH_TOKEN);
   await axiosInstance.delete('/api/member/withdraw', {
@@ -104,9 +132,16 @@ const deleteUser = async () => {
   });
 };
 
-export type {RequestUser, RequestSignupUser, ResponseProfile, AuthToken};
+export type {
+  RequestUser,
+  RequestSignupUser,
+  ResponseProfile,
+  AuthToken,
+  RequestSocialLogin,
+};
 export {
   postLogin,
+  postSocialLogin,
   postSignup,
   getProfile,
   getAccessToken,
