@@ -29,7 +29,7 @@ function TabUserStackNavigator() {
         name={tabUserNavigations.TAB_USER_EDIT_INFO}
         component={TabUserEditInfoScreen}
         options={{
-          headerTitle: '',
+          headerTitle: '내 정보 수정',
         }}
       />
     </Stack.Navigator>
