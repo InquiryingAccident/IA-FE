@@ -1,9 +1,10 @@
 import InputField from '@/components/custom/InputField';
+import UserEditHeaderRight from '@/components/user/UserEditHeaderRight';
 import {colors, tabUserNavigations} from '@/constants';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {SafeAreaView, Text, StyleSheet, View} from 'react-native';
 
 type TabUserEditInfoScreenProps = StackScreenProps<
   TabUserStackParamList,
@@ -11,10 +12,24 @@ type TabUserEditInfoScreenProps = StackScreenProps<
 >;
 
 function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
+  const handlePressEditInfo = async () => {
+    //저장 후 navigation goback기능 사용
+    //서버 통신 후, zustand에 저장된 개인 정보 또한 수정 필요함
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => UserEditHeaderRight(handlePressEditInfo),
+    });
+  });
   return (
-    <View style={styles.container}>
-      <InputField placeholder="닉네임을 입력해주세요." />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.nicknameContainer}>
+        <Text style={styles.nicknameText}>닉네임 수정</Text>
+        <InputField placeholder="닉네임을 입력해주세요." />
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -25,5 +40,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: colors.WHITE,
+  },
+  nicknameContainer: {
+    padding: 30,
+    justifyContent: 'center',
+  },
+  nicknameText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.GRAY_700,
+    marginBottom: -10,
+    marginTop: 10,
   },
 });
