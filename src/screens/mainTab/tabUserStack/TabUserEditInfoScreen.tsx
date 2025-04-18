@@ -2,6 +2,7 @@ import InputField from '@/components/custom/InputField';
 import UserEditHeaderRight from '@/components/user/UserEditHeaderRight';
 import {colors, tabUserNavigations} from '@/constants';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
+import {useUserStore} from '@/store/userStore';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import {SafeAreaView, Text, StyleSheet, View} from 'react-native';
@@ -12,6 +13,8 @@ type TabUserEditInfoScreenProps = StackScreenProps<
 >;
 
 function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
+  const {user, setUser} = useUserStore();
+
   const handlePressEditInfo = async () => {
     //저장 후 navigation goback기능 사용
     //서버 통신 후, zustand에 저장된 개인 정보 또한 수정 필요함
