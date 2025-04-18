@@ -1,9 +1,18 @@
-import {tabSearchNavigations} from '@/constants';
+import IdentInfoModal from '@/components/search/IdentInfoModal';
+import {colors, tabSearchNavigations} from '@/constants';
 import {TabSearchStackParamList} from '@/navigations/stack/TabSearchStackNavigator';
 import {useFlightsStore} from '@/store/flightsStore';
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
-import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Dimensions,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type TabSearchScreenProps = StackScreenProps<
@@ -13,6 +22,8 @@ type TabSearchScreenProps = StackScreenProps<
 
 function TabSearchIdentScreen({navigation}: TabSearchScreenProps) {
   const flights = useFlightsStore(state => state.flights);
+  const [identInfoModal, setIdentInfoModal] = useState<boolean>(false);
+  console.log(JSON.stringify(flights));
 
   const calculateTime = (time: string) => {
     const year = time.slice(0, 4);
@@ -46,44 +57,43 @@ function TabSearchIdentScreen({navigation}: TabSearchScreenProps) {
     );
   } else {
     return (
-      // <SafeAreaView style={styles.container}>
-      //   {flights && flights.length > 0 && (
-      //     <View style={styles.identInfoContainer}>
-      //       <Text style={styles.identText}>항공편 {flights[0].ident}</Text>
-      //       <View style={styles.headerInfoContainer}>
-      //         <View style={styles.headerDeparture}>
-      //           <Text style={styles.headerDepartureText}>
-      //             출발{`\n`}
-      //             <Text style={styles.headerDepartureInfoText}>
-      //               {flights[0].origin.city}
-      //               {`\n`}
-      //             </Text>
-      //           </Text>
-      //         </View>
-      //         <View style={styles.headerGap}>
-      //           <Ionicons name="airplane-outline" size={48} color="black" />
-      //         </View>
-      //         <View style={styles.headerArrival}>
-      //           <Text style={styles.headerArrivalText}>
-      //             도착{`\n`}
-      //             <Text style={styles.headerArrivalInfoText}>
-      //               {flights[0].destination.city}
-      //               {`\n`}
-      //             </Text>
-      //             <Text style={styles.headerArrivalInfoText}>
-      //               {`\n`}예상 도착 시간: {`\n`}
-      //               {flights[0].actualIn}
-      //               {`\n`}
-      //               {calculateTime(flights[0].actualIn)}
-      //             </Text>
-      //           </Text>
-      //         </View>
-      //       </View>
-      //     </View>
-      //   )}
-      // </SafeAreaView>
       <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>
+            {flights[0].origin.city} - {flights[0].destination.city}
+          </Text>
+          <Text style={styles.subHeaderText}>
+            {flights[0].origin.name} - {flights[0].destination.name}
+          </Text>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Pressable
+              style={styles.identInfoModalController}
+              onPress={() => setIdentInfoModal(true)}>
+              <Text style={styles.identInfoModalControllerText}>
+                {flights[0].ident}항공편 정보보기
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+        <View style={styles.headerGap} />
+
         <Text>{flights[0].ident}</Text>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 20,
+            marginBottom: 20,
+          }}>
+          <IdentInfoModal
+            visible={identInfoModal}
+            onRequestClose={() => setIdentInfoModal(false)}
+          />
+        </View>
       </SafeAreaView>
     );
   }
@@ -94,11 +104,39 @@ export default TabSearchIdentScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.WHITE,
   },
   identInfoContainer: {
-    gap: 10,
+    flex: 1,
     justifyContent: 'center',
-    textAlign: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.BLACK,
+  },
+  headerContainer: {
+    padding: 20,
+    justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 24,
+  },
+  subHeaderText: {
+    color: colors.GRAY_700,
+    fontSize: 16,
+    marginBottom: 30,
+  },
+  identInfoModalController: {
+    backgroundColor: colors.BLUE_BASIC,
+    width: Dimensions.get('screen').width - 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 20,
+  },
+  identInfoModalControllerText: {
+    color: colors.WHITE,
+    fontSize: 15,
+    fontWeight: '500',
   },
   identText: {
     fontSize: 32,
@@ -117,9 +155,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   headerGap: {
-    width: Dimensions.get('screen').width * 0.2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: Dimensions.get('window').width,
+    height: 10,
+    backgroundColor: colors.GRAY_200,
   },
   headerArrival: {
     fontSize: 16,
@@ -142,5 +180,28 @@ const styles = StyleSheet.create({
   headerArrivalInfoText: {
     textAlign: 'center',
     fontSize: 20,
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: Dimensions.get('window').width - 40,
+    backgroundColor: colors.WHITE,
+
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: colors.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
