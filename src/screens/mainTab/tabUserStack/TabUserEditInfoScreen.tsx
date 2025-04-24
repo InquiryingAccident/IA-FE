@@ -20,7 +20,6 @@ function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
     //서버 통신 후, zustand에 저장된 개인 정보 또한 수정 필요함
     navigation.goBack();
   };
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => UserEditHeaderRight(handlePressEditInfo),
