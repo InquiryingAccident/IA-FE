@@ -20,6 +20,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 import useAuth from '@/hooks/queries/useAuth';
 import {jwtDecode} from 'jwt-decode';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 type AuthScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -27,6 +29,8 @@ type AuthScreenProps = StackScreenProps<
 >;
 
 const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   const {socialLoginMutation} = useAuth();
   const handlePressAppleLogin = async () => {
     try {
@@ -139,45 +143,46 @@ const AuthHomeScreen = ({navigation}: AuthScreenProps) => {
 
 export default AuthHomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    marginHorizontal: 30,
-    marginVertical: 30,
-  },
-  imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  image: {
-    width: Dimensions.get('screen').width * 0.8,
-    height: Dimensions.get('screen').width * 0.8,
-  },
-  appName: {
-    padding: 30,
-    fontSize: 24,
-    marginTop: 8,
-    fontWeight: '500',
-    color: colors.BLUE_BASIC,
-    // fontStyle: 'italic',
-  },
-  subText: {
-    color: colors.GRAY_400,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  buttonContainer: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 10,
-    bottom: 100,
-    position: 'absolute',
-  },
-  kakaoButtonContainer: {
-    backgroundColor: '#fee503',
-  },
-  kakaoButtonText: {
-    color: '#181600',
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      marginHorizontal: 30,
+      marginVertical: 30,
+    },
+    imageContainer: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    image: {
+      width: Dimensions.get('screen').width * 0.8,
+      height: Dimensions.get('screen').width * 0.8,
+    },
+    appName: {
+      padding: 30,
+      fontSize: 24,
+      marginTop: 8,
+      fontWeight: '500',
+      color: colors[theme].BLUE_BASIC,
+      // fontStyle: 'italic',
+    },
+    subText: {
+      color: colors[theme].GRAY_300,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    buttonContainer: {
+      flex: 1,
+      alignItems: 'center',
+      gap: 10,
+      bottom: 100,
+      position: 'absolute',
+    },
+    kakaoButtonContainer: {
+      backgroundColor: '#fee503',
+    },
+    kakaoButtonText: {
+      color: '#181600',
+    },
+  });
