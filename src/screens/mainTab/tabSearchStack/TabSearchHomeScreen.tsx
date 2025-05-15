@@ -7,6 +7,8 @@ import SearchIdentInputField from '@/components/custom/SearchIdentInputField';
 import axiosInstance from '@/api/axios';
 import {getEncryptStorage} from '@/utils';
 import {useFlightsStore} from '@/store/flightsStore';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 type TabSearchScreenProps = StackScreenProps<
   TabSearchStackParamList,
@@ -30,6 +32,8 @@ export interface Flight {
 }
 
 function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   const [searchText, setSearchText] = useState<string>('');
   const {setFlights} = useFlightsStore();
 
@@ -119,7 +123,11 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
 
   return (
     <View
-      style={{backgroundColor: colors.WHITE, width: '100%', height: '100%'}}>
+      style={{
+        backgroundColor: colors[theme].WHITE,
+        width: '100%',
+        height: '100%',
+      }}>
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>항공편을 검색하세요</Text>
@@ -143,25 +151,26 @@ function TabSearchHomeScreen({navigation}: TabSearchScreenProps) {
 
 export default TabSearchHomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 30,
-    justifyContent: 'center',
-  },
-  headerContainer: {
-    marginBottom: 30,
-    gap: 5,
-  },
-  headerText: {
-    fontSize: 24,
-    color: colors.BLUE_BASIC,
-  },
-  subHeaderText: {
-    color: colors.BLACK,
-    fontSize: 16,
-  },
-  searchContainer: {
-    marginBottom: 20,
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      margin: 30,
+      justifyContent: 'center',
+    },
+    headerContainer: {
+      marginBottom: 30,
+      gap: 5,
+    },
+    headerText: {
+      fontSize: 24,
+      color: colors[theme].BLUE_BASIC,
+    },
+    subHeaderText: {
+      color: colors[theme].BLACK,
+      fontSize: 16,
+    },
+    searchContainer: {
+      marginBottom: 20,
+    },
+  });
