@@ -12,6 +12,8 @@ import {
 import {mergeRefs} from '@/utils';
 import {colors} from '@/constants';
 import Icon from './CustomIcon';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 interface InputFieldProps extends TextInputProps {
   disabled?: boolean;
@@ -27,6 +29,8 @@ const SearchIdentInputField = forwardRef(
     {disabled = false, error, touched, onPress, ...props}: InputFieldProps,
     ref?: ForwardedRef<TextInput>,
   ) => {
+    const {theme} = useThemeStore();
+    const styles = styling(theme);
     const innerRef = useRef<TextInput | null>(null);
 
     const handlePressInput = () => {
@@ -44,7 +48,7 @@ const SearchIdentInputField = forwardRef(
           <TextInput
             ref={ref ? mergeRefs(innerRef, ref) : innerRef}
             editable={!disabled}
-            placeholderTextColor={colors.GRAY_500}
+            placeholderTextColor={colors[theme].GRAY_500}
             style={[styles.input, disabled && styles.disabled]}
             autoCapitalize="none"
             spellCheck={false}
@@ -63,39 +67,40 @@ const SearchIdentInputField = forwardRef(
   },
 );
 
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 3,
-    borderRadius: 8,
-    borderColor: colors.BLUE_BASIC,
-    padding: deviceHeight > 700 ? 15 : 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  input: {
-    fontSize: 16,
-    color: colors.BLACK,
-    padding: 0,
-  },
-  disabled: {
-    backgroundColor: colors.GRAY_200,
-    color: colors.GRAY_700,
-  },
-  inputError: {
-    borderWidth: 1,
-    borderColor: colors.RED_300,
-  },
-  error: {
-    color: colors.RED_500,
-    fontSize: 12,
-    paddingTop: 5,
-  },
-  searchIcon: {
-    margin: 4,
-    width: 20,
-    height: 20,
-    // backgroundColor: '#333',
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      borderWidth: 3,
+      borderRadius: 8,
+      borderColor: colors[theme].BLUE_BASIC,
+      padding: deviceHeight > 700 ? 15 : 10,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    input: {
+      fontSize: 16,
+      color: colors[theme].BLACK,
+      padding: 0,
+    },
+    disabled: {
+      backgroundColor: colors[theme].GRAY_200,
+      color: colors[theme].GRAY_700,
+    },
+    inputError: {
+      borderWidth: 1,
+      borderColor: colors[theme].RED_300,
+    },
+    error: {
+      color: colors[theme].RED_500,
+      fontSize: 12,
+      paddingTop: 5,
+    },
+    searchIcon: {
+      margin: 4,
+      width: 20,
+      height: 20,
+      // backgroundColor: '#333',
+    },
+  });
 
 export default SearchIdentInputField;

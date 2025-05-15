@@ -2,6 +2,8 @@ import React, {ReactNode} from 'react';
 import {StyleSheet, Text, Pressable, PressableProps, View} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {colors} from '@/constants';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 interface SettingItemProps extends PressableProps {
   title: string;
@@ -17,6 +19,8 @@ function SettingItem({
   color,
   ...props
 }: SettingItemProps) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   return (
     <Pressable
       style={({pressed}) => [
@@ -26,46 +30,51 @@ function SettingItem({
       {...props}>
       {icon}
       <View style={styles.titleContainer}>
-        <Text style={[styles.titleText, {color: color ?? colors.BLACK}]}>
+        <Text style={[styles.titleText, {color: color ?? colors[theme].BLACK}]}>
           {title}
         </Text>
         {subTitle && <Text style={styles.subTitleText}>{subTitle}</Text>}
       </View>
       <View>
-        <Octicons name="chevron-right" size={22} color={colors.GRAY_300} />
+        <Octicons
+          name="chevron-right"
+          size={22}
+          color={colors[theme].GRAY_300}
+        />
       </View>
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    padding: 15,
-    backgroundColor: colors.WHITE,
-    borderColor: colors.GRAY_200,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  pressedContainer: {
-    backgroundColor: colors.GRAY_200,
-  },
-  titleContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  titleText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: colors.BLACK,
-  },
-  subTitleText: {
-    color: colors.GRAY_500,
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      height: 60,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      padding: 15,
+      backgroundColor: colors[theme].WHITE,
+      borderColor: colors[theme].GRAY_200,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderTopWidth: StyleSheet.hairlineWidth,
+    },
+    pressedContainer: {
+      backgroundColor: colors[theme].GRAY_200,
+    },
+    titleContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    titleText: {
+      fontSize: 14,
+      fontWeight: '500',
+      color: colors[theme].BLACK,
+    },
+    subTitleText: {
+      color: colors[theme].GRAY_500,
+    },
+  });
 
 export default SettingItem;

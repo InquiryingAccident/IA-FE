@@ -1,5 +1,7 @@
 import {colors} from '@/constants';
 import {useFlightsStore} from '@/store/flightsStore';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 import {
   Dimensions,
   Modal,
@@ -17,6 +19,9 @@ interface IdentInfoModalProps {
 }
 
 function IdentInfoModal({visible, onRequestClose}: IdentInfoModalProps) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
+  const noDataStyles = noDataStyling(theme);
   const flights = useFlightsStore(state => state.flights);
   const handleClose = () => {
     onRequestClose();
@@ -71,7 +76,11 @@ function IdentInfoModal({visible, onRequestClose}: IdentInfoModalProps) {
                 </View>
                 <View>
                   <Pressable onPress={handleClose}>
-                    <Octicons name="x" size={24} color={colors.GRAY_700} />
+                    <Octicons
+                      name="x"
+                      size={24}
+                      color={colors[theme].GRAY_700}
+                    />
                   </Pressable>
                 </View>
               </View>
@@ -116,97 +125,99 @@ function IdentInfoModal({visible, onRequestClose}: IdentInfoModalProps) {
 
 export default IdentInfoModal;
 
-const styles = StyleSheet.create({
-  optionBackground: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  cardContainer: {
-    backgroundColor: colors.WHITE,
-    margin: 10,
-    borderRadius: 20,
-    shadowColor: colors.BLACK,
-    shadowOffset: {width: 3, height: 3},
-    shadowOpacity: 0.2,
-    elevation: 1,
-    borderColor: colors.GRAY_500,
-    borderWidth: 1.5,
-  },
-  cardInner: {
-    padding: 20,
-    width: '100%',
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  cardHeaderContainer: {
-    flexDirection: 'row',
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerText: {
-    fontSize: 20,
-    color: colors.BLUE_SHADOW,
-    fontWeight: '500',
-  },
-  headerTextIdent: {
-    fontSize: 24,
-    color: colors.BLUE_BASIC,
-    fontWeight: '500',
-  },
-  subHeaderText: {
-    color: colors.BLACK,
-    fontSize: 16,
-  },
-  gap: {
-    marginHorizontal: 20,
-    borderTopWidth: 1,
-  },
-  cardBodyContainer: {
-    marginTop: 10,
-    paddingHorizontal: 20,
-  },
-  bodyIdentTextContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    // marginBottom: 10,
-    paddingVertical: 10,
-    // borderBottomWidth: 1,
-    // borderBottomColor: colors.GRAY_200,
-    // borderTopWidth: 1,
-  },
-  bodyIdentTextQuestion: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: colors.GRAY_700,
-  },
-  bodyIdentOriginDestinationTextAnswer: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.BLUE_BASIC,
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    optionBackground: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
+    cardContainer: {
+      backgroundColor: colors[theme].WHITE,
+      margin: 10,
+      borderRadius: 20,
+      shadowColor: colors[theme].BLACK,
+      shadowOffset: {width: 3, height: 3},
+      shadowOpacity: 0.2,
+      elevation: 1,
+      borderColor: colors[theme].GRAY_500,
+      borderWidth: 1.5,
+    },
+    cardInner: {
+      padding: 20,
+      width: '100%',
+      // flexDirection: 'row',
+      // alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    cardHeaderContainer: {
+      flexDirection: 'row',
+      padding: 20,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    headerText: {
+      fontSize: 20,
+      color: colors[theme].BLUE_SHADOW,
+      fontWeight: '500',
+    },
+    headerTextIdent: {
+      fontSize: 24,
+      color: colors[theme].BLUE_BASIC,
+      fontWeight: '500',
+    },
+    subHeaderText: {
+      color: colors[theme].BLACK,
+      fontSize: 16,
+    },
+    gap: {
+      marginHorizontal: 20,
+      borderTopWidth: 1,
+    },
+    cardBodyContainer: {
+      marginTop: 10,
+      paddingHorizontal: 20,
+    },
+    bodyIdentTextContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      // marginBottom: 10,
+      paddingVertical: 10,
+      // borderBottomWidth: 1,
+      // borderBottomColor: colors[theme].GRAY_200,
+      // borderTopWidth: 1,
+    },
+    bodyIdentTextQuestion: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors[theme].GRAY_700,
+    },
+    bodyIdentOriginDestinationTextAnswer: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: colors[theme].BLUE_BASIC,
+    },
+  });
 
-const noDataStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  identInfoContainer: {
-    backgroundColor: colors.WHITE,
-    width: Dimensions.get('screen').width - 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: colors.BLACK,
-    shadowOffset: {width: 1, height: 1},
-    shadowOpacity: 0.5,
-    elevation: 4,
-    borderColor: colors.GRAY_500,
-    borderWidth: 1.5,
-  },
-});
+const noDataStyling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    identInfoContainer: {
+      backgroundColor: colors[theme].WHITE,
+      width: Dimensions.get('screen').width - 90,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      padding: 20,
+      shadowColor: colors[theme].BLACK,
+      shadowOffset: {width: 1, height: 1},
+      shadowOpacity: 0.5,
+      elevation: 4,
+      borderColor: colors[theme].GRAY_500,
+      borderWidth: 1.5,
+    },
+  });

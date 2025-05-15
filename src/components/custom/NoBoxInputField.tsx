@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {colors} from '@/constants';
 import DeleteIcon from '@/assets/Icon/DeleteIcon.svg';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 interface InputFieldProps<T> {
   label: string;
@@ -35,6 +37,8 @@ function InputField<T extends string | number>({
   onClear,
   unit,
 }: InputFieldProps<T>) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -42,7 +46,7 @@ function InputField<T extends string | number>({
         <TextInput
           style={styles.input}
           placeholder={placeholder}
-          placeholderTextColor={colors.GRAY_500}
+          placeholderTextColor={colors[theme].GRAY_500}
           onChangeText={text => {
             const newValue = typeof value === 'number' ? Number(text) : text;
             onChangeText(newValue as T);
@@ -55,7 +59,7 @@ function InputField<T extends string | number>({
         )}
         {showClearIcon && value.toString().length > 0 && (
           <Pressable onPress={onClear} style={styles.icon}>
-            <DeleteIcon width={20} height={20} fill={colors.GRAY_700} />
+            <DeleteIcon width={20} height={20} fill={colors[theme].GRAY_700} />
           </Pressable>
         )}
       </View>
@@ -67,42 +71,43 @@ function InputField<T extends string | number>({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    paddingHorizontal: 24,
-    marginVertical: 10,
-  },
-  label: {
-    fontSize: 14,
-    color: colors.GRAY_500,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    fontSize: 20,
-    color: '#333',
-    paddingVertical: 5,
-  },
-  unit: {
-    fontSize: 16,
-    color: '#333',
-    marginLeft: 4,
-  },
-  icon: {
-    padding: 8,
-  },
-  line: {
-    height: 1,
-    backgroundColor: colors.GREEN_500,
-  },
-  message: {
-    fontSize: 12,
-    marginTop: 4,
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      paddingHorizontal: 24,
+      marginVertical: 10,
+    },
+    label: {
+      fontSize: 14,
+      color: colors[theme].GRAY_500,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    input: {
+      flex: 1,
+      fontSize: 20,
+      color: '#333',
+      paddingVertical: 5,
+    },
+    unit: {
+      fontSize: 16,
+      color: '#333',
+      marginLeft: 4,
+    },
+    icon: {
+      padding: 8,
+    },
+    line: {
+      height: 1,
+      backgroundColor: colors[theme].BLUE_500,
+    },
+    message: {
+      fontSize: 12,
+      marginTop: 4,
+    },
+  });
 
 export default InputField;
