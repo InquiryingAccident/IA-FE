@@ -1,31 +1,35 @@
-import useThemeStore from '@/store/useThemeStore';
-import {ThemeMode} from '@/types';
-import {getAsyncStorage, setAsyncStorage} from '@/utils';
 import {useEffect} from 'react';
 import {useColorScheme} from 'react-native';
+
+import {storageKeys} from '@/constants';
+import type {ThemeMode} from '@/types';
+import useThemeStore from '@/store/useThemeStore';
+import {getEncryptStorage, setEncryptStorage} from '@/utils';
 
 function useThemeStorage() {
   const systemTheme = useColorScheme();
   const {theme, isSystem, setTheme, setSystemTheme} = useThemeStore();
 
   const setMode = async (mode: ThemeMode) => {
-    await setAsyncStorage('themeMode', mode);
+    await setEncryptStorage(storageKeys.THEME_MODE, mode);
     setTheme(mode);
   };
 
   const setSystem = async (flag: boolean) => {
-    await setAsyncStorage('themeSystem', flag);
+    await setEncryptStorage(storageKeys.THEME_SYSTEM, flag);
     setSystemTheme(flag);
   };
 
   useEffect(() => {
-    async () => {
-      const mode = (await getAsyncStorage('themeMode')) ?? 'light';
-      const systemMode = (await getAsyncStorage('themeSystem')) ?? 'false';
+    (async () => {
+      const mode = (await getEncryptStorage(storageKeys.THEME_MODE)) ?? 'light';
+      const systemMode =
+        (await getEncryptStorage(storageKeys.THEME_SYSTEM)) ?? false;
+
       const newMode = systemMode ? systemTheme : mode;
-      setTheme(mode);
+      setTheme(newMode);
       setSystemTheme(systemMode);
-    };
+    })();
   }, [setTheme, setSystemTheme, systemTheme]);
 
   return {theme, isSystem, setMode, setSystem};
