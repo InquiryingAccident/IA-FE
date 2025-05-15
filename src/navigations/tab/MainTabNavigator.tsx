@@ -6,6 +6,8 @@ import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import SvgIcon from '@/components/custom/CustomIcon';
 import Logo from '@/assets/logo/LogoSvg.svg';
 import TabUserStackNavigator from '../stack/TabUserStackNavigator';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 export type MainTabParamList = {
   [mainTabNavigations.MAINTAB_SEARCH]: undefined;
@@ -15,6 +17,9 @@ export type MainTabParamList = {
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTabNavigator() {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
+  const headerStyles = headerStyling(theme);
   return (
     <Tab.Navigator
       initialRouteName={mainTabNavigations.MAINTAB_SEARCH}
@@ -23,7 +28,7 @@ function MainTabNavigator() {
           height: Dimensions.get('screen').height * 0.08,
           paddingTop: 8,
           paddingBottom: 12,
-          backgroundColor: colors.BLUE_BASIC,
+          backgroundColor: colors[theme].BLUE_BASIC,
         },
         tabBarIcon: ({focused}) => {
           switch (route.name) {
@@ -55,8 +60,8 @@ function MainTabNavigator() {
               : '내정보'}
           </Text>
         ),
-        tabBarActiveTintColor: colors.WHITE,
-        tabBarInactiveTintColor: colors.WHITE,
+        tabBarActiveTintColor: colors[theme].WHITE,
+        tabBarInactiveTintColor: colors[theme].WHITE,
         headerLeft: () => (
           <View style={headerStyles.container}>
             <Logo width={30} height={30} />
@@ -90,25 +95,27 @@ function MainTabNavigator() {
 
 export default MainTabNavigator;
 
-const styles = StyleSheet.create({
-  tabLabel: {
-    fontSize: 12,
-    color: '#FFF',
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    tabLabel: {
+      fontSize: 12,
+      color: '#FFF',
+    },
+  });
 
-const headerStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    left: 20,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 10,
-  },
-  headerText: {
-    color: colors.BLUE_BASIC,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
+const headerStyling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      left: 20,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      gap: 10,
+    },
+    headerText: {
+      color: colors[theme].BLUE_BASIC,
+      fontSize: 16,
+      textAlign: 'center',
+    },
+  });
