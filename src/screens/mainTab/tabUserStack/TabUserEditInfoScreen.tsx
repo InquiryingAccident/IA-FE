@@ -3,6 +3,8 @@ import UserEditHeaderRight from '@/components/user/UserEditHeaderRight';
 import {colors, tabUserNavigations} from '@/constants';
 import {TabUserStackParamList} from '@/navigations/stack/TabUserStackNavigator';
 import {useUserStore} from '@/store/userStore';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import {SafeAreaView, Text, StyleSheet, View} from 'react-native';
@@ -13,6 +15,8 @@ type TabUserEditInfoScreenProps = StackScreenProps<
 >;
 
 function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   const {user, setUser} = useUserStore();
 
   const handlePressEditInfo = async () => {
@@ -37,21 +41,22 @@ function TabUserEditInfoScreen({navigation}: TabUserEditInfoScreenProps) {
 
 export default TabUserEditInfoScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: colors.WHITE,
-  },
-  nicknameContainer: {
-    padding: 30,
-    justifyContent: 'center',
-  },
-  nicknameText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: colors.GRAY_700,
-    marginBottom: -10,
-    marginTop: 10,
-  },
-});
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: colors[theme].WHITE,
+    },
+    nicknameContainer: {
+      padding: 30,
+      justifyContent: 'center',
+    },
+    nicknameText: {
+      fontSize: 16,
+      fontWeight: '500',
+      color: colors[theme].GRAY_700,
+      marginBottom: -10,
+      marginTop: 10,
+    },
+  });

@@ -17,6 +17,8 @@ import {StackScreenProps} from '@react-navigation/stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
+import useThemeStore from '@/store/useThemeStore';
+import {ThemeMode} from '@/types';
 
 type TabUserScreenProps = StackScreenProps<
   TabUserStackParamList,
@@ -24,6 +26,8 @@ type TabUserScreenProps = StackScreenProps<
 >;
 
 function TabUserHomeScreen({navigation}: TabUserScreenProps) {
+  const {theme} = useThemeStore();
+  const styles = styling(theme);
   const {logoutMutation, deleteMutation} = useAuth();
   const userInfo = useUserStore(state => state.user);
   const [userState, setUserState] = useState<Boolean>(true);
@@ -202,7 +206,11 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
           onPress={() =>
             navigation.navigate(tabUserNavigations.TAB_USER_EDIT_INFO)
           }>
-          <MaterialIcons name="edit" size={24} color={colors.BLUE_BASIC} />
+          <MaterialIcons
+            name="edit"
+            size={24}
+            color={colors[theme].BLUE_BASIC}
+          />
           <Text style={styles.editText}>내 정보 수정</Text>
         </Pressable>
       </View>
@@ -213,26 +221,30 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
         <SettingItem
           title="로그아웃"
           onPress={logoutUser}
-          color={colors.GRAY_300}
+          color={colors[theme].GRAY_300}
           icon={
-            <MaterialIcons name="logout" size={20} color={colors.GRAY_300} />
+            <MaterialIcons
+              name="logout"
+              size={20}
+              color={colors[theme].GRAY_300}
+            />
           }
         />
         <View
           style={{
             height: 2,
-            backgroundColor: colors.GRAY_100,
+            backgroundColor: colors[theme].GRAY_100,
           }}
         />
         <SettingItem
           title="회원탈퇴"
           onPress={deleteUser}
-          color={colors.GRAY_300}
+          color={colors[theme].GRAY_300}
           icon={
             <Ionicons
               name="remove-circle-sharp"
               size={20}
-              color={colors.RED_500}
+              color={colors[theme].RED_500}
             />
           }
         />
@@ -243,87 +255,88 @@ function TabUserHomeScreen({navigation}: TabUserScreenProps) {
 
 export default TabUserHomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: colors.WHITE,
-  },
-  userInfo: {
-    // padding: 20,
-    paddingVertical: 30,
-    paddingHorizontal: 22,
-  },
-  infoHeader: {
-    flexDirection: 'row',
-    marginTop: 10,
-    // backgroundColor: colors.RED_300,
-    marginBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoHeaderText: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    fontSize: 18,
-    color: colors.GRAY_300,
-  },
-  infoHeaderGap: {
-    width: Dimensions.get('screen').width * 0.5,
-  },
-  accountStatusButton: {
-    width: 76,
-    height: 26,
-    alignSelf: 'flex-end',
-    borderRadius: 4,
+const styling = (theme: ThemeMode) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: colors[theme].WHITE,
+    },
+    userInfo: {
+      // padding: 20,
+      paddingVertical: 30,
+      paddingHorizontal: 22,
+    },
+    infoHeader: {
+      flexDirection: 'row',
+      marginTop: 10,
+      // backgroundColor: colors[theme].RED_300,
+      marginBottom: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    infoHeaderText: {
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      fontSize: 18,
+      color: colors[theme].GRAY_300,
+    },
+    infoHeaderGap: {
+      width: Dimensions.get('screen').width * 0.5,
+    },
+    accountStatusButton: {
+      width: 76,
+      height: 26,
+      alignSelf: 'flex-end',
+      borderRadius: 4,
 
-    justifyContent: 'center',
-  },
-  accountStatusText: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: colors.WHITE,
-  },
-  accountStatusButtonACTIVE: {
-    backgroundColor: colors.BLUE_BASIC,
-  },
-  accountStatusButtonINACTIVE: {
-    backgroundColor: colors.BLUE_SHADOW,
-  },
-  questionHeaderText: {
-    fontSize: 14,
-    color: colors.GRAY_300,
-    marginBottom: 20,
-  },
-  answerNickname: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: colors.BLACK,
-  },
-  editContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderTopWidth: 1,
-    borderTopColor: colors.GRAY_200,
-  },
-  editMenu: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-  },
-  editText: {
-    fontWeight: '600',
-    fontSize: 15,
-    color: colors.GRAY_700,
-  },
-  containerGap: {
-    width: '100%',
-    height: 14,
-    backgroundColor: colors.GRAY_100,
-  },
-  authContainer: {
-    flex: 1,
-  },
-});
+      justifyContent: 'center',
+    },
+    accountStatusText: {
+      fontSize: 12,
+      textAlign: 'center',
+      color: colors[theme].WHITE,
+    },
+    accountStatusButtonACTIVE: {
+      backgroundColor: colors[theme].BLUE_BASIC,
+    },
+    accountStatusButtonINACTIVE: {
+      backgroundColor: colors[theme].BLUE_SHADOW,
+    },
+    questionHeaderText: {
+      fontSize: 14,
+      color: colors[theme].GRAY_300,
+      marginBottom: 20,
+    },
+    answerNickname: {
+      fontSize: 18,
+      fontWeight: '400',
+      color: colors[theme].BLACK,
+    },
+    editContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      paddingHorizontal: 20,
+      paddingVertical: 15,
+      borderTopWidth: 1,
+      borderTopColor: colors[theme].GRAY_200,
+    },
+    editMenu: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+    },
+    editText: {
+      fontWeight: '600',
+      fontSize: 15,
+      color: colors[theme].GRAY_700,
+    },
+    containerGap: {
+      width: '100%',
+      height: 14,
+      backgroundColor: colors[theme].GRAY_100,
+    },
+    authContainer: {
+      flex: 1,
+    },
+  });
