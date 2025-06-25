@@ -1,12 +1,12 @@
-import {colors} from '@/constants';
-import useThemeStore from '@/store/useThemeStore';
 import React, {PropsWithChildren} from 'react';
 import {
-  View,
-  StyleSheet,
   ActivityIndicator,
   ActivityIndicatorProps,
+  StyleSheet,
+  View,
 } from 'react-native';
+
+import {colors} from '@/constants';
 
 function Loader({
   children,
@@ -14,7 +14,6 @@ function Loader({
   color = colors.light.GRAY_500,
   ...props
 }: PropsWithChildren<ActivityIndicatorProps>) {
-  const {theme} = useThemeStore();
   return (
     <View style={styles.container}>
       <ActivityIndicator
@@ -28,8 +27,6 @@ function Loader({
   );
 }
 
-export default Loader;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -40,3 +37,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
+export default Loader;

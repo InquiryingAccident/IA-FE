@@ -21,11 +21,6 @@ import {validateSignup} from '@/utils';
 import useThemeStore from '@/store/useThemeStore';
 import {ThemeMode} from '@/types';
 
-// const REDIRECT_URI = `${
-//   Platform.OS === 'ios'
-//     ? 'http://localhost:3030/auth/oauth/kakao'
-//     : 'http://10.0.2.2:3030/auth/oauth/kakao'
-// }`;
 const REDIRECT_URI = `${ServerBaseUrl}/api/auth/login`;
 
 function KakaoLoginScreen() {

@@ -13,6 +13,8 @@ class AppDelegate: RCTAppDelegate {
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = [:]
 
+    RNSplashScreen.show()
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

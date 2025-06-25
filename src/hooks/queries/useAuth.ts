@@ -37,6 +37,7 @@ function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
         alerts_ErrorMessage.AUTH_SIGNUP.DESCRIPTION,
       );
     },
+    throwOnError: error => Number(error.response?.status) >= 500,
     ...mutationOptions,
   });
 }
@@ -44,6 +45,7 @@ function useSignup(mutationOptions?: UseMutationCustomOptions<void>) {
 function useLogin(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postLogin,
+    throwOnError: error => Number(error.response?.status) >= 500,
     onSuccess: ({accessToken, refreshToken}) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
@@ -64,6 +66,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 function useSocialLogin(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postSocialLogin,
+    throwOnError: error => Number(error.response?.status) >= 500,
     onSuccess: ({accessToken, refreshToken}) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
@@ -82,11 +85,9 @@ function useSocialLogin(mutationOptions?: UseMutationCustomOptions) {
 }
 
 function useGetRefreshToken() {
-  const refreshToken = getEncryptStorage(storageKeys.REFRESH_TOKEN); // 동기적으로 가져올 수 있다면
-  const {data, error, isSuccess, isError} = useQuery({
+  const {data, error, isSuccess, isError, isPending} = useQuery({
     queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
     queryFn: getAccessToken,
-    enabled: Boolean(refreshToken), // 토큰이 있어야 실행
     staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
     refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
     refetchOnReconnect: true,
@@ -107,7 +108,7 @@ function useGetRefreshToken() {
     }
   }, [isError]);
 
-  return {isSuccess, isError};
+  return {isSuccess, isError, isPending};
 }
 
 function useGetProfile(queryOptions?: UseQueryCustomOptions<ResponseProfile>) {
@@ -170,6 +171,7 @@ function useAuth() {
   const socialLoginMutation = useSocialLogin();
   const logoutMutation = useLogout();
   const deleteMutation = useDelete();
+  const isLoginLoading = refreshTokenQuery.isPending;
 
   return {
     isLogin,
@@ -180,6 +182,7 @@ function useAuth() {
     refreshTokenQuery,
     getProfileQuery,
     socialLoginMutation,
+    isLoginLoading,
   };
 }
 

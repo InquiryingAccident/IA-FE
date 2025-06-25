@@ -1,16 +1,17 @@
-import {useQueryErrorResetBoundary} from '@tanstack/react-query';
 import React, {PropsWithChildren} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {ErrorBoundary} from 'react-error-boundary';
-import {View, StyleSheet, Text} from 'react-native';
+import {useQueryErrorResetBoundary} from '@tanstack/react-query';
 import CustomButton from './CustomButton';
 import {ThemeMode} from '@/types';
-import {colors} from '@/constants';
 import useThemeStore from '@/store/useThemeStore';
+import {colors} from '@/constants';
 
 function RetryErrorBoundary({children}: PropsWithChildren) {
-  const {reset} = useQueryErrorResetBoundary();
   const {theme} = useThemeStore();
   const styles = styling(theme);
+  const {reset} = useQueryErrorResetBoundary();
+
   return (
     <ErrorBoundary
       onReset={reset}
@@ -21,7 +22,7 @@ function RetryErrorBoundary({children}: PropsWithChildren) {
             요청 사항을 처리하는데 실패했습니다.
           </Text>
           <CustomButton
-            label="다시시도"
+            label="다시 시도"
             size="medium"
             variant="outlined"
             onPress={resetErrorBoundary}
@@ -32,8 +33,6 @@ function RetryErrorBoundary({children}: PropsWithChildren) {
     </ErrorBoundary>
   );
 }
-
-export default RetryErrorBoundary;
 
 const styling = (theme: ThemeMode) =>
   StyleSheet.create({
@@ -54,3 +53,5 @@ const styling = (theme: ThemeMode) =>
       color: colors[theme].GRAY_500,
     },
   });
+
+export default RetryErrorBoundary;
